@@ -1,14 +1,47 @@
-<script>
-    let message = '';
+<script lang="js">
+    
+    let login = ''
 
-    async function fetch_msg(){
-        const response = await fetch('https://hoh-api-24174ce192a4.herokuapp.com/hello')
-        message = await response.text()
-    };
+    let password = ''
+
+    function Login(){
+        console.log(login)
+        console.log(password)
+        //This can use API POST (log, passw) request to query database
+    }
+
 </script>
 
-<h1>This is a Login page</h1>
+<div id="login-form">
+    <div id="container">
+        <input class="element" type="text" bind:value={login} placeholder="Username" />
+        <input class="element" type="text" bind:value={password} placeholder="Password" /> 
+        <button class="element" on:click={Login}> Login </button>
+    </div>
+</div>
 
-<h2>{message}</h2>
 
-<button on:click={fetch_msg}>Click to get a message!</button>
+<style>
+    #login-form{
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+
+        border: 2px solid black;
+        padding: 7.5%; 
+        border-radius: 10px; 
+    }
+
+    .element{
+        font-size: 1.25em;
+    }
+</style>
