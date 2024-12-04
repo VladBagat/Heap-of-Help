@@ -12,6 +12,7 @@
 
         const res = await fetch('https://hoh-api-24174ce192a4.herokuapp.com/login', {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -19,6 +20,8 @@
         });
 
         const json = await res.json();
+
+        console.log(json)
 
         if (json.success) {
             IndexRedirect()
