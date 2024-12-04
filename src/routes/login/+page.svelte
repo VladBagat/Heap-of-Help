@@ -1,14 +1,15 @@
 <script lang="js">
     
-    let login = ''
+    let login = $state('');
+    let password = $state('');
 
-    let password = ''
+    let is_remember = $state(false);
 
     async function Login() {
         console.log(login);
         console.log(password);
 
-        const payload = { username: login, password: password };
+        const payload = { username: login, password: password, remember:is_remember };
 
         const res = await fetch('https://hoh-api-24174ce192a4.herokuapp.com/login', {
             method: 'POST',
@@ -45,8 +46,12 @@
     <div id="container">
         <input class="element" type="text" bind:value={login} placeholder="Username" />
         <input class="element" type="text" bind:value={password} placeholder="Password" /> 
-        <button class="element" on:click={Login}> Login </button>
-        <button class="redirect" on:click={RegisterRedirect}> Not on Heap of Help? </button>
+        <button class="element" onclick={Login}> Login </button>
+        <label>
+            <input type="checkbox" bind:checked={is_remember}/>
+            Remember me
+        </label>
+        <button class="redirect" onclick={RegisterRedirect}> Not on Heap of Help? </button>
     </div>
 </div>
 
