@@ -23,7 +23,7 @@
 
         console.log(json)
 
-        if (json.success) {
+        if (json[0].success) {
             IndexRedirect()
         }
     }
