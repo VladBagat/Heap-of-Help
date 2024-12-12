@@ -10,7 +10,7 @@
         console.log(confirm_password)
         // If pass not valid, user isn't registered
         let valid = Password_Validation(password, confirm_password)
-        if (Password_Validation === ''){
+        if (valid === ''){
             document.getElementById("error").innerHTML = ''
             const payload = { username: login, password: password, confirm_password:confirm_password};
 
