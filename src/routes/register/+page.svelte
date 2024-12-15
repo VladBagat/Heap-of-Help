@@ -3,6 +3,8 @@
     let password = $state('');
     let confirm_password = $state('');
 
+    import Password from '$lib/password.svelte';
+
     async function Register()
      {
         console.log(login);
@@ -50,13 +52,6 @@
         return "";
     }
 
-    function ToggleVisability(fieldId) {
-        const field = document.getElementById(fieldId);
-        // ? is a ternary operator, basically a one line if statement
-        // If password hidden when the toggle is pressed it wil be shown, otherwise it will be hidden
-        document.getElementById(fieldId).type = (field.type === "password") ? "text" : "password";
-    }
-
     function LoginRedirect(){
         goto('/login');
     }
@@ -70,18 +65,27 @@
 <div id="register-form">
     <div id="container">
         <input class="element" type="text" bind:value={login} placeholder="Username" />
-        <input id="pass" class="element" type="password" bind:value={password} placeholder="Password" /> 
-        <button class="element" onclick={() => ToggleVisability("pass")}>Toggle Pass Visibility</button>
-        <input  id="conf_pass" class="element" type="password" bind:value={confirm_password} placeholder="Confirm Password" /> 
-        <button class="element" onclick={() => ToggleVisability("conf_pass")}>Toggle Pass Visibility</button>
-        <button class="element" onclick={Register}> Register </button>
+        <div id="pass-inp">
+            <Password bind:value={password}/>
+            <Password bind:value={confirm_password}/>
+        </div>
+        <button class="element" onclick={Register}>Register</button>
         <p id="error"></p>
-        <button class="redirect" onclick={LoginRedirect}> Already on Heap of Help? </button>
+        <button class="redirect" onclick={LoginRedirect}>Already on Heap of Help?</button>
     </div>
 </div>
 
 
 <style>
+    #pass-inp{
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 20px;
+    }
+
     #register-form{
         height: 100vh;
         display: flex;
@@ -102,7 +106,7 @@
     }
 
     .element{
-        font-size: 1.25em;
+        font-size: 1.25vw;
     }
 
     .redirect{
