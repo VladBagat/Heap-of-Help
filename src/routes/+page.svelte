@@ -2,10 +2,33 @@
     import { goto } from '$app/navigation';
     import { browser } from '$app/environment';
 
-    if (browser){
-      goto('/index');
-    }
-      
-</script>
+    if (browser) {
+    (async () => {
+        try {
+            const res = await fetch('http://127.0.0.1:5000/auth', {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
 
-<!--This is an entry point. It redirects user to the index page-->
+            if (!res.ok) {
+              goto('/register');
+            }
+
+            const json = await res.json();
+            console.log(json);
+
+            if (json[0].success) {
+                goto('/index'); 
+            } else {
+                
+            }
+        } catch (error) {
+            console.error('Error fetching auth:', error);
+        }
+    })();
+}
+
+</script>
