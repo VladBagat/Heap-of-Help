@@ -3,12 +3,7 @@
 <Slider category={"Closest"}></Slider>
 
 <script lang="js">
-  import Slider from '$lib/slider.svelte';
-  import { goto } from '$app/navigation';
-  
-  function navigateToNewRoute() {
-    goto('/login');
-  }
+  import Slider from '$lib/slider.svelte';  
 </script>
 
 <!--This is an index page. It has HTML button and text + a JavaScript function.
