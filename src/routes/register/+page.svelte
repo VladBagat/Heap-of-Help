@@ -47,7 +47,7 @@
             return "Minimum password length 8, Try Again.";
         }
         if (password !== confirm_password){
-            return "Passwords do not match, Try Again";
+            return "Passwords do not match, Try Again!";
         }       
         return "";
     }
