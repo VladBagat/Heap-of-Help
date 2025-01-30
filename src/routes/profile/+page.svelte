@@ -43,9 +43,9 @@
 </script>
 
 <div class="profile-container">
-    <img src="profile.jpg" alt="Profile Image" class="profile-image" id="profileImage">
+    <img src="profile.avif" alt="Profile Image" class="profile-image" id="profileImage">
     <div class="username" id="username">My name!</div>
-    <div class="description" id="desscrption">Some descritpion</div>
+    <div class="description" id="desscrption">Some description</div>
 </div>
 
 
