@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+      {
+        "source": "/api/:path*",
+        "destination": "https://hoh-api-24174ce192a4.herokuapp.com/:path*"
+      }
+    ]
+  }

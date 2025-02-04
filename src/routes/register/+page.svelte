@@ -16,7 +16,7 @@
             document.getElementById("error").innerHTML = ''
             const payload = { username: login, password: password, confirm_password:confirm_password};
 
-            const res = await fetch('https://hoh-api-24174ce192a4.herokuapp.com/register', {
+            const res = await fetch('api/register', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -47,7 +47,7 @@
             return "Minimum password length 8, Try Again.";
         }
         if (password !== confirm_password){
-            return "Passwords do not match, Try Again";
+            return "Passwords do not match, Try Again!";
         }       
         return "";
     }
