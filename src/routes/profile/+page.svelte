@@ -44,35 +44,52 @@
 
 <div class="profile-container">
     <img src="profile.avif" alt="Profile Image" class="profile-image" id="profileImage">
-    <div class="username" id="username">My name!</div>
-    <div class="description" id="desscrption">Some description</div>
+    <div class="text-container">
+        <div class="username" id="username">My name!</div>
+        <div class="description" id="description">Some description</div>
+    </div>
 </div>
 
 
 <style>
    body {
-    font-family:Arial, sans-serif:
+    font-family:Arial, sans-serif;
     background-color:#f0f0f0;
     margin: 0;
     padding: 0;
    }
    .profile-container {
-    width:300px;
-    margin: 50px auto;
+    display: flex; /* row aligning */
+    align-items: center; 
+    width:500px;
+    margin: 50px 0 50px 20px; /* shifted left */
     padding: 20px;
     background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1):
-    tex-align: center;
     border-radius: 10px;
    }
    .profile-image {
-    width: 100px;
-    height: 100px;
+    width: 300px;
+    height: 300px;
     border-radius:50%;
-    margin-bottom: 15px;
+    margin-right: 15px;
    }
+
+    .text-container {
+    display: flex;
+    flex-direction: column; /*stacking username and description */
+    align-items: flex-start;
+    
+    }
+
    .username { 
-    font-size: 16px;
+    font-size: 30px;
     color: #666;
+    font-weight: bold;
+    margin-bottom: 5px;
+   }
+
+   .description {
+    font-size: 16px;
+    color: #888
    }
 </style>
