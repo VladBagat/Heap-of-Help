@@ -1,5 +1,6 @@
 <script>
     let menuOpen = false;
+    import "../styles.css";
   </script>
   
   <header class="header">
