@@ -40,6 +40,17 @@
         goto('/index')
     }
 
+    // Function to handle the "Chat" button click
+    function handleChat() {
+        console.log('Chat button clicked');
+        // Add chat functionality here
+    }
+
+    // Function to handle the "Edit" button click
+    function handleEdit() {
+        console.log('Edit button clicked');
+        // Add edit profile functionality here
+    }
 </script>
 
 <div class="profile-container">
@@ -47,6 +58,11 @@
     <div class="text-container">
         <div class="username" id="username">My name!</div>
         <div class="description" id="description">Some description</div>
+        <div class="tags" id="tags">tag1, tag2, tag3</div>
+        <div class="button-container">
+            <button class="chat-button" on:click={handleChat}>Chat</button>
+            <button class="edit-button" on:click={handleEdit}>Edit</button>
+        </div>
     </div>
 </div>
 
@@ -74,6 +90,38 @@
     margin-right: 15px;
    }
 
+   .button-container {
+        display: flex;
+        gap: 10px; /* Space between buttons */
+        margin-top: 15px; /* Space above the buttons */
+    }
+
+    .chat-button, .edit-button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .chat-button {
+        background-color: #4CAF50; /* Green */
+        color: white;
+    }
+
+    .edit-button {
+        background-color: #008CBA; /* Blue */
+        color: white;
+    }
+
+    .chat-button:hover {
+        background-color: #45a049; /* Darker green */
+    }
+
+    .edit-button:hover {
+        background-color: #007B9E; /* Darker blue */
+    }
+    
     .text-container {
     display: flex;
     flex-direction: column; /*stacking username and description */
@@ -85,11 +133,23 @@
     font-size: 30px;
     color: #666;
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
    }
 
    .description {
-    font-size: 16px;
-    color: #888
+    font-size: 20px;
+    color: #666
+    margin-bottom: 5px:
    }
+   
+   .tags {
+    font-size: 20px;
+    color: #888
+    margin-bottom: 20px;
+   }
+
+   
+
+
+
 </style>
