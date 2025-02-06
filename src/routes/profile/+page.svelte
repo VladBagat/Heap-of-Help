@@ -40,12 +40,11 @@
         goto('/index')
     }
 
-    // Function to handle the "Chat" button click
-    function handleChat() {
+ // Function to handle the "Chat" button click
+ function handleChat() {
         console.log('Chat button clicked');
         // Add chat functionality here
     }
-
     // Function to handle the "Edit" button click
     function handleEdit() {
         console.log('Edit button clicked');
@@ -66,36 +65,33 @@
     </div>
 </div>
 
-
 <style>
-   body {
-    font-family:Arial, sans-serif;
-    background-color:#f0f0f0;
-    margin: 0;
-    padding: 0;
-   }
-   .profile-container {
-    display: flex; /* row aligning */
-    align-items: center; 
-    width:500px;
-    margin: 50px 0 50px 20px; /* shifted left */
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-   }
-   .profile-image {
-    width: 300px;
-    height: 300px;
-    border-radius:50%;
-    margin-right: 15px;
-   }
-
+    body {
+     font-family:Arial, sans-serif;
+     background-color:#f0f0f0;
+     margin: 0;
+     padding: 0;
+    }
+    .profile-container {
+     display: flex; /* row aligning */
+     align-items: center; 
+     width:500px;
+     margin: 50px 0 50px 20px; /* shifted left */
+     padding: 20px;
+     background-color: #fff;
+     border-radius: 10px;
+    }
+    .profile-image {
+     width: 300px;
+     height: 300px;
+     border-radius:50%;
+     margin-right: 15px;
+    }
    .button-container {
         display: flex;
         gap: 10px; /* Space between buttons */
         margin-top: 15px; /* Space above the buttons */
     }
-
     .chat-button, .edit-button {
         padding: 10px 20px;
         border: none;
@@ -103,21 +99,17 @@
         cursor: pointer;
         font-size: 16px;
     }
-
     .chat-button {
         background-color: #4CAF50; /* Green */
         color: white;
     }
-
     .edit-button {
         background-color: #008CBA; /* Blue */
         color: white;
     }
-
     .chat-button:hover {
         background-color: #45a049; /* Darker green */
     }
-
     .edit-button:hover {
         background-color: #007B9E; /* Darker blue */
     }
@@ -128,28 +120,23 @@
     align-items: flex-start;
     
     }
-
    .username { 
     font-size: 30px;
     color: #666;
     font-weight: bold;
+    margin-bottom: 5px;
     margin-bottom: 10px;
-   }
-
+    }
    .description {
     font-size: 20px;
     color: #666
-    margin-bottom: 5px:
-   }
+    margin-bottom: 5px;
+    }
    
    .tags {
     font-size: 20px;
     color: #888
     margin-bottom: 20px;
-   }
-
+    }
    
-
-
-
 </style>
