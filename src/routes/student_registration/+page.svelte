@@ -1,5 +1,5 @@
 <script lang="js">
-
+    let login = $state('');
     let forename = $state('');
     let surname = $state('');
     // let dob = $state('');
@@ -12,7 +12,11 @@
     let password = $state('');
     let confirm_password = $state('');
 
-    async function student_registration() {
+    import Password from '$lib/password.svelte';
+
+    async function student_registration()
+     {
+        console.log(username)
         console.log(forename)
         console.log(surname)
         //console.log(dob)
@@ -25,9 +29,9 @@
         let valid = Password_Validation(password, confirm_password)
         if (valid === ''){
             document.getElementById("error").innerHTML = ''
-            const payload = { username: login, password: password, confirm_password:confirm_password};
+            const payload = { username: username, forename: forename, surname: surname, email: email, phonenumber: phonenumber, password: password, confirm_password:confirm_password};
 
-            const res = await fetch('/api/student-reg', {
+            const res = await fetch('api/student-reg', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -48,21 +52,10 @@
             console.log(valid);
             document.getElementById("error").innerHTML = valid;
         }
-        
     }
-
     
-    import { goto } from '$app/navigation';
 
-    function Password_Validation(password, confirm_password){
-        if (password.length < 8){
-            return "Minimum password length 8, Try Again.";
-        }
-        if (password !== confirm_password){
-            return "Passwords do not match, Try Again";
-        }       
-        return "";
-    }
+    import { goto } from '$app/navigation';
 
     function ToggleVisability(fieldId) {
         const field = document.getElementById(fieldId);
@@ -83,55 +76,62 @@
 
 <div id="student_registration">
     <div id="container">
+        <input class="element" type="text" bind:value={login} placeholder="Username" />
         <input class="element" type="text" bind:value={forename} placeholder="Forename" />
         <input class="element" type="text" bind:value={surname} placeholder="Surname" /> 
         <input class="element" type="text" bind:value={email} placeholder="Email" /> 
         <input class="element" type="text" bind:value={phonenumber} placeholder="Telephone" />
-        <input id="pass" class="element" type="password" bind:value={password} placeholder="Password" /> 
-        <input  id="conf_pass" class="element" type="password" bind:value={confirm_password} placeholder="Confirm Password" /> 
-        <button class="element" onclick={student_registration}> Register </button>
-        <button class="redirect" onclick={LoginRedirect}> Already on Heap of Help? </button>
+        <div id="pass-inp">
+            <Password bind:value={password}/>
+            <Password bind:value={confirm_password}/>
+        </div>
+        <button class="element" onclick={student_registration}>Register</button>
+        <p id="error"></p>
+        <button class="redirect" onclick={LoginRedirect}>Already on Heap of Help?</button>
     </div>
 </div>
 
 
 <style>
-    #student_registration {
+    #pass-inp{
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    #student_registration{
         height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        background: white;
     }
 
-    #container {
+    #container{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 15px;
-        width: 320px;
-        border: 1px solid black;
-        padding: 40px;
-        border-radius: 8px;
-        background: white;
+        gap: 20px;
+
+        border: 2px solid black;
+        padding: 7.5%; 
+        border-radius: 10px; 
     }
 
-    .element {
-        font-size: 1.2em;
-        color: black;
+    .element{
+        font-size: 1.25vw;
     }
 
-    .redirect {
-        background: none;
+    .redirect{
+        background: none!important;
         border: none;
-        font-family: Arial, sans-serif;
-        color: black;
+        padding: 0!important;
+        font-family: arial, sans-serif;
+        color: #069;
         text-decoration: underline;
         cursor: pointer;
-    }
-
-    .redirect:hover {
-        opacity: 0.7;
     }
 </style>

@@ -63,10 +63,12 @@
         return "";
     }
 
-    // function ToggleVisability(fieldId) {
-    //     const field = document.getElementById(fieldId);
-    //     document.getElementById(fieldId).type = (field.type === "password") ? "text" : "password";
-    // }
+    function ToggleVisability(fieldId) {
+        const field = document.getElementById(fieldId);
+        // ? is a ternary operator, basically a one line if statement
+        // If password hidden when the toggle is pressed it wil be shown, otherwise it will be hidden
+        document.getElementById(fieldId).type = (field.type === "password") ? "text" : "password";
+    }
 
     // redirection to login page
     function LoginRedirect(){
@@ -86,55 +88,63 @@
 
 <div id="tutor_registration">
     <div id="container">
+        <input class="element" type="text" bind:value={username} placeholder="Username" />
         <input class="element" type="text" bind:value={forename} placeholder="Forename" />
         <input class="element" type="text" bind:value={surname} placeholder="Surname" /> 
         <input class="element" type="text" bind:value={email} placeholder="Email" /> 
         <input class="element" type="text" bind:value={phonenumber} placeholder="Telephone" />
-        <input id="pass" class="element" type="password" bind:value={password} placeholder="Password" /> 
-        <input  id="conf_pass" class="element" type="password" bind:value={confirm_password} placeholder="Confirm Password" /> 
-        <button class="element" onclick={tutor_registration}> Register </button>
-        <button class="redirect" onclick={LoginRedirect}> Already on Heap of Help? </button>
+        <div id="pass-inp">
+            <Password bind:value={password}/>
+            <Password bind:value={confirm_password}/>
+        </div>
+        <button class="element" onclick={student_registration}>Register</button>
+        <p id="error"></p>
+        <button class="redirect" onclick={LoginRedirect}>Already on Heap of Help?</button>
     </div>
 </div>
 
 
 <style>
-    #tutor_registration {
+    #pass-inp{
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    #tutor_registration{
         height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        background: white;
     }
 
-    #container {
+    #container{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 15px;
-        width: 320px;
-        border: 1px solid black;
-        padding: 40px;
-        border-radius: 8px;
-        background: white;
+        gap: 20px;
+
+        border: 2px solid black;
+        padding: 7.5%; 
+        border-radius: 10px; 
     }
 
-    .element {
-        font-size: 1.2em;
-        color: black;
+    .element{
+        font-size: 1.25vw;
     }
 
-    .redirect {
-        background: none;
+    .redirect{
+        background: none!important;
         border: none;
-        font-family: Arial, sans-serif;
-        color: black;
+        padding: 0!important;
+        font-family: arial, sans-serif;
+        color: #069;
         text-decoration: underline;
         cursor: pointer;
     }
-
-    .redirect:hover {
-        opacity: 0.7;
-    }
 </style>
+
