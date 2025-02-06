@@ -1,20 +1,25 @@
 <script lang="js">
-
-    let username = $state('')
+    let login = $state('');
     let forename = $state('');
     let surname = $state('');
-    let email = $state('');
+    // let dob = $state('');
     // address
-    // dob
-    // qualifications
+    // university
+    // degree
+    // year
+    let email = $state('');
     let phonenumber = $state('');
     let password = $state('');
     let confirm_password = $state('');
 
-    async function tutor_registration() {
+    import Password from '$lib/password.svelte';
+
+    async function tutor_registration()
+     {
         console.log(username)
         console.log(forename)
         console.log(surname)
+        //console.log(dob)
         console.log(email)
         console.log(phonenumber)
         console.log(password);
@@ -24,9 +29,9 @@
         let valid = Password_Validation(password, confirm_password)
         if (valid === ''){
             document.getElementById("error").innerHTML = ''
-            const payload = { username: username, forename: forename, surname: surname, email:email, phonenumber:phonenumber, password: password, confirm_password:confirm_password};
+            const payload = { username: username, forename: forename, surname: surname, email: email, phonenumber: phonenumber, password: password, confirm_password:confirm_password};
 
-            const res = await fetch('/api/tutor-reg', {
+            const res = await fetch('api/tutor-reg', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -47,21 +52,10 @@
             console.log(valid);
             document.getElementById("error").innerHTML = valid;
         }
-        
     }
-
     
-    import { goto } from '$app/navigation';
 
-    function Password_Validation(password, confirm_password){
-        if (password.length < 8){
-            return "Minimum password length 8, Try Again.";
-        }
-        if (password !== confirm_password){
-            return "Passwords do not match, Try Again";
-        }       
-        return "";
-    }
+    import { goto } from '$app/navigation';
 
     function ToggleVisability(fieldId) {
         const field = document.getElementById(fieldId);
@@ -70,16 +64,10 @@
         document.getElementById(fieldId).type = (field.type === "password") ? "text" : "password";
     }
 
-    // redirection to login page
     function LoginRedirect(){
         goto('/login');
     }
 
-    function TutorRegRedirect(){
-        goto('/tutor_reg');
-    }
-
-    // redirection to index page
     function IndexRedirect(){
         goto('/index')
     }
@@ -88,7 +76,7 @@
 
 <div id="tutor_registration">
     <div id="container">
-        <input class="element" type="text" bind:value={username} placeholder="Username" />
+        <input class="element" type="text" bind:value={login} placeholder="Username" />
         <input class="element" type="text" bind:value={forename} placeholder="Forename" />
         <input class="element" type="text" bind:value={surname} placeholder="Surname" /> 
         <input class="element" type="text" bind:value={email} placeholder="Email" /> 
@@ -97,7 +85,7 @@
             <Password bind:value={password}/>
             <Password bind:value={confirm_password}/>
         </div>
-        <button class="element" onclick={student_registration}>Register</button>
+        <button class="element" onclick={tutor_registration}>Register</button>
         <p id="error"></p>
         <button class="redirect" onclick={LoginRedirect}>Already on Heap of Help?</button>
     </div>
@@ -147,4 +135,3 @@
         cursor: pointer;
     }
 </style>
-
