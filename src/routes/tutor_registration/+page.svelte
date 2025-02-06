@@ -63,10 +63,10 @@
         return "";
     }
 
-    function ToggleVisability(fieldId) {
-        const field = document.getElementById(fieldId);
-        document.getElementById(fieldId).type = (field.type === "password") ? "text" : "password";
-    }
+    // function ToggleVisability(fieldId) {
+    //     const field = document.getElementById(fieldId);
+    //     document.getElementById(fieldId).type = (field.type === "password") ? "text" : "password";
+    // }
 
     // redirection to login page
     function LoginRedirect(){
@@ -90,12 +90,8 @@
         <input class="element" type="text" bind:value={surname} placeholder="Surname" /> 
         <input class="element" type="text" bind:value={email} placeholder="Email" /> 
         <input class="element" type="text" bind:value={phonenumber} placeholder="Telephone" />
-
         <input id="pass" class="element" type="password" bind:value={password} placeholder="Password" /> 
-        <button class="element" onclick={() => ToggleVisability("pass")}>Toggle Pass Visibility</button>
         <input  id="conf_pass" class="element" type="password" bind:value={confirm_password} placeholder="Confirm Password" /> 
-        <button class="element" onclick={() => ToggleVisability("conf_pass")}>Toggle Pass Visibility</button>
-
         <button class="element" onclick={tutor_registration}> Register </button>
         <button class="redirect" onclick={LoginRedirect}> Already on Heap of Help? </button>
     </div>
@@ -103,36 +99,42 @@
 
 
 <style>
-    #tutor_registration{
-        height: 200vh;
+    #tutor_registration {
+        height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
+        background: white;
     }
 
-    #container{
+    #container {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 20px;
-        width: 300px;
-        border: 2px solid black;
-        padding: 7.5%; 
-        border-radius: 10px; 
+        gap: 15px;
+        width: 320px;
+        border: 1px solid black;
+        padding: 40px;
+        border-radius: 8px;
+        background: white;
     }
 
-    .element{
-        font-size: 1.25em;
+    .element {
+        font-size: 1.2em;
+        color: black;
     }
 
-    .redirect{
-        background: none!important;
+    .redirect {
+        background: none;
         border: none;
-        padding: 0!important;
-        font-family: arial, sans-serif;
-        color: #069;
+        font-family: Arial, sans-serif;
+        color: black;
         text-decoration: underline;
         cursor: pointer;
+    }
+
+    .redirect:hover {
+        opacity: 0.7;
     }
 </style>
