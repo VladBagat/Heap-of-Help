@@ -1,4 +1,4 @@
-<!-- <script lang="js">
+<script lang="js">
 
     let forename = $state('');
     let surname = $state('');
@@ -94,7 +94,7 @@
         <button class="element" onclick={() => ToggleVisability("conf_pass")}>Toggle Pass Visibility</button>
 
 
-        <button class="element" onclick={Register}> Register </button>
+        <button class="element" onclick={student_registration}> Register </button>
         <button class="redirect" onclick={LoginRedirect}> Already on Heap of Help? </button>
     </div>
 </div>
@@ -133,4 +133,4 @@
         text-decoration: underline;
         cursor: pointer;
     }
-</style> -->
+</style>
