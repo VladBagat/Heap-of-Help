@@ -16,7 +16,7 @@
             document.getElementById("error").innerHTML = ''
             const payload = { username: login, password: password, confirm_password:confirm_password};
 
-            const res = await fetch('https://hoh-api-24174ce192a4.herokuapp.com/register', {
+            const res = await fetch('api/register', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -47,7 +47,7 @@
             return "Minimum password length 8, Try Again.";
         }
         if (password !== confirm_password){
-            return "Passwords do not match, Try Again";
+            return "Passwords do not match, Try Again!";
         }       
         return "";
     }
@@ -76,46 +76,3 @@
 </div>
 
 
-<style>
-    #pass-inp{
-        height: auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    #register-form{
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    #container{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-
-        border: 2px solid black;
-        padding: 7.5%; 
-        border-radius: 10px; 
-    }
-
-    .element{
-        font-size: 1.25vw;
-    }
-
-    .redirect{
-        background: none!important;
-        border: none;
-        padding: 0!important;
-        font-family: arial, sans-serif;
-        color: #069;
-        text-decoration: underline;
-        cursor: pointer;
-    }
-</style>
