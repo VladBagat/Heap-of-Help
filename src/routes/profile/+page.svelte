@@ -129,13 +129,13 @@
     }
    .description {
     font-size: 20px;
-    color: #666
+    color: #666;
     margin-bottom: 5px;
     }
    
    .tags {
     font-size: 20px;
-    color: #888
+    color: #888;
     margin-bottom: 20px;
     }
    
