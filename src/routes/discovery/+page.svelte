@@ -79,10 +79,10 @@
   let { category } = $props();
 </script>
 
-<div class="container">
-  <h1 class="header">Discovery</h1>
+<div class="page-container">
+  <h1 class="main-header">Discovery</h1>
   <h2 class="category">Recommended</h2>
-  <div class="grid-container">
+  <div class="main-grid-container">
     <!-- <div class="box">a</div>
     <div class="box">b</div>
     <div class="box">c</div>
@@ -130,13 +130,8 @@
     {/each}
   </div>
   <h2 class="category">Most Popular</h2>
-  <div class="grid-container">
-    <!-- <div class="box">a</div>
-    <div class="box">b</div>
-    <div class="box">c</div>
-    <div class="box">d</div>
-    <div class="box">e</div>
-    <div class="box">f</div> -->
+  <div class="main-grid-container">
+
     {#each temp as tile}
       <div class="box">
         <div class="card-image">
@@ -180,11 +175,11 @@
 </div>
 
 <style>
-  .container {
+  .page-container {
     margin: 0 auto;
     width: 90%;
   }
-  .header {
+  .main-header {
     text-align: center;
     font-size: clamp(1.5rem, 2.5vw, 3rem);
     font-weight: 600;
@@ -194,8 +189,10 @@
     border-bottom: 1px solid #ececec;
     font-family: sans-serif;
   }
+
   .category {
     text-transform: uppercase;
+    text-align: start;
     font-size: clamp(1rem, 1.7vh, 2rem);
     font-weight: 600;
     color: #363434;
@@ -203,7 +200,8 @@
     font-family: sans-serif;
     border-bottom: px solid #ececec;
   }
-  .grid-container {
+  .main-grid-container {
+    color: #000;
     display: grid;
     grid-template-columns: 1fr;
     gap: 0.5rem;
@@ -242,7 +240,7 @@
 
   /* For Small devices (portrait tablets and large phones, 600px and up) */
   @media only screen and (min-width: 700px) {
-    .grid-container {
+    .main-grid-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
@@ -251,7 +249,7 @@
 
   /* For Medium and large devices (landscape tablets and desktops, 768px and up) */
   @media only screen and (min-width: 1200px) {
-    .grid-container {
+    .main-grid-container {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 1.5rem;
