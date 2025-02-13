@@ -5,6 +5,8 @@
 
     let is_remember = $state(false);
 
+    import Password from '$lib/password.svelte';
+
     async function Login() {
         console.log(login);
         console.log(password);
@@ -45,7 +47,9 @@
 <div id="login-form">
     <div id="container">
         <input class="element" type="text" bind:value={login} placeholder="Username" />
-        <input class="element" type="text" bind:value={password} placeholder="Password" /> 
+        <div id="pass-inp">
+            <Password bind:value={password}/>
+        </div>
         <button class="element" onclick={Login}> Login </button>
         <label>
             <input type="checkbox" bind:checked={is_remember}/>
