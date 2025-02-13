@@ -53,45 +53,103 @@
 </script>
 
 <div class="container">
-    <img src="profile.avif" alt="Profile Image" class="profile-image" id="profileImage" style="width:100%">  
-    <div class="username"><h2>John Doe</h2></div>
-    <div class="tags"><a href="#">tag 1</a><br><a href="#">tag 2</a><br><a href="#">tag 3</a></div>
-    <div class="content"><h3>Description</h3><p>Lorem ipsum odor amet, consectetuer adipiscing elit. Ridiculus sit nisl laoreet facilisis aliquet. Potenti dignissim litora eget montes rhoncus sapien neque urna. Cursus libero sapien integer magnis ligula lobortis quam ut.</p></div>
+    <div class="header">
+        <img src="profile.avif" alt="Profile Image" class="profile-image" id="profileImage" style="width:100%">  
+        <div class="username"><h2>John Doe</h2></div>
+        <div class="tags"><a href="#">tag 1</a><br><a href="#">tag 2</a><br><a href="#">tag 3</a></div>
+        <div class="content"><h3>Description</h3>
+            <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Ridiculus sit nisl laoreet facilisis aliquet.</p>
+        </div>
+    </div>
+
+    <div class="work-contact">
+        <div class="work"> 
+            <h3>Google</h3>
+            <p>Software Engineer</p>
+        </div>
+        <div class="contact">
+            <h3>Contact</h3>
+            <p><b>Email</b>: qwerth@gmail.com</p>
+            <p><b>Phone number</b>: 070000000</p>
+        </div>
+    </div>
+
     <div class="footer"><h4>Footer</h4></div>
-  </div>
+</div>
+
 
 <style>
 .container {
   display: grid;
   grid-template-areas:
-    "header header"
-    "menu content"
-    "footer footer";
-  grid-template-columns: 1fr 3fr;
-  gap: 1px;
+    "header"
+    "work-contact"
+    "footer";
+  gap: 10px;
   background-color: #000000;
-  padding: 1px;
-  max-width: 1000px;
-}
-.container > div {
-  background-color: rgba(255, 255, 255, 0.8);
   padding: 10px;
+  max-width: auto;
+  color: white; 
 }
+
+
+.container > div {
+  background-color: rgba(255, 255, 255, 0.9); /* Increased contrast */
+  padding: 10px;
+  border-radius: 5px; /* Added rounded corners */
+}
+
+/* Fixed Class Name from `.contianer` to `.container` */
 .container > div.header {
-  grid-area: header;
-  text-align: center;
+  display: grid;
+  grid-template-areas: 
+    "image username"
+    "image content"
+    "image tags";
+  grid-template-columns: 200px auto; /* Fixed sizes */
+  gap: 10px;
+  background-color: #222; /* Darker background */
+  padding: 10px;
+  width: 100%;
 }
-.container > div.menu {
-  grid-area: menu;
+
+.container > div.tags {
+  grid-area: tags;
 }
+
 .container > div.content {
   grid-area: content;
 }
+
 .container > div.footer {
   grid-area: footer;
+  text-align: center;
 }
-.container > div.profile-image {
-    width: 100px;
+
+.container > div.work-contact {
+  display: grid;
+  grid-template-areas: "work contact";
+  grid-template-columns: 800px 500px;
+  gap: 10px;
+  background-color: #222;
+  padding: 10px;
+  width: 100%;
 }
-   
+
+.container > div.work-contact > div.work {
+    grid-area: work;
+    background-color: rgba(255, 255, 255, 1);
+    padding: 10px;
+    color: black;
+    border-radius: 5px;
+}
+
+.container > div.work-contact > div.contact {
+    grid-area: contact;
+    background-color: rgba(255, 255, 255, 1);
+    padding: 10px;
+    color: black;
+    border-radius: 5px;
+}
+
 </style>
