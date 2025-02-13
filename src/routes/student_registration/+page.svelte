@@ -85,7 +85,7 @@
             <Password bind:value={password}/>
             <Password bind:value={confirm_password}/>
         </div>
-        <button class="element" onclick={student_registration}>Register</button>
+        <button id="register-button" class="element" onclick={student_registration}>Register</button>
         <p id="error"></p>
         <button class="redirect" onclick={LoginRedirect}>Already on Heap of Help?</button>
     </div>
@@ -103,6 +103,7 @@
     }
 
     #student_registration{
+        background-color: #f5f5f5;
         height: 100vh;
         display: flex;
         justify-content: center;
@@ -110,19 +111,36 @@
     }
 
     #container{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
 
-        border: 2px solid black;
-        padding: 7.5%; 
-        border-radius: 10px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 60%;
+    max-width: 800px;
+    background-color: white;
+    border: 2px solid black;
+    padding: 40px 60px; 
+    border-radius: 10px;
+    position: relative;
+
     }
 
     .element{
         font-size: 1.25vw;
+    }
+
+    #register-button {
+        position: absolute;
+        bottom: 20px;
+        right: 20px; 
+        padding: 10px 20px;
+        background-color:#f5f5f5 ;
+        color: #333;
+        border: 2px solid black;
+        border-radius: 5px;
+        cursor: pointer;
     }
 
     .redirect{
