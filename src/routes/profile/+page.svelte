@@ -54,8 +54,18 @@
 
 <div class="container">
     <img src="profile.avif" alt="Profile Image" class="profile-image" id="profileImage" style="width:100%">  
-    <div class="username"><h2>John Doe</h2></div>
+    <div class="user-info">
+      <h2 class="username">John Doe</h2>
+      <p class="role">Product Designer</p>
+      <p class="location">📍 New York, NY</p>
+      <p class="rating"><srong>8.6</srong> ⭐⭐⭐⭐☆</p>
+    </div>
     <div class="tags"><a href="#">tag 1</a><br><a href="#">tag 2</a><br><a href="#">tag 3</a></div>
+    <div class="buttons">
+      <button class="btn primary">Send Message</button>
+      <button class="btn secondary">Contacts</button>
+      <button class="btn danger">Report User</button>
+    </div> 
     <div class="content"><h3>Description</h3><p>Lorem ipsum odor amet, consectetuer adipiscing elit. Ridiculus sit nisl laoreet facilisis aliquet. Potenti dignissim litora eget montes rhoncus sapien neque urna. Cursus libero sapien integer magnis ligula lobortis quam ut.</p></div>
     <div class="footer"><h4>Footer</h4></div>
   </div>
@@ -64,14 +74,16 @@
 .container {
   display: grid;
   grid-template-areas:
-    "header header"
-    "menu content"
+    "image user-info"
+    "tags button"
+    "content content"
     "footer footer";
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 1fr 2fr;
   gap: 1px;
-  background-color: #000000;
-  padding: 1px;
-  max-width: 1000px;
+  background-color: #f4f4f4;
+  padding: 20px;
+  max-width:600px;
+  border-radius: 10px;
 }
 .container > div {
   background-color: rgba(255, 255, 255, 0.8);
@@ -92,6 +104,53 @@
 }
 .container > div.profile-image {
     width: 100px;
+}
+.user-info {
+  grid-area: user-info;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.rating {
+  font-size: 14px;
+  font-weight: bold;
+  color: #444;
+}
+.tags {
+  grid-area: tags;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.buttons { 
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn.primary {
+  background: #007bff;
+  color: white;
+}
+
+.btn.secondary {
+  background: white;
+  color: black;
+  border: 1px solid #ddd;
+}
+
+.btn.danger {
+  background: red;
+  color: white;
 }
    
 </style>
