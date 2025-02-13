@@ -51,147 +51,170 @@
         // Add edit profile functionality here
     }
 </script>
+<div class="profile-page">
+    <div class="container">
+        <div class="header">
+            <img src="profile.avif" alt="Profile Image" class="profile-image" id="profileImage">  
+            <div class="user-info">
+                <h2 class="username">John Doe</h2>
+                <p class="role">Product Designer</p>
+                <p class="location">📍 New York, NY</p>
+                <p class="rating"><strong>8.6</strong> ⭐⭐⭐⭐☆</p>
+                <div class="tags">
+                    <p>tag 1, tag 2, tag 3</p>
+                </div>
+                <div class="content">
+                    <h3>Description</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ridiculus sit nisl laoreet facilisis aliquet.</p>
+                </div>
+                <div class="buttons">
+                    <button class="btn primary">Send Message</button>
+                    <button class="btn secondary">Contacts</button>
+                    <button class="btn danger">Report User</button>
+                </div> 
+            </div>
+        </div>
 
-<div class="container">
-    <img src="profile.avif" alt="Profile Image" class="profile-image" id="profileImage" style="width:100%">  
-    <div class="user-info">
-      <h2 class="username">John Doe</h2>
-      <p class="role">Product Designer</p>
-      <p class="location">📍 New York, NY</p>
-      <p class="rating"><srong>8.6</srong> ⭐⭐⭐⭐☆</p>
+        <div class="work-contact">
+            <div class="work">
+                <h2>WORK</h2>
+                <div>
+                    <h3>Google</h3>
+                    <p>Software Developer</p>
+                </div>
+            </div>
+            <div class="contact">
+                <h2>CONTACT</h2>
+                <div>
+                    <p><b>Email:</b> qwerty@gmail.com</p>
+                    <p><b>Phone:</b> 000000000</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h4>Footer</h4>
+        </div>
     </div>
-    <div class="tags"><a href="#">tag 1</a><br><a href="#">tag 2</a><br><a href="#">tag 3</a></div>
-    <div class="buttons">
-      <button class="btn primary">Send Message</button>
-      <button class="btn secondary">Contacts</button>
-      <button class="btn danger">Report User</button>
-    </div> 
-    <div class="content"><h3>Description</h3><p>Lorem ipsum odor amet, consectetuer adipiscing elit. Ridiculus sit nisl laoreet facilisis aliquet. Potenti dignissim litora eget montes rhoncus sapien neque urna. Cursus libero sapien integer magnis ligula lobortis quam ut.</p></div>
-    <div class="footer"><h4>Footer</h4></div>
 </div>
 
 
+
 <style>
+.profile-page {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    min-height: 100vh; /* Full viewport height */
+    background-color: #f8f9fa; /* Light gray background */
+    padding: 20px;
+}
+
+/* Main Container */
 .container {
-  display: grid;
-  grid-template-areas:
-    "image user-info"
-    "tags button"
-    "content content"
-    "footer footer";
-  grid-template-columns: 1fr 2fr;
-  gap: 1px;
-  background-color: #f4f4f4;
-  padding: 20px;
-  max-width:600px;
-  border-radius: 10px;
+    width: 90%;
+    max-width: 900px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-
-.container > div {
-  background-color: rgba(255, 255, 255, 0.9); /* Increased contrast */
-  padding: 10px;
-  border-radius: 5px; /* Added rounded corners */
+/* Header Section - Profile Image & User Info */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 70px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+    padding-left: 50px;
 }
 
-/* Fixed Class Name from `.contianer` to `.container` */
-.container > div.header {
-  display: grid;
-  grid-template-areas: 
-    "image username"
-    "image content"
-    "image tags";
-  grid-template-columns: 200px auto; /* Fixed sizes */
-  gap: 10px;
-  background-color: #222; /* Darker background */
-  padding: 10px;
-  width: 100%;
+.header > h2, p{
+    margin: 5px;
 }
 
-.container > div.tags {
-  grid-area: tags;
+.profile-image {
+    width: 200px;  
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ddd;
 }
 
-.container > div.content {
-  grid-area: content;
-}
-
-.container > div.footer {
-  grid-area: footer;
-  text-align: center;
-}
-
-.container > div.work-contact {
-  display: grid;
-  grid-template-areas: "work contact";
-  grid-template-columns: 800px 500px;
-  gap: 10px;
-  background-color: #222;
-  padding: 10px;
-  width: 100%;
-}
-
-.container > div.work-contact > div.work {
-    grid-area: work;
-    background-color: rgba(255, 255, 255, 1);
-    padding: 10px;
-    color: black;
-    border-radius: 5px;
-}
-
-.container > div.work-contact > div.contact {
-    grid-area: contact;
-    background-color: rgba(255, 255, 255, 1);
-    padding: 10px;
-    color: black;
-    border-radius: 5px;
-}
+/* User Info */
 .user-info {
-  grid-area: user-info;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .rating {
-  font-size: 14px;
-  font-weight: bold;
-  color: #444;
+    font-size: 14px;
+    font-weight: bold;
+    color: #444;
 }
-.tags {
-  grid-area: tags;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-.buttons { 
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
+
+/* Buttons */
+.buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
 }
 
 .btn {
-  padding: 8px 12px;
-  font-size: 14px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .btn.primary {
-  background: #007bff;
-  color: white;
+    background: #007bff;
+    color: white;
 }
 
 .btn.secondary {
-  background: white;
-  color: black;
-  border: 1px solid #ddd;
+    background: white;
+    color: black;
+    border: 1px solid #ddd;
 }
 
 .btn.danger {
-  background: red;
-  color: white;
+    background: red;
+    color: white;
+}
+
+/* Description Section */
+.content {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
+/* Work & Contact Section */
+.work-contact {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.work, .contact {
+    flex: 1;
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer */
+.footer {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+    color: #777;
 }
    
 </style>
