@@ -20,6 +20,12 @@
       }
     }
 
+    function previousStage() {
+      if (currentStage > 1) {
+        currentStage -= 1;
+      }
+    }
+
     import Password from '$lib/password.svelte';
 
     async function student_registration()
@@ -95,15 +101,15 @@
         <button class="redirect" onclick={LoginRedirect}>Already on Heap of Help?</button>
       </div>
   
-      <!-- Form Content -->
       <div id="form-content">
         {#if currentStage === 1}
+          <h2>Step 1: Personal Details </h2>
           <form>
             <input class="element" type="text" bind:value={forename} placeholder="Forename" />
             <input class="element" type="text" bind:value={surname} placeholder="Surname" /> 
             <input class="element" type="text" bind:value={email} placeholder="Email" /> 
             <input class="element" type="text" bind:value={phonenumber} placeholder="Telephone" />
-            <input class="element" type="text" placeholder="DOB" />
+            <input class="element" type="date" placeholder="DOB" />
             <input class="element" type="text" placeholder="Country" />
             <input class="element" type="text" placeholder="Address Line 1" />
             <input class="element" type="text" placeholder="Address Line 2" />
@@ -113,21 +119,25 @@
         {/if}
   
         {#if currentStage === 2}
+          <h2>Step 2: Account Setup</h2>
           <form>
             <input class="element" type="text" bind:value={login} placeholder="Username" />
             <div id="pass-inp" type= "text">
-              <Password bind:value={password}/>
-              <Password bind:value={confirm_password}/>
+              <Password class="element" bind:value={password}/>
+              <Password class="element" bind:value={confirm_password}/>
             </div>
-            <input class="element" type="text" placeholder="Profile Picture" />
+            <input class="element" type="file" id="profile-pic" accept="image/*" />
             <input class="element" type="text" placeholder="Description" />
+            <button type="button" onclick={previousStage}>Back</button>
             <button type="button" onclick={nextStage}>Next</button>
           </form>
         {/if}
   
         {#if currentStage === 3}
+          <h2>Step 3: Tags </h2>
           <form onsubmit={submitForm}>
             <input class="element" type="password" placeholder="Tags" />
+            <button type="button" onclick={previousStage}>Back</button>
             <button type="submit">Submit</button>
           </form>
         {/if}
@@ -136,10 +146,13 @@
   </div>
   
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
+
     #student_registration {
       display: flex;
       justify-content: center;
       align-items: flex-start;
+      background-color: #f8f8f8;
       height: 100vh;
     }
   
@@ -157,42 +170,82 @@
       top: 0;
       width: 200px;
       height: 100%;
-      background-color: #f0f0f0;
+      background-color: #e0e0e0;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
       padding: 20px;
       border: 1px solid #ccc;
+      font-family: 'Poppins', sans-serif;
     }
   
     #form-content {
       flex-grow: 1;
       padding: 20px;
+      background-color: #ffffff;
       border: 1px solid #ccc;
       border-radius: 10px;
+      box-shadow: 2px 2px 10px 
+      rgba(0, 0, 0, 0.1);
+    }
+
+    #pass-inp {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+      width: 100%;
+    }
+
+    #pass-inp .element {
+      padding: 11px;
+      border: 1px solid #aaa;
+      font-size: 15px;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
     }
   
     form {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 13px;
     }
   
     .element {
-      padding: 10px;
-      border: 1px solid #ccc;
+      padding: 11px;
+      border: 1px solid #aaa;
+      font-size: 15px;
       border-radius: 5px;
+    }
+
+    h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 23px;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 23px;
+      color: #333;
+      margin-bottom: 15px;
     }
   
     button {
-      padding: 10px;
-      background-color: black;
-      color: white;
+      padding: 12px;
+      background-color: #d3d3d3;
+      color: #333;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.1s ease;
     }
   
     button:hover {
-      background-color: #035;
+      background-color: #b0b0b0;
+      transform: scale(1.02);
     }
+
   </style>
 
 
