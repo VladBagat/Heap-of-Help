@@ -105,11 +105,17 @@
         {#if currentStage === 1}
           <h2>Step 1: Personal Details </h2>
           <form>
+            <select id="selection" class="element">
+              <option value="" disabled selected>Select Tutor/Student</option>
+              <option value="tutor">Tutor</option>
+              <option value="tutee">Student</option>
+            </select>
             <input class="element" type="text" bind:value={forename} placeholder="Forename" />
             <input class="element" type="text" bind:value={surname} placeholder="Surname" /> 
             <input class="element" type="text" bind:value={email} placeholder="Email" /> 
             <input class="element" type="text" bind:value={phonenumber} placeholder="Telephone" />
             <input class="element" type="date" placeholder="DOB" />
+            <input class="element" type="text" placeholder="Education" />
             <input class="element" type="text" placeholder="Country" />
             <input class="element" type="text" placeholder="Address Line 1" />
             <input class="element" type="text" placeholder="Address Line 2" />
@@ -134,9 +140,14 @@
         {/if}
   
         {#if currentStage === 3}
-          <h2>Step 3: Tags </h2>
+          <h2>Step 3: Selecting Tags </h2>
           <form onsubmit={submitForm}>
-            <input class="element" type="password" placeholder="Tags" />
+            <div id="tags">
+              <button class="tag_btn" data-value="Option 1">Option 1</button>
+              <button class="tag_btn" data-value="Option 2">Option 2</button>
+              <button class="tag_btn" data-value="Option 3">Option 3</button>
+              <button class="tag_btn" data-value="Option 4">Option 3</button>
+            </div>
             <button type="button" onclick={previousStage}>Back</button>
             <button type="submit">Submit</button>
           </form>
@@ -154,6 +165,42 @@
       align-items: flex-start;
       background-color: #f8f8f8;
       height: 100vh;
+    }
+
+    #selection {
+      padding: 10px;
+      border: 1px solid #aaa;
+      font-size: 15px;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+      background-color: white;
+      cursor: pointer;
+    }
+
+    #tags {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .tag_btn {
+      padding: 12px 20px;
+      background-color: grey;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.1s ease;
+    }
+
+    .tag_btn:hover {
+      background-color: #2980b9; /* Darker blue on hover */
+      transform: scale(1.05);
     }
   
     #container {
@@ -247,72 +294,3 @@
     }
 
   </style>
-
-
-
-<!-- 
-<style>
-  #pass-inp{
-      height: auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      gap: 20px;
-  }
-
-  #student_registration{
-      background-color: #f5f5f5;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  }
-
-  #container{
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  width: 60%;
-  max-width: 800px;
-  background-color: white;
-  border: 2px solid black;
-  padding: 40px 60px; 
-  border-radius: 10px;
-  position: relative;
-
-  }
-
-  .element{
-      font-size: 1.25vw;
-  }
-
-  #register-button {
-      position: absolute;
-      bottom: 20px;
-      right: 20px; 
-      padding: 10px 20px;
-      background-color:#f5f5f5 ;
-      color: #333;
-      border: 2px solid black;
-      border-radius: 5px;
-      cursor: pointer;
-  }
-
-  .redirect{
-      background: none!important;
-      border: none;
-      padding: 0!important;
-      font-family: arial, sans-serif;
-      color: #069;
-      text-decoration: underline;
-      cursor: pointer;
-  }
-</style> -->
-
-
-
-  
