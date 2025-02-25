@@ -37,7 +37,7 @@
     }
 
     function IndexRedirect(){
-        goto('/index')
+        goto('/profile')
     }
 
 </script>
