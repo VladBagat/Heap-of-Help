@@ -28,7 +28,7 @@
 
     import Password from '$lib/password.svelte';
 
-    async function student_registration()
+    async function registration()
      {
         console.log(username)
         console.log(forename)
@@ -159,7 +159,7 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
 
-    #student_registration {
+    #registration {
       display: flex;
       justify-content: center;
       align-items: flex-start;

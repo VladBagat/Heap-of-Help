@@ -35,7 +35,7 @@
     import { goto } from '$app/navigation';
 
     function RegRedirect(){
-        goto('/student_registration');
+        goto('/registration');
     }
 
     function IndexRedirect(){
