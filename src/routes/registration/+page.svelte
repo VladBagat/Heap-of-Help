@@ -1,14 +1,14 @@
 <script lang="js">
-    let login = $state('');
+    let profile = $state('');
     let forename = $state('');
     let surname = $state('');
-    let dob = $state('');
-    // address
-    // university
-    // degree
-    // year
+    let age = $state('');
+    let county = $state('');
     let email = $state('');
     let phonenumber = $state('');
+    let language = $state('');
+    let timezone = $state('');
+    let username = $state('');
     let password = $state('');
     let confirm_password = $state('');
 
@@ -30,20 +30,22 @@
 
     async function registration()
      {
-        console.log(username)
+        console.log(profile)
         console.log(forename)
         console.log(surname)
-        //console.log(dob)
         console.log(email)
         console.log(phonenumber)
-        console.log(password);
+        console.log(language)
+        console.log(timezone)
+        console.log(username)
+        console.log(password)
         console.log(confirm_password)
 
         // If pass not valid, user isn't registered
         let valid = Password_Validation(password, confirm_password)
         if (valid === ''){
             document.getElementById("error").innerHTML = ''
-            const payload = { username: username, forename: forename, surname: surname, email: email, phonenumber: phonenumber, password: password, confirm_password:confirm_password};
+            const payload = { profile: profile, forename: forename, surname: surname, email: email, phonenumber: phonenumber, language: language, username: username,  password: password, confirm_password: confirm_password};
 
             const res = await fetch('api/student-reg', {
                 method: 'POST',
@@ -92,7 +94,7 @@
 
 </script>
   
-  <div id="student_registration">
+  <div id="registration">
     <div id="container">
       <!-- Sidebar -->
       <div id="sidebar">
@@ -114,12 +116,10 @@
             <input class="element" type="text" bind:value={surname} placeholder="Surname" /> 
             <input class="element" type="text" bind:value={email} placeholder="Email" /> 
             <input class="element" type="text" bind:value={phonenumber} placeholder="Telephone" />
-            <input class="element" type="date" placeholder="DOB" />
+            <input class="element" type="text" bind:value={age} placeholder="Age" />
             <input class="element" type="text" placeholder="Education" />
-            <input class="element" type="text" placeholder="Country" />
-            <input class="element" type="text" placeholder="Address Line 1" />
-            <input class="element" type="text" placeholder="Address Line 2" />
-            <input class="element" type="text" placeholder="Adress Line 3" />
+            <input class="element" type="text" bind:value={language} placeholder="Language" />
+            <input class="element" type="text" bind:value={timezone} placeholder="Time Zone" />
             <button type="button" onclick={nextStage}>Next</button>
           </form>
         {/if}
@@ -127,7 +127,7 @@
         {#if currentStage === 2}
           <h2>Step 2: Account Setup</h2>
           <form>
-            <input class="element" type="text" bind:value={login} placeholder="Username" />
+            <input class="element" type="text" bind:value={username} placeholder="Username" />
             <div id="pass-inp" type= "text">
               <Password class="element" bind:value={password}/>
               <Password class="element" bind:value={confirm_password}/>
@@ -199,7 +199,7 @@
     }
 
     .tag_btn:hover {
-      background-color: #2980b9; /* Darker blue on hover */
+      background-color: #2980b9;
       transform: scale(1.05);
     }
   
