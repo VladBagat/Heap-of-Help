@@ -11,6 +11,7 @@
     let username = $state('');
     let password = $state('');
     let confirm_password = $state('');
+    let description = $state('');
 
     let currentStage = $state(1);
   
@@ -40,12 +41,13 @@
         console.log(username)
         console.log(password)
         console.log(confirm_password)
+        console.log0(description)
 
         // If pass not valid, user isn't registered
         let valid = Password_Validation(password, confirm_password)
         if (valid === ''){
             document.getElementById("error").innerHTML = ''
-            const payload = { profile: profile, forename: forename, surname: surname, email: email, phonenumber: phonenumber, language: language, username: username,  password: password, confirm_password: confirm_password};
+            const payload = { profile: profile, forename: forename, surname: surname, email: email, phonenumber: phonenumber, language: language, timezone: timezone, username: username,  password: password, confirm_password: confirm_password, description: description};
 
             const res = await fetch('api/student-reg', {
                 method: 'POST',
@@ -133,7 +135,7 @@
               <Password class="element" bind:value={confirm_password}/>
             </div>
             <input class="element" type="file" id="profile-pic" accept="image/*" />
-            <input class="element" type="text" placeholder="Description" />
+            <input class="element" type="text" bind:value={description} placeholder="Description" />
             <button type="button" onclick={previousStage}>Back</button>
             <button type="button" onclick={nextStage}>Next</button>
           </form>
