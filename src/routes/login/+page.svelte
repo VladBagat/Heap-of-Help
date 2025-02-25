@@ -11,7 +11,7 @@
 
         const payload = { username: login, password: password, remember:is_remember };
 
-        const res = await fetch('https://hoh-api-24174ce192a4.herokuapp.com/login', {
+        const res = await fetch('api/login', {
             method: 'POST',
             credentials: 'include',
             headers: {
