@@ -35,7 +35,7 @@
   
   <header class="header">
     <div class="container">
-      <a href="/" class="logo">Heap of Help</a>
+      <a href="/index" class="logo">Heap of Help</a>
       
       <nav class="nav" class:open={menuOpen}>
         <a href="/" class="nav-link">Tutors</a>
