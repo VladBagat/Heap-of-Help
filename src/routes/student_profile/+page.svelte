@@ -1,11 +1,12 @@
-<script lang="js">
+<script>
     import { onMount } from "svelte";
 
-    let tuteeProfile = null;
+    let tuteeProfile = {};
     let errorMessage = "";
     let loading = true;
 
     async function fetchTuteeProfile() {
+        loading = true;
         try {
             const res = await fetch(`api/get_tutee_profile`, {
                 method: 'GET',
@@ -15,11 +16,10 @@
             console.log(json);
 
             if (json.success) {
-                tuteeProfile = json.data;
+                tuteeProfile = { ...json.data }; // ✅ Reassigning to trigger reactivity
             } else {
-                errorMessage = message;
+                errorMessage = json.message;
             }
-            console.log(tuteeProfile);
         } catch (error) {
             errorMessage = "Failed to connect to the server.";
         } finally {
@@ -27,28 +27,25 @@
         }
     }
 
-    // Call API when component loads
     onMount(() => {
-        fetchTuteeProfile();  // Fetch profile for tutee with ID 234
+        fetchTuteeProfile();
     });
 
-    // Function to handle the "Chat" button click
     function handleChat() {
-            console.log('Chat button clicked');
-            // Add chat functionality here
+        console.log("Chat button clicked");
     }
-    // Function to handle the "Edit" button click
+
     function handleEdit() {
-        console.log('Edit button clicked');
-        // Add edit profile functionality here
+        console.log("Edit button clicked");
     }
 </script>
+
 <div class="profile-page">
     <div class="profile-container">
         <div class="profile-header">
-            <img src="profile.avif" alt="Profile Image" class="profile-image" id="profileImage">  
+            <img src="data:image/png;base64, {tuteeProfile.profile_img}" alt="Profile Image" class="profile-image" id="profileImage">  
             <div class="user-info">
-                <h2 class="username">John Doe</h2>
+                <h2 class="username">{tuteeProfile.first_name} {tuteeProfile.last_name}</h2>
                 <p class="role">Product Designer</p>
                 <p class="location">📍 New York, NY</p>
                 <p class="rating"><strong>8.6</strong> ⭐⭐⭐⭐☆</p>
@@ -57,7 +54,7 @@
                 </div>
                 <div class="content">
                     <h3>Description</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ridiculus sit nisl laoreet facilisis aliquet.</p>
+                    <p>{tuteeProfile.description}</p>
                 </div>
                 <div class="buttons">
                     <button class="btn primary">Send Message</button>
