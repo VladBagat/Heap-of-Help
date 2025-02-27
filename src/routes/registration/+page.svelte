@@ -145,10 +145,10 @@
           <h2>Step 3: Selecting Tags </h2>
           <form onsubmit={submitForm}>
             <div id="tags">
-              <button class="tag_btn" data-value="Option 1">Option 1</button>
-              <button class="tag_btn" data-value="Option 2">Option 2</button>
-              <button class="tag_btn" data-value="Option 3">Option 3</button>
-              <button class="tag_btn" data-value="Option 4">Option 3</button>
+              <button class="tag_btn" data-value="Theoretical Computer Science"> Theoretical Computer Science</button>
+              <button class="tag_btn" data-value="Computer Systems and Architecture"> Computer Systems and Architecture</button>
+              <button class="tag_btn" data-value="Artificial Intelligence & Machine Learning"> Artificial Intelligence & Machine Learning</button>
+              <button class="tag_btn" data-value="Software Engineering"> Software Engineering</button>
             </div>
             <button type="button" onclick={previousStage}>Back</button>
             <button type="submit">Submit</button>
