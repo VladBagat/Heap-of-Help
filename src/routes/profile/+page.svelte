@@ -9,9 +9,9 @@
         console.log(login);
         console.log(password);
 
-        const payload = { username: login, password: password, remember:is_remember };
+        const payload = { username: login};
 
-        const res = await fetch('https://hoh-api-24174ce192a4.herokuapp.com/login', {
+        const res = await fetch('api/pageowner', {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -24,13 +24,20 @@
 
         console.log(json)
 
-        if (json[0].success) {
-            IndexRedirect()
+        if (json.success) {
+            isowner =true;
+        }
+        else {
+            isowner = false;
         }
     }
     
+    onMount(() => {
+        Login();
+    });
 
     import { goto } from '$app/navigation';
+    import { onMount } from 'svelte';
 
     function RegisterRedirect(){
         goto('/register');
@@ -40,26 +47,37 @@
         goto('/index')
     }
 
- // Function to handle the "Chat" button click
- function handleChat() {
-        console.log('Chat button clicked');
-        // Add chat functionality here
-    }
-    // Function to handle the "Edit" button click
-    function handleEdit() {
-        console.log('Edit button clicked');
-        // Add edit profile functionality here
-    }
 </script>
+
 <div class="profile-page">
     <div class="container">
+        {#if isowner}
+            
+            <div class="edit-profile">
+                <h2>Edit Profile</h2>
+
+                <label>Name:</label>
+                <input type="text" bind:value={user.name} />
+
+                <label>Locatiom:</label>
+                <input type="text" bind:value={user.location} />
+
+                <label>Email:</label>
+                <input type="email" bind:value={user.email} />
+
+                <label>Description:</label>
+                <textarea bind:value={user.description}></textarea>
+            </div>
+        {:else}
+
+        
         <div class="header">
             <img src="profile.avif" alt="Profile Image" class="profile-image" id="profileImage">  
             <div class="user-info">
                 <h2 class="username">John Doe</h2>
                 <p class="role">Product Designer</p>
                 <p class="location">📍 New York, NY</p>
-                <p class="rating"><strong>8.6</strong> ⭐⭐⭐⭐☆</p>
+                <p class="rating"><strong>4</strong> ⭐⭐⭐⭐☆</p>
                 <div class="tags">
                     <p>tag 1, tag 2, tag 3</p>
                 </div>
@@ -103,14 +121,14 @@
 <style>
 .profile-page {
     display: flex;
-    justify-content: center; /* Centers horizontally */
-    align-items: center; /* Centers vertically */
-    min-height: 100vh; /* Full viewport height */
-    background-color: #f8f9fa; /* Light gray background */
+    justify-content: center;
+    align-items: center; 
+    min-height: 100vh; 
+    background-color: #f8f9fa;
     padding: 20px;
 }
 
-/* Main Container */
+
 .container {
     width: 90%;
     max-width: 900px;
@@ -120,7 +138,7 @@
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Header Section - Profile Image & User Info */
+
 .header {
     display: flex;
     align-items: center;
@@ -142,7 +160,7 @@
     border: 3px solid #ddd;
 }
 
-/* User Info */
+
 .user-info {
     flex-grow: 1;
     display: flex;
@@ -155,7 +173,7 @@
     color: #444;
 }
 
-/* Buttons */
+
 .buttons {
     display: flex;
     gap: 10px;
@@ -186,14 +204,14 @@
     color: white;
 }
 
-/* Description Section */
+
 .content {
     padding: 15px;
     background: #f8f9fa;
     border-radius: 5px;
 }
 
-/* Work & Contact Section */
+
 .work-contact {
     display: flex;
     justify-content: space-between;
