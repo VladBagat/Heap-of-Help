@@ -2,6 +2,7 @@
   import Modal from "../../lib/modal.svelte";
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
+
   let isMobile = $state(false);
 
   // Media query check with proper cleanup
@@ -93,7 +94,7 @@
   ]);
   //Proposed data model
   //data = [{"name":"John", "profile-img":blob, "image":blob, "description":"some limited description"}, ...]
-  
+
   // not sure if this is needed
   let { things } = $props();
   // Default category is recommended
@@ -110,10 +111,15 @@
     category = event.target.value;
   }
   // Count is just used to convey the button dissapears when there are no more cards to show
+  // Simulates loading more users atm
   let count = $state(10);
   function ShowMore() {
-    temp = [...temp, temp[0]];
-    count -= 1;
+    let rnd = Math.floor(Math.random()*2) + 1;
+    console.log(rnd);
+    for (let i = 0; i < rnd; i++) {
+      temp = [...temp, temp[0]];
+    }
+    count -= rnd;
   }
 </script>
 
@@ -162,21 +168,25 @@
   </div>
 {/if}
 <Modal bind:showModal>
-  <h2 class="category">Profile</h2>
-  <div class="card-image">
-    <img
-      src="https://picsum.photos/id/1005/400/300"
-      width="150"
-      height="150"
-      alt="Profile"
-    />
-  </div>
-  <div class="name">{temp[selected_card].name}</div>
-  <div class="modal-description">{temp[selected_card].description}</div>
-  <div class="tags-container">
-    {#each temp[selected_card].tags as tag}
-      <div class="tag">{tag}</div>
-    {/each}
+  {#snippet header()}
+    <h2 class="category">Profile</h2>
+  {/snippet}
+  <div class="modal-container">
+    <div class="card-image">
+      <img
+        src="https://picsum.photos/id/1005/400/300"
+        width="150"
+        height="150"
+        alt="Profile"
+      />
+    </div>
+    <div class="name">{temp[selected_card].name}</div>
+    <div class="modal-description">{temp[selected_card].description}</div>
+    <div class="tags-container">
+      {#each temp[selected_card].tags as tag}
+        <div class="tag">{tag}</div>
+      {/each}
+    </div>
   </div>
 </Modal>
 
@@ -228,6 +238,10 @@
     place-content: center;
     margin-bottom: 10px;
   }
+  .modal-container {
+    display: grid;
+    flex-direction: column;
+  }
   .card {
     color: black;
     width: 100%;
@@ -277,6 +291,7 @@
     grid-row: 2;
     max-width: 400px;
     text-align: left;
+    margin: 0 0 10px 0;
 
     overflow: hidden;
   }
