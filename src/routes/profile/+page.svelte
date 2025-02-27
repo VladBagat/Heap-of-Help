@@ -1,15 +1,11 @@
 <script lang="js">
     
     let login = $state('');
-    let password = $state('');
-
-    let is_remember = $state(false);
 
     async function Login() {
         console.log(login);
-        console.log(password);
 
-        const payload = { username: login};
+        const payload = { username: login };
 
         const res = await fetch('api/pageowner', {
             method: 'POST',
@@ -22,10 +18,8 @@
 
         const json = await res.json();
 
-        console.log(json)
-
-        if (json.success) {
-            isowner =true;
+        if (res.ok) {
+            isowner = true;
         }
         else {
             isowner = false;
@@ -33,7 +27,7 @@
     }
     
     onMount(() => {
-        Login();
+        //Login();
     });
 
     import { goto } from '$app/navigation';
@@ -47,11 +41,19 @@
         goto('/index')
     }
 
+    let isowner=true;
+    let user = {
+        name:"",
+        location:"",
+        email:"",
+        description:""
+    }
+
 </script>
 
 <div class="profile-page">
     <div class="container">
-        {#if isowner}
+        <!-- {#if isowner}
             
             <div class="edit-profile">
                 <h2>Edit Profile</h2>
@@ -59,7 +61,7 @@
                 <label>Name:</label>
                 <input type="text" bind:value={user.name} />
 
-                <label>Locatiom:</label>
+                <label>Location:</label>
                 <input type="text" bind:value={user.location} />
 
                 <label>Email:</label>
@@ -68,9 +70,8 @@
                 <label>Description:</label>
                 <textarea bind:value={user.description}></textarea>
             </div>
-        {:else}
+        {:else} -->
 
-        
         <div class="header">
             <img src="profile.avif" alt="Profile Image" class="profile-image" id="profileImage">  
             <div class="user-info">
@@ -86,6 +87,9 @@
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ridiculus sit nisl laoreet facilisis aliquet.</p>
                 </div>
                 <div class="buttons">
+                    {#if isowner}
+                        <button class="btn edit"> Edit Profile</button>
+                    {/if}
                     <button class="btn primary">Send Message</button>
                     <button class="btn secondary">Contacts</button>
                     <button class="btn danger">Report User</button>
@@ -113,8 +117,9 @@
         <div class="footer">
             <h4>Footer</h4>
         </div>
+        
     </div>
-</div>
+</div>    
 
 
 
