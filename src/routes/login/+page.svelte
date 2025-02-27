@@ -25,7 +25,11 @@
         console.log(json)
 
         if (json[0].success) {
-            IndexRedirect()
+            if (json[0].isTutor) {
+                TutorProfileRedirect();
+            } else {
+                TuteeProfileRedirect();
+            }
         }
     }
     
@@ -36,8 +40,12 @@
         goto('/register_as');
     }
 
-    function IndexRedirect(){
+    function TutorProfileRedirect(){
         goto('/profile')
+    }
+
+    function TuteeProfileRedirect() {
+        goto('/student_profile')
     }
 
 </script>

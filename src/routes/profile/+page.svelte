@@ -1,13 +1,47 @@
 <script lang="js">
-    
-    let login = $state('');
+    import { onMount } from "svelte";
+    import { goto } from '$app/navigation';
 
-    async function Login() {
-        console.log(login);
+    let isEditing = false;
+
+    let isowner=true;
+    let user = {
+        name:"",
+        location:"",
+        email:"",
+        description:""
+    }
+
+    let tutorProfile = {};
+    let errorMessage = "";
+    let loading = true;
+
+    async function fetchTutorProfile() {
+        try {
+            const res = await fetch(`api/get_tutor_profile`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+            const json = await res.json();
+            console.log(json);
+
+            if (json.success) {
+                tutorProfile = json.data;
+            } else {
+                errorMessage = json.message;
+            }
+        } catch (error) {
+            errorMessage = "Failed to connect to the server.";
+        } finally {
+            loading = false;
+        }
+    }
+
+    async function ownerCheck() {
 
         const payload = { username: login };
 
-        const res = await fetch('https://hoh-api-24174ce192a4.herokuapp.com/login', {
+        const res = await fetch('api/pageowner', {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -25,34 +59,25 @@
             isowner = false;
         }
     }
-    
+
+    function editProfile() {
+        isEditing = !isEditing;
+    }
+
+    function saveChanges() {
+        // TODO: Send updated data to the backend
+        console.log("Saved user data:", user);
+        isEditing = false; // Exit edit mode
+    }
+
     onMount(() => {
-        //Login();
+        fetchTutorProfile();
     });
-
-    import { goto } from '$app/navigation';
-
-    function RegisterRedirect(){
-        goto('/register');
-    }
-
-    function IndexRedirect(){
-        goto('/index')
-    }
-
-    let isowner=true;
-    let user = {
-        name:"",
-        location:"",
-        email:"",
-        description:""
-    }
 
 </script>
 <div class="profile-page">
-    <div class="container">
-        <!-- {#if isowner}
-            
+    <div class="profile-container">
+        {#if isEditing}
             <div class="edit-profile">
                 <h2>Edit Profile</h2>
 
@@ -68,32 +93,33 @@
                 <label>Description:</label>
                 <textarea bind:value={user.description}></textarea>
             </div>
-        {:else} -->
-
-        <div class="header">
-            <img src="profile.avif" alt="Profile Image" class="profile-image" id="profileImage">  
-            <div class="user-info">
-                <h2 class="username">John Doe</h2>
-                <p class="role">Product Designer</p>
-                <p class="location">📍 New York, NY</p>
-                <p class="rating"><strong>8.6</strong> ⭐⭐⭐⭐☆</p>
-                <div class="tags">
-                    <p>tag 1, tag 2, tag 3</p>
+            <button class="btn save" onclick={saveChanges}> Save </button>
+        {:else}
+            <div class="profile-header">
+                <img src="data:image/png;base64, {tutorProfile.profile_img}" alt="Profile Image" class="profile-image" id="profileImage">  
+                <div class="user-info">
+                    <h2 class="username">{tutorProfile.first_name} {tutorProfile.last_name}</h2>
+                    <p class="role">Product Designer</p>
+                    <p class="location">📍 New York, NY</p>
+                    <p class="rating"><strong>8.6</strong> ⭐⭐⭐⭐☆</p>
+                    <div class="tags">
+                        <p>tag 1, tag 2, tag 3</p>
+                    </div>
+                    <div class="content">
+                        <h3>Description</h3>
+                        <p>{tutorProfile.description}</p>
+                    </div>
+                    <div class="buttons">
+                        {#if isowner}
+                            <button class="btn edit" onclick={editProfile}> Edit Profile</button>
+                        {/if}
+                        <button class="btn primary">Send Message</button>
+                        <button class="btn secondary">Contacts</button>
+                        <button class="btn danger">Report User</button>
+                    </div> 
                 </div>
-                <div class="content">
-                    <h3>Description</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ridiculus sit nisl laoreet facilisis aliquet.</p>
-                </div>
-                <div class="buttons">
-                    {#if isowner}
-                        <button class="btn edit"> Edit Profile</button>
-                    {/if}
-                    <button class="btn primary">Send Message</button>
-                    <button class="btn secondary">Contacts</button>
-                    <button class="btn danger">Report User</button>
-                </div> 
             </div>
-        </div>
+        {/if}
 
         <div class="work-contact">
             <div class="work">
@@ -110,12 +136,7 @@
                     <p><b>Phone:</b> 000000000</p>
                 </div>
             </div>
-        </div>
-
-        <div class="footer">
-            <h4>Footer</h4>
-        </div>
-        
+        </div>    
     </div>
 </div>    
 
@@ -132,7 +153,7 @@
 }
 
 /* Main Container */
-.container {
+.profile-container {
     width: 90%;
     max-width: 900px;
     background: white;
@@ -142,7 +163,7 @@
 }
 
 /* Header Section - Profile Image & User Info */
-.header {
+.profile-header {
     display: flex;
     align-items: center;
     gap: 70px;
@@ -151,7 +172,7 @@
     padding-left: 50px;
 }
 
-.header > h2, p{
+.profile-header > .div > h2, p{
     margin: 5px;
 }
 
@@ -229,13 +250,5 @@
     border-radius: 5px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
-
-/* Footer */
-.footer {
-    margin-top: 20px;
-    text-align: center;
-    font-weight: bold;
-    color: #777;
-}
-   
+    
 </style>
