@@ -33,7 +33,7 @@
     import { goto } from '$app/navigation';
 
     function RegRedirect(){
-        goto('/register_as');
+        goto('/registration');
     }
 
     function IndexRedirect(){
