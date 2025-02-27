@@ -1,15 +1,11 @@
 <script lang="js">
     
     let login = $state('');
-    let password = $state('');
-
-    let is_remember = $state(false);
 
     async function Login() {
         console.log(login);
-        console.log(password);
 
-        const payload = { username: login, password: password, remember:is_remember };
+        const payload = { username: login };
 
         const res = await fetch('https://hoh-api-24174ce192a4.herokuapp.com/login', {
             method: 'POST',
@@ -22,13 +18,17 @@
 
         const json = await res.json();
 
-        console.log(json)
-
-        if (json[0].success) {
-            IndexRedirect()
+        if (res.ok) {
+            isowner = true;
+        }
+        else {
+            isowner = false;
         }
     }
     
+    onMount(() => {
+        //Login();
+    });
 
     import { goto } from '$app/navigation';
 
@@ -40,19 +40,36 @@
         goto('/index')
     }
 
- // Function to handle the "Chat" button click
- function handleChat() {
-        console.log('Chat button clicked');
-        // Add chat functionality here
+    let isowner=true;
+    let user = {
+        name:"",
+        location:"",
+        email:"",
+        description:""
     }
-    // Function to handle the "Edit" button click
-    function handleEdit() {
-        console.log('Edit button clicked');
-        // Add edit profile functionality here
-    }
+
 </script>
 <div class="profile-page">
     <div class="container">
+        <!-- {#if isowner}
+            
+            <div class="edit-profile">
+                <h2>Edit Profile</h2>
+
+                <label>Name:</label>
+                <input type="text" bind:value={user.name} />
+
+                <label>Location:</label>
+                <input type="text" bind:value={user.location} />
+
+                <label>Email:</label>
+                <input type="email" bind:value={user.email} />
+
+                <label>Description:</label>
+                <textarea bind:value={user.description}></textarea>
+            </div>
+        {:else} -->
+
         <div class="header">
             <img src="profile.avif" alt="Profile Image" class="profile-image" id="profileImage">  
             <div class="user-info">
@@ -68,6 +85,9 @@
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ridiculus sit nisl laoreet facilisis aliquet.</p>
                 </div>
                 <div class="buttons">
+                    {#if isowner}
+                        <button class="btn edit"> Edit Profile</button>
+                    {/if}
                     <button class="btn primary">Send Message</button>
                     <button class="btn secondary">Contacts</button>
                     <button class="btn danger">Report User</button>
@@ -95,8 +115,9 @@
         <div class="footer">
             <h4>Footer</h4>
         </div>
+        
     </div>
-</div>
+</div>    
 
 
 
