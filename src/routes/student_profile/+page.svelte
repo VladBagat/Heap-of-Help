@@ -5,18 +5,21 @@
     let errorMessage = "";
     let loading = true;
 
-    async function fetchTuteeProfile(id) {
+    async function fetchTuteeProfile() {
         try {
-            const response = await fetch('api/get_tutee_profile');
-            console.log(response);
+            const res = await fetch(`api/get_tutee_profile`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+            const json = await res.json();
+            console.log(json);
 
-            const data = await response.json();
-
-            if (response.ok) {
-                tuteeProfile = data.data;
+            if (json.success) {
+                tuteeProfile = json.data;
             } else {
-                errorMessage = data.message;
+                errorMessage = message;
             }
+            console.log(tuteeProfile);
         } catch (error) {
             errorMessage = "Failed to connect to the server.";
         } finally {
@@ -26,7 +29,7 @@
 
     // Call API when component loads
     onMount(() => {
-        fetchTuteeProfile(234);  // Fetch profile for tutee with ID 234
+        fetchTuteeProfile();  // Fetch profile for tutee with ID 234
     });
 
     // Function to handle the "Chat" button click
@@ -41,8 +44,8 @@
     }
 </script>
 <div class="profile-page">
-    <div class="container">
-        <div class="header">
+    <div class="profile-container">
+        <div class="profile-header">
             <img src="profile.avif" alt="Profile Image" class="profile-image" id="profileImage">  
             <div class="user-info">
                 <h2 class="username">John Doe</h2>
@@ -80,10 +83,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="footer">
-            <h4>Footer</h4>
-        </div>
     </div>
 </div>
 
@@ -100,7 +99,7 @@
 }
 
 /* Main Container */
-.container {
+.profile-container {
     width: 90%;
     max-width: 900px;
     background: white;
@@ -110,7 +109,7 @@
 }
 
 /* Header Section - Profile Image & User Info */
-.header {
+.profile-header {
     display: flex;
     align-items: center;
     gap: 70px;
@@ -119,7 +118,7 @@
     padding-left: 50px;
 }
 
-.header > h2, p{
+.profile-header > h2, p{
     margin: 5px;
 }
 
@@ -196,14 +195,6 @@
     padding: 15px;
     border-radius: 5px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Footer */
-.footer {
-    margin-top: 20px;
-    text-align: center;
-    font-weight: bold;
-    color: #777;
 }
    
 </style>
