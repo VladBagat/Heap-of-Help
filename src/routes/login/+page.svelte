@@ -11,7 +11,7 @@
 
         const payload = { username: login, password: password, remember:is_remember };
 
-        const res = await fetch('https://hoh-api-24174ce192a4.herokuapp.com/login', {
+        const res = await fetch('api/login', {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -32,8 +32,8 @@
 
     import { goto } from '$app/navigation';
 
-    function RegisterRedirect(){
-        goto('/register');
+    function RegRedirect(){
+        goto('/register_as');
     }
 
     function IndexRedirect(){
@@ -51,7 +51,7 @@
             <input type="checkbox" bind:checked={is_remember}/>
             Remember me
         </label>
-        <button class="redirect" onclick={RegisterRedirect}> Not on Heap of Help? </button>
+        <button class="redirect" onclick={RegRedirect}> Not on Heap of Help? </button>
     </div>
 </div>
 
