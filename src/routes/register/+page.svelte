@@ -74,5 +74,3 @@
         <button class="redirect" onclick={LoginRedirect}>Already on Heap of Help?</button>
     </div>
 </div>
-
-
