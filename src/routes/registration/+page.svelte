@@ -100,10 +100,50 @@
     <div id="container">
       <!-- Sidebar -->
       <div id="sidebar">
-        <h3>Sidebar</h3>
+        <h3>Progress</h3>
+        
+        <!-- Simple progress indicator -->
+        <div class="progress-list">
+          <div class="progress-item">
+            <span class="progress-number">1</span>
+            <span>Personal Details</span>
+          </div>
+          
+          <div class="progress-item">
+            <span class="progress-number">2</span>
+            <span>Account Setup</span>
+          </div>
+          
+          <div class="progress-item">
+            <span class="progress-number">3</span>
+            <span>Selecting Tags</span>
+          </div>
+        </div>
+        
+        <div class="progress-item {currentStage === 1 ? 'current' : ''} {currentStage > 1 ? 'completed' : ''}">
+          <span class="progress-number">1</span>
+          <span>Personal Details</span>
+        </div>
+
+        <div class="progress-item {currentStage === 2 ? 'current' : ''} {currentStage > 2 ? 'completed' : ''}">
+          <span class="progress-number">2</span>
+          <span>Account Setup</span>
+        </div>
+
+        <div class="progress-item {currentStage === 3 ? 'current' : ''} {currentStage > 3 ? 'completed' : ''}">
+          <span class="progress-number">3</span>
+          <span>Selecting Tags</span>
+        </div>
+        
         <p>Current Stage: {currentStage}</p>
         <button class="redirect" onclick={LoginRedirect}>Already on Heap of Help?</button>
       </div>
+      
+      <!-- <div id="sidebar">
+        <h3>Sidebar</h3>
+        <p>Current Stage: {currentStage}</p>
+        <button class="redirect" onclick={LoginRedirect}>Already on Heap of Help?</button>
+      </div> -->
   
       <div id="form-content">
         {#if currentStage === 1}
@@ -161,14 +201,6 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
 
-    #registration {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      background-color: #f8f8f8;
-      height: 100vh;
-    }
-
     #selection {
       padding: 10px;
       border: 1px solid #aaa;
@@ -204,12 +236,62 @@
       background-color: #2980b9;
       transform: scale(1.05);
     }
-  
+
+    #registration {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background-color: #f8f8f8;
+      height: 100vh;
+      padding: 20px;
+    }
+
     #container {
       display: flex;
+      flex-direction: row; /* Explicitly set horizontal layout */
+      align-items: flex-start;
+      gap: 30px;
+      width: 80%;
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+      position: relative;
+    }
+
+    #sidebar {
+      width: 250px;
+      flex-shrink: 0;
+      background-color: #e0e0e0;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      border: 1px solid #ccc;
+      font-family: 'Poppins', sans-serif;
+      border-radius: 10px;
+      height: auto;
+      align-self: flex-start; /* Keep sidebar at the top */
+      color: black;
+    }
+
+    #form-content {
+      flex-grow: 1;
+      padding: 20px;
+      min-width: 500px;
+      max-width: 700px;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* #container {
+      display: flex;
+      align-content: flex-start;
       justify-content: flex-start;
       gap: 20px;
       width: 80%;
+      max-width: 1200px;
+      margin: auto;
+      gap: 30px;
       padding: 20px;
       position: relative;
     }
@@ -217,7 +299,8 @@
     #sidebar {
       position: sticky;
       top: 0;
-      width: 200px;
+      width: 250px;
+      flex-shrink: 0;
       height: 100%;
       background-color: #e0e0e0;
       box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
@@ -229,12 +312,14 @@
     #form-content {
       flex-grow: 1;
       padding: 20px;
+      min-width: 500px;
+      max-width: 700px;
       background-color: #ffffff;
       border: 1px solid #ccc;
       border-radius: 10px;
       box-shadow: 2px 2px 10px 
       rgba(0, 0, 0, 0.1);
-    }
+    } */
 
     #pass-inp {
       display: flex;
@@ -293,6 +378,41 @@
     button:hover {
       background-color: #b0b0b0;
       transform: scale(1.02);
+    }
+
+    /*for sidebar */
+
+    .progress-list {
+      margin: 20px 0;
+    }
+
+    .progress-item {
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .progress-number {
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      background-color: #ccc;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 25px;
+      margin-right: 10px;
+      font-weight: bold;
+    }
+
+    /* Add this class to the current step with JavaScript or your framework */
+    .current .progress-number {
+      background-color: blue;
+    }
+
+    /* Add this class to completed steps with JavaScript or your framework */
+    .completed .progress-number {
+      background-color: green;
     }
 
   </style>
