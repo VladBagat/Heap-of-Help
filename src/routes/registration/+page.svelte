@@ -100,25 +100,7 @@
     <div id="container">
       <!-- Sidebar -->
       <div id="sidebar">
-        <h3>Progress</h3>
-        
-        <!-- Simple progress indicator -->
-        <div class="progress-list">
-          <div class="progress-item">
-            <span class="progress-number">1</span>
-            <span>Personal Details</span>
-          </div>
-          
-          <div class="progress-item">
-            <span class="progress-number">2</span>
-            <span>Account Setup</span>
-          </div>
-          
-          <div class="progress-item">
-            <span class="progress-number">3</span>
-            <span>Selecting Tags</span>
-          </div>
-        </div>
+        <h3>Creating Account</h3>
         
         <div class="progress-item {currentStage === 1 ? 'current' : ''} {currentStage > 1 ? 'completed' : ''}">
           <span class="progress-number">1</span>
