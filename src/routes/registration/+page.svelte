@@ -230,7 +230,7 @@
 
     #container {
       display: flex;
-      flex-direction: row; /* Explicitly set horizontal layout */
+      flex-direction: row;
       align-items: flex-start;
       gap: 30px;
       width: 80%;
@@ -250,7 +250,7 @@
       font-family: 'Poppins', sans-serif;
       border-radius: 10px;
       height: auto;
-      align-self: flex-start; /* Keep sidebar at the top */
+      align-self: flex-start;
       color: black;
     }
 
@@ -264,44 +264,6 @@
       border-radius: 10px;
       box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
     }
-
-    /* #container {
-      display: flex;
-      align-content: flex-start;
-      justify-content: flex-start;
-      gap: 20px;
-      width: 80%;
-      max-width: 1200px;
-      margin: auto;
-      gap: 30px;
-      padding: 20px;
-      position: relative;
-    }
-  
-    #sidebar {
-      position: sticky;
-      top: 0;
-      width: 250px;
-      flex-shrink: 0;
-      height: 100%;
-      background-color: #e0e0e0;
-      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      border: 1px solid #ccc;
-      font-family: 'Poppins', sans-serif;
-    }
-  
-    #form-content {
-      flex-grow: 1;
-      padding: 20px;
-      min-width: 500px;
-      max-width: 700px;
-      background-color: #ffffff;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      box-shadow: 2px 2px 10px 
-      rgba(0, 0, 0, 0.1);
-    } */
 
     #pass-inp {
       display: flex;
