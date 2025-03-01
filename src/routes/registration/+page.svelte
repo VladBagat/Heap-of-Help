@@ -363,7 +363,6 @@
     }
 
     /*for sidebar */
-
     .progress-list {
       margin: 20px 0;
     }
@@ -387,12 +386,10 @@
       font-weight: bold;
     }
 
-    /* Add this class to the current step with JavaScript or your framework */
     .current .progress-number {
       background-color: blue;
     }
 
-    /* Add this class to completed steps with JavaScript or your framework */
     .completed .progress-number {
       background-color: green;
     }
