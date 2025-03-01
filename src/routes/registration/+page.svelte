@@ -5,7 +5,6 @@
     let age = $state('');
     let county = $state('');
     let email = $state('');
-    let phonenumber = $state('');
     let language = $state('');
     let timezone = $state('');
     let username = $state('');
@@ -35,7 +34,6 @@
         console.log(forename)
         console.log(surname)
         console.log(email)
-        console.log(phonenumber)
         console.log(language)
         console.log(timezone)
         console.log(username)
@@ -47,9 +45,9 @@
         let valid = Password_Validation(password, confirm_password)
         if (valid === ''){
             document.getElementById("error").innerHTML = ''
-            const payload = { profile: profile, forename: forename, surname: surname, email: email, phonenumber: phonenumber, language: language, timezone: timezone, username: username,  password: password, confirm_password: confirm_password, description: description};
+            const payload = { profile: profile, forename: forename, surname: surname, email: email, language: language, timezone: timezone, username: username,  password: password, confirm_password: confirm_password, description: description};
 
-            const res = await fetch('api/student-reg', {
+            const res = await fetch('api/registration', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -94,6 +92,10 @@
       alert('Submit!');
     }
 
+    function ProfileRedirect(){
+      goto('\profile');
+    }
+
 </script>
   
   <div id="registration">
@@ -120,12 +122,6 @@
         <p>Current Stage: {currentStage}</p>
         <button class="redirect" onclick={LoginRedirect}>Already on Heap of Help?</button>
       </div>
-      
-      <!-- <div id="sidebar">
-        <h3>Sidebar</h3>
-        <p>Current Stage: {currentStage}</p>
-        <button class="redirect" onclick={LoginRedirect}>Already on Heap of Help?</button>
-      </div> -->
   
       <div id="form-content">
         {#if currentStage === 1}
@@ -139,7 +135,6 @@
             <input class="element" type="text" bind:value={forename} placeholder="Forename" />
             <input class="element" type="text" bind:value={surname} placeholder="Surname" /> 
             <input class="element" type="text" bind:value={email} placeholder="Email" /> 
-            <input class="element" type="text" bind:value={phonenumber} placeholder="Telephone" />
             <input class="element" type="text" bind:value={age} placeholder="Age" />
             <input class="element" type="text" placeholder="Education" />
             <input class="element" type="text" bind:value={language} placeholder="Language" />
@@ -157,7 +152,7 @@
               <Password class="element" bind:value={confirm_password}/>
             </div>
             <input class="element" type="file" id="profile-pic" accept="image/*" />
-            <input class="element" type="text" bind:value={description} placeholder="Description" />
+            <textarea class="element" bind:value={description} placeholder="Description"></textarea>
             <button type="button" onclick={previousStage}>Back</button>
             <button type="button" onclick={nextStage}>Next</button>
           </form>
@@ -165,7 +160,7 @@
   
         {#if currentStage === 3}
           <h2>Step 3: Selecting Tags </h2>
-          <form onsubmit={submitForm}>
+          <form>
             <div id="tags">
               <button class="tag_btn" data-value="Theoretical Computer Science"> Theoretical Computer Science</button>
               <button class="tag_btn" data-value="Computer Systems and Architecture"> Computer Systems and Architecture</button>
@@ -173,7 +168,7 @@
               <button class="tag_btn" data-value="Software Engineering"> Software Engineering</button>
             </div>
             <button type="button" onclick={previousStage}>Back</button>
-            <button type="submit">Submit</button>
+            <button type="button" onclick={ProfileRedirect}>Submit</button>
           </form>
         {/if}
       </div>
@@ -271,15 +266,6 @@
       gap: 13px;
       width: 100%;
     }
-
-    #pass-inp .element {
-      padding: 11px;
-      border: 1px solid #aaa;
-      font-size: 15px;
-      border-radius: 5px;
-      width: 100%;
-      box-sizing: border-box;
-    }
   
     form {
       display: flex;
@@ -325,9 +311,6 @@
     }
 
     /*for sidebar */
-    .progress-list {
-      margin: 20px 0;
-    }
 
     .progress-item {
       padding: 10px 0;
