@@ -30,7 +30,9 @@
         goto("/login");
     }
 
-    onMount(checkAuth);
+    onMount(() => {
+        checkAuth();
+    });
   </script>
   
   <header class="header">
