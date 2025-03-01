@@ -57,7 +57,7 @@
     }
 
     function IndexRedirect(){
-        goto('/index')
+        goto('/discovery')
     }
 
 </script>

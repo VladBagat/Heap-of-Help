@@ -95,8 +95,6 @@
   //Proposed data model
   //data = [{"name":"John", "profile-img":blob, "image":blob, "description":"some limited description"}, ...]
 
-  // not sure if this is needed
-  let { things } = $props();
   // Default category is recommended
   let category = $state("Recommended Users");
 

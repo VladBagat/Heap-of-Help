@@ -8,7 +8,7 @@
       <a href="/" class="logo">Heap of Help</a>
       
       <nav class="nav" class:open={menuOpen}>
-        <a href="/" class="nav-link">Tutors</a>
+        <a href="/discovery" class="nav-link">Tutors</a>
         <a href="/" class="nav-link">Chat</a>
         <a href="/login" class="nav-link">Login</a>
       </nav>
