@@ -63,7 +63,7 @@
     }
 
     function IndexRedirect(){
-        goto('/index')
+        goto('/')
     }
 
     function editProfile() {

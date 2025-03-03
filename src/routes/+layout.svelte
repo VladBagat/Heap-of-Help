@@ -44,7 +44,7 @@
         <a href="/" class="nav-link">Chat</a>
         {#if isLoggedIn}
           <a href="/profile" class="nav-link">Profile</a>
-          <a href = "/index" class="nav-link" on:click={logout}>Logout</a>
+          <a href = "/" class="nav-link" on:click={logout}>Logout</a>
         {:else}
           <a href="/login" class="nav-link">Login</a>
         {/if}
