@@ -6,15 +6,34 @@
   let isMobile = $state(false);
 
   // Media query check with proper cleanup
-  onMount(() => {
+  onMount(async () => {
     const mediaQuery = window.matchMedia("(max-width: 768px)");
     const updateMobile = () => (isMobile = mediaQuery.matches);
 
     updateMobile();
     mediaQuery.addEventListener("change", updateMobile);
 
+    temp = await fetch_content();
+
     return () => mediaQuery.removeEventListener("change", updateMobile);
   });
+
+  async function fetch_content(){
+    const res = await fetch('api/content', {
+      method: 'GET',
+      credentials: 'include',
+    });
+
+    const json = await res.json();
+    let users = json[0].content;
+    users.forEach(user => {
+      user.name = `${user.first_name} ${user.last_name}`;
+      delete user.first_name;
+      delete user.last_name;
+    });
+    return users;
+  }
+
   let showModal = $state(false);
   let selected_card = $state(0);
 
@@ -92,6 +111,7 @@
       tags: ["Python", "Senior", "Sigma"],
     },
   ]);
+  
   //Proposed data model
   //data = [{"name":"John", "profile-img":blob, "image":blob, "description":"some limited description"}, ...]
 
