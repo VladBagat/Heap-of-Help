@@ -3,7 +3,6 @@
     let forename = $state('');
     let surname = $state('');
     let age = $state('');
-    let county = $state('');
     let email = $state('');
     let language = $state('');
     let timezone = $state('');
@@ -33,6 +32,7 @@
         console.log(profile)
         console.log(forename)
         console.log(surname)
+        console.log(age)
         console.log(email)
         console.log(language)
         console.log(timezone)
@@ -136,7 +136,6 @@
             <input class="element" type="text" bind:value={surname} placeholder="Surname" /> 
             <input class="element" type="text" bind:value={email} placeholder="Email" /> 
             <input class="element" type="text" bind:value={age} placeholder="Age" />
-            <input class="element" type="text" placeholder="Education" />
             <input class="element" type="text" bind:value={language} placeholder="Language" />
             <input class="element" type="text" bind:value={timezone} placeholder="Time Zone" />
             <button type="button" onclick={nextStage}>Next</button>
