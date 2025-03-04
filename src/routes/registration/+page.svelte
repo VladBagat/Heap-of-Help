@@ -6,10 +6,12 @@
     let email = $state('');
     let language = $state('');
     let timezone = $state('');
+    let education = $state('')
     let username = $state('');
     let password = $state('');
     let confirm_password = $state('');
     let description = $state('');
+    let profile_img = $state('');
 
     let currentStage = $state(1);
   
@@ -22,6 +24,17 @@
     function previousStage() {
       if (currentStage > 1) {
         currentStage -= 1;
+      }
+    }
+
+    function pw_check() {
+      if (document.getElementById('password').value ==
+        document.getElementById('confirm_password').value) {
+        document.getElementById('message').style.color = 'green';
+        document.getElementById('message').innerHTML = 'matching';
+      } else {
+        document.getElementById('message').style.color = 'red';
+        document.getElementById('message').innerHTML = 'not matching';
       }
     }
 
@@ -39,13 +52,26 @@
         console.log(username)
         console.log(password)
         console.log(confirm_password)
-        console.log0(description)
+        console.log(description)
 
         // If pass not valid, user isn't registered
-        let valid = Password_Validation(password, confirm_password)
-        if (valid === ''){
-            document.getElementById("error").innerHTML = ''
-            const payload = { profile: profile, forename: forename, surname: surname, email: email, language: language, timezone: timezone, username: username,  password: password, confirm_password: confirm_password, description: description};
+        //let valid = Password_Validation(password, confirm_password)
+        if (password == confirm_password) {
+            // document.getElementById("error").innerHTML = ''
+            const payload = { profile: profile, 
+              forename: forename, 
+              surname: surname, 
+              email: email, 
+              age: age,
+              language: language, 
+              timezone: timezone, 
+              username: username,  
+              password: password, 
+              confirm_password: confirm_password, 
+              education: education,
+              description: description, 
+              profile_img: base64Image};
+            console.log(payload);
 
             const res = await fetch('api/registration', {
                 method: 'POST',
@@ -85,7 +111,7 @@
     }
 
     function IndexRedirect(){
-        goto('/index')
+        goto('/profile')
     }
 
     function submitForm() {
@@ -95,6 +121,24 @@
     function ProfileRedirect(){
       goto('\profile');
     }
+
+    let base64Image = $state('');
+
+    function handle_profile_img(event) {
+        const file = event.target.files[0];
+        if (file) {
+            profile_img = file;
+        } else {
+            profile_img = "static/profile.avif"
+        }
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            base64Image = e.target.result;  // Get Base64 string
+            console.log("Base64 Encoded Image:", base64Image);
+        };
+        reader.readAsDataURL(file);  // Convert to Base64
+    }
+
 
 </script>
   
@@ -127,7 +171,7 @@
         {#if currentStage === 1}
           <h2>Step 1: Personal Details </h2>
           <form>
-            <select id="selection" class="element">
+            <select id="selection" class="element" bind:value={profile}>
               <option value="" disabled selected>Select Tutor/Student</option>
               <option value="tutor">Tutor</option>
               <option value="tutee">Student</option>
@@ -135,7 +179,8 @@
             <input class="element" type="text" bind:value={forename} placeholder="Forename" />
             <input class="element" type="text" bind:value={surname} placeholder="Surname" /> 
             <input class="element" type="text" bind:value={email} placeholder="Email" /> 
-            <input class="element" type="text" bind:value={age} placeholder="Age" />
+            <input class="element" type="text" bind:value={education} placeholder="Education" />
+            <input class="element" type="number" bind:value={age} placeholder="Age" />
             <input class="element" type="text" bind:value={language} placeholder="Language" />
             <input class="element" type="text" bind:value={timezone} placeholder="Time Zone" />
             <button type="button" onclick={nextStage}>Next</button>
@@ -147,10 +192,21 @@
           <form>
             <input class="element" type="text" bind:value={username} placeholder="Username" />
             <div id="pass-inp" type= "text">
-              <Password class="element" bind:value={password}/>
-              <Password class="element" bind:value={confirm_password}/>
+              <!-- <Password class="element" id="password" bind:value={password}/>
+              <Password class="element" id="confirm_password" bind:value={confirm_password}/> -->
+              <label>password :
+                <input name="password" id="password" type="password" bind:value={password} onkeyup={pw_check} />
+              </label>
+              <label>confirm password:
+                <input type="password" name="confirm_password" id="confirm_password" bind:value={confirm_password} onkeyup={pw_check} /> 
+                <span id='message'></span>
+              </label>
             </div>
-            <input class="element" type="file" id="profile-pic" accept="image/*" />
+            <input class="element" type="file" id="profile-pic" accept="image/*" onchange={handle_profile_img}/>
+            {#if base64Image}
+                <p>Preview:</p>
+                <img src={base64Image} alt="Uploaded Image" width="100" />
+            {/if}
             <textarea class="element" bind:value={description} placeholder="Description"></textarea>
             <button type="button" onclick={previousStage}>Back</button>
             <button type="button" onclick={nextStage}>Next</button>
@@ -167,7 +223,7 @@
               <button class="tag_btn" data-value="Software Engineering"> Software Engineering</button>
             </div>
             <button type="button" onclick={previousStage}>Back</button>
-            <button type="button" onclick={ProfileRedirect}>Submit</button>
+            <button type="button" onclick={registration}>Submit</button>
           </form>
         {/if}
       </div>
