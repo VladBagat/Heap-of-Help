@@ -63,7 +63,7 @@
     }
 
     function IndexRedirect(){
-        goto('/index')
+        goto('/')
     }
 
     function editProfile() {
@@ -95,22 +95,26 @@
             <div class="edit-profile">
                 <h2>Edit Profile</h2>
 
-                <label>Name:</label>
-                <input type="text" bind:value={user.name} />
+                <label>Name:
+                    <input type="text" bind:value={user.name} />
+                </label>
 
-                <label>Location:</label>
-                <input type="text" bind:value={user.location} />
+                <label>Location:
+                    <input type="text" bind:value={user.location} />
+                </label>
 
-                <label>Email:</label>
-                <input type="email" bind:value={user.email} />
+                <label>Email:
+                    <input type="email" bind:value={user.email} />
+                </label>
 
-                <label>Description:</label>
-                <textarea bind:value={user.description}></textarea>
+                <label>Description:
+                    <textarea bind:value={user.description}></textarea>
+                </label>
             </div>
             <button class="btn save" onclick={saveChanges}> Save </button>
         {:else}
             <div class="profile-header">
-                <img src="data:image/png;base64, {tuteeProfile.profile_img}" alt="Profile Image" class="profile-image" id="profileImage">  
+                <img src="data:image/png;base64, {tuteeProfile.profile_img}" alt="" class="profile-image" id="profileImage">  
                 <div class="user-info">
                     <h2 class="username">{tuteeProfile.first_name} {tuteeProfile.last_name}</h2>
                     <p class="role">Product Designer</p>
@@ -184,10 +188,6 @@
     border-bottom: 1px solid #ddd;
     padding-bottom: 20px;
     padding-left: 50px;
-}
-
-.profile-header > .div > h2, p{
-    margin: 5px;
 }
 
 .profile-image {
