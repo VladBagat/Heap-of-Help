@@ -115,7 +115,6 @@
                     <h2 class="username">{tuteeProfile.first_name} {tuteeProfile.last_name}</h2>
                     <p class="role">Product Designer</p>
                     <p class="location">📍 New York, NY</p>
-                    <p class="rating"><strong>8.6</strong> ⭐⭐⭐⭐☆</p>
                     <div class="tags">
                         <p>tag 1, tag 2, tag 3</p>
                     </div>
