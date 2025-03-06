@@ -27,14 +27,23 @@
       }
     }
 
-    function pw_check() {
-      if (document.getElementById('password').value ==
-        document.getElementById('confirm_password').value) {
-        document.getElementById('message').style.color = 'green';
-        document.getElementById('message').innerHTML = 'matching';
+    function pw_length_check() {
+      if (password.length >= 7) {
+        document.getElementById('pw_length_message').style.color = 'green';
+        document.getElementById('pw_length_message').innerHTML = 'Good';
       } else {
-        document.getElementById('message').style.color = 'red';
-        document.getElementById('message').innerHTML = 'not matching';
+        document.getElementById('pw_length_message').style.color = 'red';
+        document.getElementById('pw_length_message').innerHTML = 'At least 8 characters';
+      }
+    }
+
+	function pw_match_check() {
+      if (password == confirm_password) {
+        document.getElementById('pw_match_message').style.color = 'green';
+        document.getElementById('pw_match_message').innerHTML = 'matching';
+      } else {
+        document.getElementById('pw_match_message').style.color = 'red';
+        document.getElementById('pw_match_message').innerHTML = 'not matching';
       }
     }
 
@@ -140,6 +149,39 @@
     }
 
 
+	let username_validation = $state(false);
+
+    async function valid_username() {
+      if (username.trim() == "") {
+        username_validation = false;
+      } else if (username_validation){
+        username_validation = false;
+      } else {
+        const payload = {username: username};
+        console.log(payload)
+
+        const res = await fetch('api/validate_username', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const json = await res.json();
+
+        console.log(json)
+
+        if (json[0].success) {
+          username_validation = true;
+        } else {
+          username_validation = false;
+        }
+      }
+    }
+
+
 </script>
   
   <div id="registration">
@@ -190,23 +232,26 @@
         {#if currentStage === 2}
           <h2>Step 2: Account Setup</h2>
           <form>
-            <input class="element" type="text" bind:value={username} placeholder="Username" />
-            <div id="pass-inp" type= "text">
-              <!-- <Password class="element" id="password" bind:value={password}/>
-              <Password class="element" id="confirm_password" bind:value={confirm_password}/> -->
-              <label>password :
-                <input name="password" id="password" type="password" bind:value={password} onkeyup={pw_check} />
-              </label>
-              <label>confirm password:
-                <input type="password" name="confirm_password" id="confirm_password" bind:value={confirm_password} onkeyup={pw_check} /> 
-                <span id='message'></span>
-              </label>
+            <div id="username">
+              {#if username_validation}
+                <input id="username_in" class="element" type="text" bind:value={username} placeholder="Username" readonly/>
+                <button id="valid_username" type="button" onclick={valid_username}>Change</button>
+                <span id="username_message" style="color:green;">Valid Username</span>
+              {:else}
+                <input id="username_in" class="element" type="text" bind:value={username} placeholder="Username" />
+                <button id="valid_username" type="button" onclick={valid_username}>CHECK</button>
+                <span id="username_message" style="color:red;">Invalid Username</span>
+              {/if}
+            </div>
+            <div id="password" type= "text">
+                <input class="element" name="password" id="password_in" type="password" placeholder="Password" bind:value={password} onkeydown={pw_length_check} onkeyup={(pw_match_check)} />
+				        <span id='pw_length_message'></span>
+			      </div>
+			      <div id="password">
+                <input class="element" type="password" name="confirm_password" id="confirm_password" placeholder="Confrim Password" bind:value={confirm_password} onkeyup={pw_match_check} /> 
+                <span id='pw_match_message'></span>
             </div>
             <input class="element" type="file" id="profile-pic" accept="image/*" onchange={handle_profile_img}/>
-            {#if base64Image}
-                <p>Preview:</p>
-                <img src={base64Image} alt="Uploaded Image" width="100" />
-            {/if}
             <textarea class="element" bind:value={description} placeholder="Description"></textarea>
             <button type="button" onclick={previousStage}>Back</button>
             <button type="button" onclick={nextStage}>Next</button>
@@ -315,11 +360,28 @@
       box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
     }
 
-    #pass-inp {
+    #username {
       display: flex;
-      flex-direction: column;
-      gap: 13px;
-      width: 100%;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    #username_in {
+      max-width: 550px;
+    }
+
+    #valid_username {
+      max-width: 100px;
+    }
+
+    #password {
+		display: flex;
+      	align-items: center;
+      	gap: 20px;
+      	flex-wrap: wrap;
+      	margin-top: 10px;
     }
   
     form {
