@@ -233,16 +233,17 @@
         reader.readAsDataURL(file);  // Convert to Base64
     }
 
-    // Use $state() for reactive variables
     let selectedMainCategory = $state(null);
     let selectedSubcategory = $state(null);
     let selectedTags = $state([]);
 
     const tagData = {
       "Theoretical Computer Science": {
-        "Algorithms": ["Graph Algorithms", "Randomized Algorithms", "Approximation Algorithms"],
-        "Formal Languages": ["Regular Languages", "Context-Free Languages", "Parsing"],
-        "Cryptography": ["Public-Key Cryptography", "Zero-Knowledge Proofs"]
+        "Algorithms": ["Graph Algorithms", "Randomized Algorithms", "Approximation Algorithms", "Parallel Algorithms"],
+        "Formal Languages": ["Regular Languages and Finite Automata", "Context-Free Languages and Grammars", "Context-Sensitive Languages" ,"Parsing and Syntax Analysis"],
+        "Cryptography (Theoretical)": ["Public-Key Cryptography", "Zero-Knowledge Proofs","Lattice-Based Cryptography","Provable Security"],
+        "Quantum Computing Theory": ["Quantum Algorithms","Quantum Complexity Theory", "Quantum Error Correction","Quantum Information Theory"],
+        "Automata Theory": [ "Finite Automata","Pushdown Automata","Turing Machines","Cellular Automata"]
       },
       "Networking & Communications": {
         "Internet Protocols": ["Routing Protocols", "Transport Protocols"],
@@ -254,8 +255,10 @@
         "Compiler Design": ["Lexical Analysis", "Parsing", "Code Optimization"],
         "Concurrency": ["Thread-based", "Message Passing", "Actor Model"]
       }
+
     };
 
+    // keys avoid the values
     const mainCategories = Object.keys(tagData);
 
     function getSubcategories(mainCategory) {
@@ -266,6 +269,7 @@
       return tagData[mainCategory]?.[subcategory] || [];
     }
 
+    // this and one below for deselecting the categories
     function selectMainCategory(category) {
       selectedMainCategory = selectedMainCategory === category ? null : category;
       selectedSubcategory = null;
