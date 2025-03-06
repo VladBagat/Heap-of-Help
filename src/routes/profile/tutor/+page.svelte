@@ -110,25 +110,25 @@
                     <p class="location">📍 New York, NY</p>
 
                     {#if rating === 0.5}
-                        <img src="/static/stars/0.5s.jpg" alt="0.5" class="rating">
+                        <img src="/stars/0.5s.jpg" alt="0.5" class="rating">
                     {:else if rating === 1.0}
-                        <img src="/static/stars/1s.jpg" alt="1.0" class="rating">
+                        <img src="/stars/1s.jpg" alt="1.0" class="rating">
                     {:else if rating === 1.5}
-                        <img src="/static/stars/1.5s.jpg" alt="1.5" class="rating">
+                        <img src="/stars/1.5s.jpg" alt="1.5" class="rating">
                     {:else if rating === 2.0}
-                        <img src="/static/stars/2s.jpg" alt="2.0" class="rating">
+                        <img src="/stars/2s.jpg" alt="2.0" class="rating">
                     {:else if rating === 2.5}
-                        <img src="/static/stars/2.5s.jpg" alt="2.5" class="rating">
+                        <img src="/stars/2.5s.jpg" alt="2.5" class="rating">
                     {:else if rating === 3.0}
-                        <img src="/static/stars/3s.jpg" alt="3.0" class="rating">
+                        <img src="/stars/3s.jpg" alt="3.0" class="rating">
                     {:else if rating === 3.5}
-                        <img src="/static/stars/3.5s.jpg" alt="3.5" class="rating">
+                        <img src="/stars/3.5s.jpg" alt="3.5" class="rating">
                     {:else if rating === 4.0}
-                        <img src="/static/stars/4.0s.jpg" alt="4.0" class="rating">
+                        <img src="/stars/4.0s.jpg" alt="4.0" class="rating">
                     {:else if rating === 4.5}
-                        <img src="/static/stars/4.5s.jpg" alt="4.5" class="rating">
+                        <img src="/stars/4.5s.jpg" alt="4.5" class="rating">
                     {:else if rating === 5.0}
-                        <img src="/static/stars/5.0s.jpg" alt="5.0" class="rating">
+                        <img src="/stars/5.0s.jpg" alt="5.0" class="rating">
 
                     {/if}
 
