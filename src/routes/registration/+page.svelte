@@ -74,79 +74,16 @@
           alert("Please enter a username");
           return false;
         }
-        if (!password || password.trim() === "") {
-          alert("Please enter a password");
-          return false;
-        }
-        if (!confirm_password || confirm_password.trim() === "") {
-          alert("Please confirm your password");
-          return false;
-        }
-        if (password !== confirm_password) {
-          alert("Passwords do not match");
-          return false;
-        }
-        if (!description || description.trim() === "") {
-          alert("Please enter a short description");
-          return false;
-        }
-        // Profile picture is optional, so we don't validate it
-        return true;
-      }
-
-      else if (currentStage == 3){
-        if(selectedTags.length == 0){
-          alert("Please choose at least 1 tag")
-          return false;
-        }
-        return true;
-      }
-      return false;
-    }
-
-    function validation_page1(){
-      if (currentStage == 1){
-        if (profile === "") {
-          alert("Please select if you are a Tutor or Student");
-          return false;
-        }
-        if (forename == "") {
-          alert("Please enter your forename");
-          return false;
-        }
-        if (surname.trim() === "") {
-          alert("Please enter your surname");
-          return false;
-        }
-        if (email.trim() === "") {
-          alert("Please enter your email");
-          return false;
-        }
-        if (education.trim() === "") {
-          alert("Please enter your education");
-          return false;
-        }
-        if (age <= 0) {
-          alert("Please enter a valid age");
-          return false;
-        }
-        if (language.trim() === "") {
-          alert("Please enter your language");
-          return false;
-        }
-        if (timezone.trim() === "") {
-          alert("Please enter your time zone");
-          return false;
-        }
-        return true;
-        }
-      else if (currentStage == 2){
-        if (!username || username.trim() === "") {
-          alert("Please enter a username");
+        if (!username_validation) {
+          alert("Please check the username")
           return false;
         }
         if (!password || password.trim() === "") {
           alert("Please enter a password");
+          return false;
+        }
+        if (password.length < 8) {
+          alert("Password must be at least 8 characters");
           return false;
         }
         if (!confirm_password || confirm_password.trim() === "") {
@@ -350,8 +287,8 @@
       selectedTags = selectedTags.filter(t => t !== tag);
     }
 
-	let username_validation = $state(false);
 
+	let username_validation = $state(false);
     async function valid_username() {
       if (username.trim() == "") {
         username_validation = false;
