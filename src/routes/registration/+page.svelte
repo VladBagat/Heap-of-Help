@@ -16,8 +16,14 @@
     let currentStage = $state(1);
   
     function nextStage() {
-      if (currentStage < 3) {
+      if (validation(currentStage)) {
         currentStage += 1;
+      }
+    }
+
+    function finalStage() {
+      if (validation(currentStage)){
+        ProfileRedirect();
       }
     }
 
@@ -25,6 +31,77 @@
       if (currentStage > 1) {
         currentStage -= 1;
       }
+    }
+
+    function validation(){
+      if (currentStage == 1){
+        if (profile === "") {
+          alert("Please select if you are a Tutor or Student");
+          return false;
+        }
+        if (forename == "") {
+          alert("Please enter your forename");
+          return false;
+        }
+        if (surname.trim() === "") {
+          alert("Please enter your surname");
+          return false;
+        }
+        if (email.trim() === "") {
+          alert("Please enter your email");
+          return false;
+        }
+        if (education.trim() === "") {
+          alert("Please enter your education");
+          return false;
+        }
+        if (age <= 0) {
+          alert("Please enter a valid age");
+          return false;
+        }
+        if (language.trim() === "") {
+          alert("Please enter your language");
+          return false;
+        }
+        if (timezone.trim() === "") {
+          alert("Please enter your time zone");
+          return false;
+        }
+        return true;
+        }
+      else if (currentStage == 2){
+        if (!username || username.trim() === "") {
+          alert("Please enter a username");
+          return false;
+        }
+        if (!password || password.trim() === "") {
+          alert("Please enter a password");
+          return false;
+        }
+        if (!confirm_password || confirm_password.trim() === "") {
+          alert("Please confirm your password");
+          return false;
+        }
+        if (password !== confirm_password) {
+          alert("Passwords do not match");
+          return false;
+        }
+        if (!description || description.trim() === "") {
+          alert("Please enter a short description");
+          return false;
+        }
+        // Profile picture is optional, so we don't validate it
+        return true;
+      }
+
+      else if (currentStage == 3){
+        if(selectedTags.length == 0){
+          alert("Please choose at least 1 tag")
+          return false;
+        }
+        return true;
+      }
+      return false;
     }
 
     function pw_check() {
@@ -139,6 +216,59 @@
         reader.readAsDataURL(file);  // Convert to Base64
     }
 
+    // Use $state() for reactive variables
+    let selectedMainCategory = $state(null);
+    let selectedSubcategory = $state(null);
+    let selectedTags = $state([]);
+
+    const tagData = {
+      "Theoretical Computer Science": {
+        "Algorithms": ["Graph Algorithms", "Randomized Algorithms", "Approximation Algorithms"],
+        "Formal Languages": ["Regular Languages", "Context-Free Languages", "Parsing"],
+        "Cryptography": ["Public-Key Cryptography", "Zero-Knowledge Proofs"]
+      },
+      "Networking & Communications": {
+        "Internet Protocols": ["Routing Protocols", "Transport Protocols"],
+        "Cloud Computing": ["IaaS", "PaaS", "SaaS"],
+        "Wireless Networks": ["WiFi", "Cellular Networks", "Ad Hoc Networks"]
+      },
+      "Programming Languages": {
+        "Language Theory": ["Semantics", "Type Systems"],
+        "Compiler Design": ["Lexical Analysis", "Parsing", "Code Optimization"],
+        "Concurrency": ["Thread-based", "Message Passing", "Actor Model"]
+      }
+    };
+
+    const mainCategories = Object.keys(tagData);
+
+    function getSubcategories(mainCategory) {
+      return Object.keys(tagData[mainCategory] || {});
+    }
+
+    function getFinalTags(mainCategory, subcategory) {
+      return tagData[mainCategory]?.[subcategory] || [];
+    }
+
+    function selectMainCategory(category) {
+      selectedMainCategory = selectedMainCategory === category ? null : category;
+      selectedSubcategory = null;
+    }
+
+    function selectSubcategory(subcategory) {
+      selectedSubcategory = selectedSubcategory === subcategory ? null : subcategory;
+    }
+
+    function toggleTag(tag) {
+      if (selectedTags.includes(tag)) {
+        selectedTags = selectedTags.filter(t => t !== tag);
+      } else if (selectedTags.length < 5){
+        selectedTags = [...selectedTags, tag];
+      }
+    }
+
+    function removeTag(tag) {
+      selectedTags = selectedTags.filter(t => t !== tag);
+    }
 
 </script>
   
@@ -212,23 +342,79 @@
             <button type="button" onclick={nextStage}>Next</button>
           </form>
         {/if}
-  
+
         {#if currentStage === 3}
-          <h2>Step 3: Selecting Tags </h2>
-          <form>
-            <div id="tags">
-              <button class="tag_btn" data-value="Theoretical Computer Science"> Theoretical Computer Science</button>
-              <button class="tag_btn" data-value="Computer Systems and Architecture"> Computer Systems and Architecture</button>
-              <button class="tag_btn" data-value="Artificial Intelligence & Machine Learning"> Artificial Intelligence & Machine Learning</button>
-              <button class="tag_btn" data-value="Software Engineering"> Software Engineering</button>
+        <h2>Step 3: Selecting Tags</h2>
+        <form>
+          <!-- Main category buttons -->
+          <div id="tags">
+            {#each mainCategories as category}
+              <button 
+                type="button" 
+                class="tag_btn {selectedMainCategory === category ? 'active' : ''}" 
+                onclick={() => selectMainCategory(category)}
+              >
+                {category}
+              </button>
+            {/each}
+          </div>
+
+          <!-- Subcategory buttons (only shown if main category is selected) -->
+          {#if selectedMainCategory}
+            <div id="subtags">
+              <h3>Subfields in {selectedMainCategory}</h3>
+              {#each getSubcategories(selectedMainCategory) as subcategory}
+                <button 
+                  type="button" 
+                  class="tag_btn {selectedSubcategory === subcategory ? 'active' : ''}" 
+                  onclick={() => selectSubcategory(subcategory)}
+                >
+                  {subcategory}
+                </button>
+              {/each}
             </div>
+          {/if}
+
+          <!-- Final tag options (only shown if subcategory is selected) -->
+          {#if selectedSubcategory}
+            <div id="final-tags">
+              <h3>Topics in {selectedSubcategory}</h3>
+              {#each getFinalTags(selectedMainCategory, selectedSubcategory) as tag}
+                <button 
+                  type="button" 
+                  class="tag_btn {selectedTags.includes(tag) ? 'selected' : ''}" 
+                  onclick={() => toggleTag(tag)}
+                >
+                  {tag}
+                </button>
+              {/each}
+            </div>
+          {/if}
+
+          {#if selectedTags.length > 0}
+            <div id="selected-tags">
+              <h3>Selected Tags:</h3>
+              <div class="selected-tag-list">
+                <!-- Displaying the tags -->
+                {#each selectedTags as tag}
+                  <div class="selected-tag">
+                    {tag} 
+                    <button type="button" class="remove-btn" onclick={() => removeTag(tag)}>×</button>
+                  </div>
+                {/each}
+              </div>
+            </div>
+          {/if}
+
+          <div class="nav-buttons">
             <button type="button" onclick={previousStage}>Back</button>
-            <button type="button" onclick={registration}>Submit</button>
-          </form>
-        {/if}
-      </div>
+            <button type="button" onclick={finalStage}>Submit</button>
+          </div>
+        </form>
+      {/if}
     </div>
   </div>
+</div>
   
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
@@ -393,5 +579,84 @@
     .completed .progress-number {
       background-color: green;
     }
+
+          /* Basic styling */
+    #tags, #subtags, #final-tags {
+      margin-bottom: 15px;
+    }
+
+    .tag_btn {
+      padding: 8px 15px;
+      margin: 5px;
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .tag_btn:hover {
+      background-color: #e0e0e0;
+    }
+
+    .tag_btn.active {
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    .tag_btn.selected {
+      background-color: #10b981;
+      color: white;
+    }
+
+    #selected-tags {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 4px;
+    }
+
+    .selected-tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .selected-tag {
+      background-color: #d1fae5;
+      color: #065f46;
+      padding: 5px 10px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .remove-btn {
+      margin-left: 5px;
+      background: none;
+      border: none;
+      color: #065f46;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .nav-buttons {
+      margin-top: 20px;
+    }
+
+    .nav-buttons button {
+      padding: 8px 16px;
+      margin-right: 10px;
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .nav-buttons button:last-child {
+      background-color: #3b82f6;
+      color: white;
+    }
+
 
   </style>
