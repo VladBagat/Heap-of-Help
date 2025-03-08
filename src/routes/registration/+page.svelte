@@ -32,7 +32,7 @@
         currentStage -= 1;
       }
     }
-
+    
     function validation(){
       if (currentStage == 1){
         if (profile === "") {
@@ -70,14 +70,14 @@
         return true;
         }
       else if (currentStage == 2){
-        if (!username || username.trim() === "") {
-          alert("Please enter a username");
-          return false;
-        }
-        if (!username_validation) {
-          alert("Please check the username")
-          return false;
-        }
+        // if (!username || username.trim() === "") {
+        //   alert("Please enter a username");
+        //   return false;
+        // }
+        // if (!username_validation) {
+        //   alert("Please check the username")
+        //   return false;
+        // }
         if (!password || password.trim() === "") {
           alert("Please enter a password");
           return false;
@@ -265,6 +265,59 @@
     }
 
 
+    import Tree from '../../lib/Tree.svelte';
+    
+    // tree data
+    const treeData = {
+      "name": "Theoretical Computer Science",
+      "subfields": [
+        {
+          "name": "Algorithms",
+          "subfields": [
+            { "name": "Graph Algorithms", "subfields":[] },
+            { "name": "Randomized Algorithms", "subfields":[] },
+            { "name": "Approximation Algorithms", "subfields":[] },
+            { "name": "Parallel Algorithms", "subfields":[] }
+          ]
+        },
+        {
+          "name": "Formal Languages",
+          "subfields": [
+            { "name": "Regular Languages and Finite Automata", "subfields":[] },
+            { "name": "Context-Free Languages and Grammars", "subfields":[] },
+            { "name": "Context-Sensitive Languages", "subfields":[] },
+            { "name": "Parsing and Syntax Analysis", "subfields":[] }
+          ]
+        },
+        {
+            "name": "Cryptography (Theoretical)",
+            "subfields": [
+              { "name": "Public-Key Cryptography", "subfields":[] },
+              { "name": "Zero-Knowledge Proofs", "subfields":[] },
+              { "name": "Lattice-Based Cryptography", "subfields":[] },
+              { "name": "Provable Security", "subfields":[] }
+            ]
+        },
+        {
+            "name": "Quantum Computing Theory",
+            "subfields": [
+              { "name": "Quantum Algorithms", "subfields":[] },
+              { "name": "Quantum Complexity Theory", "subfields":[] },
+              { "name": "Quantum Error Correction", "subfields":[] },
+              { "name": "Quantum Information Theory", "subfields":[] }
+            ]
+        },
+        {
+            "name": "Automata Theory",
+            "subfields": [
+              { "name": "Finite Automata", "subfields":[] },
+              { "name": "Pushdown Automata", "subfields":[] },
+              { "name": "Turing Machines", "subfields":[] },
+              { "name": "Cellular Automata", "subfields":[] }
+            ]
+        }
+      ]
+    };
 </script>
   
   <div id="registration">
@@ -316,15 +369,15 @@
           <h2>Step 2: Account Setup</h2>
           <form>
             <div id="username">
-              {#if username_validation}
+              <!-- {#if username_validation} -->
                 <input id="username_in" class="element" type="text" bind:value={username} placeholder="Username" readonly/>
-                <button id="valid_username" type="button" onclick={valid_username}>Change</button>
-                <span id="username_message" style="color:green;">Valid Username</span>
-              {:else}
+                <!-- <button id="valid_username" type="button" onclick={valid_username}>Change</button> -->
+                <!-- <span id="username_message" style="color:green;">Valid Username</span> -->
+              <!-- {:else}
                 <input id="username_in" class="element" type="text" bind:value={username} placeholder="Username" />
                 <button id="valid_username" type="button" onclick={valid_username}>CHECK</button>
                 <span id="username_message" style="color:red;">Invalid Username</span>
-              {/if}
+              {/if} -->
             </div>
             <div id="password" type= "text">
                 <input class="element" name="password" id="password_in" type="password" placeholder="Password" bind:value={password} onkeydown={pw_length_check} onkeyup={(pw_match_check)} />
@@ -342,74 +395,17 @@
         {/if}
 
         {#if currentStage === 3}
-        <h2>Step 3: Selecting Tags</h2>
-        <form>
-          <!-- Main category buttons -->
-          <div id="tags">
-            {#each mainCategories as category}
-              <button 
-                type="button" 
-                class="tag_btn {selectedMainCategory === category ? 'active' : ''}" 
-                onclick={() => selectMainCategory(category)}
-              >
-                {category}
-              </button>
-            {/each}
-          </div>
-
-          <!-- Subcategory buttons (only shown if main category is selected) -->
-          {#if selectedMainCategory}
-            <div id="subtags">
-              <h3>Subfields in {selectedMainCategory}</h3>
-              {#each getSubcategories(selectedMainCategory) as subcategory}
-                <button 
-                  type="button" 
-                  class="tag_btn {selectedSubcategory === subcategory ? 'active' : ''}" 
-                  onclick={() => selectSubcategory(subcategory)}
-                >
-                  {subcategory}
-                </button>
-              {/each}
+          <h2>Step 3: Selecting Tags</h2>
+          <form>
+            <div class="tree-section">
+              <Tree data={treeData} />
             </div>
-          {/if}
-
-          <!-- Final tag options (only shown if subcategory is selected) -->
-          {#if selectedSubcategory}
-            <div id="final-tags">
-              <h3>Topics in {selectedSubcategory}</h3>
-              {#each getFinalTags(selectedMainCategory, selectedSubcategory) as tag}
-                <button 
-                  type="button" 
-                  class="tag_btn {selectedTags.includes(tag) ? 'selected' : ''}" 
-                  onclick={() => toggleTag(tag)}
-                >
-                  {tag}
-                </button>
-              {/each}
+            <div class="nav-buttons">
+              <button type="button" onclick={previousStage}>Back</button>
+              <button type="button" onclick={finalStage}>Submit</button>
             </div>
-          {/if}
-
-          {#if selectedTags.length > 0}
-            <div id="selected-tags">
-              <h3>Selected Tags:</h3>
-              <div class="selected-tag-list">
-                <!-- Displaying the tags -->
-                {#each selectedTags as tag}
-                  <div class="selected-tag">
-                    {tag} 
-                    <button type="button" class="remove-btn" onclick={() => removeTag(tag)}>×</button>
-                  </div>
-                {/each}
-              </div>
-            </div>
-          {/if}
-
-          <div class="nav-buttons">
-            <button type="button" onclick={previousStage}>Back</button>
-            <button type="button" onclick={finalStage}>Submit</button>
-          </div>
-        </form>
-      {/if}
+          </form>
+        {/if}
     </div>
   </div>
 </div>
@@ -595,5 +591,48 @@
       background-color: green;
     }
 
+    /* tags */
+
+    .node-wrapper {
+      width: 100%;
+    }
+    
+    .node {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    
+    .node:hover {
+      background-color: #f0f0f0;
+    }
+    
+    .node.selected {
+      background-color: #e6f7ff;
+      border-left: 3px solid #1890ff;
+      padding-left: 2px;
+    }
+    
+    .has-children {
+      font-weight: 500;
+    }
+    
+    .node-icon {
+      width: 20px;
+      color: #555;
+    }
+    
+    .node-name {
+      margin-left: 5px;
+    }
+    
+    .children {
+      margin-left: 10px;
+      border-left: 1px solid #ddd;
+      padding-left: 10px;
+    }
 
   </style>

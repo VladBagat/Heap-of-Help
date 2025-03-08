@@ -1,6 +1,6 @@
 <script>
     import { slide } from 'svelte/transition';
-    import Node from './Node.svelte';
+    import Node from './node.svelte';
     
     // You can either use the default data or pass your own as a prop
     export let data = {
