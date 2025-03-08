@@ -55,7 +55,7 @@
           alert("Please enter your education");
           return false;
         }
-        if (age <= 0) {
+        if (age <= 0 || age > 100) {
           alert("Please enter a valid age");
           return false;
         }
@@ -240,6 +240,13 @@
     const tagData = {
       "Theoretical Computer Science": {
         "Algorithms": ["Graph Algorithms", "Randomized Algorithms", "Approximation Algorithms", "Parallel Algorithms"],
+        "Formal Languages": ["Regular Languages and Finite Automata", "Context-Free Languages and Grammars", "Context-Sensitive Languages" ,"Parsing and Syntax Analysis"],
+        "Cryptography (Theoretical)": ["Public-Key Cryptography", "Zero-Knowledge Proofs","Lattice-Based Cryptography","Provable Security"],
+        "Quantum Computing Theory": ["Quantum Algorithms","Quantum Complexity Theory", "Quantum Error Correction","Quantum Information Theory"],
+        "Automata Theory": [ "Finite Automata","Pushdown Automata","Turing Machines","Cellular Automata"]
+      },
+      "Computer Systems & Architecture": {
+        "Operating Systems": ["Graph Algorithms", "Randomized Algorithms", "Approximation Algorithms", "Parallel Algorithms"],
         "Formal Languages": ["Regular Languages and Finite Automata", "Context-Free Languages and Grammars", "Context-Sensitive Languages" ,"Parsing and Syntax Analysis"],
         "Cryptography (Theoretical)": ["Public-Key Cryptography", "Zero-Knowledge Proofs","Lattice-Based Cryptography","Provable Security"],
         "Quantum Computing Theory": ["Quantum Algorithms","Quantum Complexity Theory", "Quantum Error Correction","Quantum Information Theory"],
