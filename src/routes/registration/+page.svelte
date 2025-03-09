@@ -12,6 +12,7 @@
     let confirm_password = $state('');
     let description = $state('');
     let profile_img = $state('');
+    let selectedTopics = $state([]);
 
     let currentStage = $state(1);
   
@@ -70,14 +71,14 @@
         return true;
         }
       else if (currentStage == 2){
-        // if (!username || username.trim() === "") {
-        //   alert("Please enter a username");
-        //   return false;
-        // }
-        // if (!username_validation) {
-        //   alert("Please check the username")
-        //   return false;
-        // }
+        if (!username || username.trim() === "") {
+          alert("Please enter a username");
+          return false;
+        }
+        if (!username_validation) {
+          alert("Please check the username")
+          return false;
+        }
         if (!password || password.trim() === "") {
           alert("Please enter a password");
           return false;
@@ -267,57 +268,572 @@
 
     import Tree from '../../lib/Tree.svelte';
     
+    // topic selection
+    function handleTopicOperation(event) {
+        const { topic, operation } = event.detail;
+        
+        if (operation === 'add') {
+            if (!selectedTopics.some(t => t.name === topic.name)) {
+                // check if reached max
+                if (selectedTopics.length >= 5) {
+                    console.log('Maximum 5 topics allowed');
+                    return;
+                }
+                selectedTopics = [...selectedTopics, topic];
+                console.log('Added topic:', topic.name);
+            }
+        } else if (operation === 'remove') {
+            selectedTopics = selectedTopics.filter(t => t.name !== topic.name);
+            console.log('Removed topic:', topic.name);
+        }
+    }
+
+    function removeTopic(topic) {
+        selectedTopics = selectedTopics.filter(t => t.name !== topic.name);
+        console.log('Removed topic:', topic.name);
+    }
+    
+
     // tree data
     const treeData = {
-      "name": "Theoretical Computer Science",
+      "name": "Computer Science",
       "subfields": [
         {
-          "name": "Algorithms",
+          "name": "Theoretical Computer Science",
           "subfields": [
-            { "name": "Graph Algorithms", "subfields":[] },
-            { "name": "Randomized Algorithms", "subfields":[] },
-            { "name": "Approximation Algorithms", "subfields":[] },
-            { "name": "Parallel Algorithms", "subfields":[] }
+            {
+              "name": "Algorithms",
+              "subfields": [
+                { "name": "Graph Algorithms", "subfields": [] },
+                { "name": "Randomized Algorithms", "subfields": [] },
+                { "name": "Approximation Algorithms", "subfields": [] },
+                { "name": "Parallel Algorithms", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Formal Languages",
+              "subfields": [
+                { "name": "Regular Languages and Finite Automata", "subfields":[] },
+                { "name": "Context-Free Languages and Grammars", "subfields":[] },
+                { "name": "Context-Sensitive Languages", "subfields":[] },
+                { "name": "Parsing and Syntax Analysis", "subfields":[] }
+              ]
+            },
+            {
+              "name": "Cryptography (Theoretical)",
+              "subfields": [
+                { "name": "Public-Key Cryptography", "subfields":[] },
+                { "name": "Zero-Knowledge Proofs", "subfields":[] },
+                { "name": "Lattice-Based Cryptography", "subfields":[] },
+                { "name": "Provable Security", "subfields":[] }
+              ]
+            },
+            {
+              "name": "Quantum Computing Theory",
+              "subfields": [
+                { "name": "Quantum Algorithms", "subfields": [] },
+                { "name": "Quantum Complexity Theory", "subfields": [] },
+                { "name": "Quantum Error Correction", "subfields": [] },
+                { "name": "Quantum Information Theory", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Automata Theory",
+              "subfields": [
+                { "name": "Finite Automata", "subfields": [] },
+                { "name": "Pushdown Automata", "subfields": [] },
+                { "name": "Turing Machines", "subfields": [] },
+                { "name": "Cellular Automata", "subfields": [] }
+              ]
+            }
           ]
         },
         {
-          "name": "Formal Languages",
+        "name": "Computer Systems & Architecture",
+        "subfields": [
+          {
+            "name": "Operating Systems",
+            "subfields": [
+              {
+                "name": "Kernel Types",
+                "subfields": [
+                  { "name": "Monolithic", "subfields": [] },
+                  { "name": "Microkernel", "subfields": [] },
+                  { "name": "Hybrid", "subfields": [] }
+                ]
+              },
+              {
+                "name": "Memory Management",
+                "subfields": [
+                  { "name": "Paging", "subfields": [] },
+                  { "name": "Segmentation", "subfields": [] },
+                  { "name": "Garbage Collection", "subfields": [] }
+                ]
+              },
+              {
+                "name": "Process Management",
+                "subfields": [
+                  { "name": "Scheduling Algorithms", "subfields": [] },
+                  { "name": "Concurrency Control", "subfields": [] },
+                  { "name": "Interprocess Communication", "subfields": [] }
+                ]
+              },
+              {
+                "name": "File Systems",
+                "subfields": [
+                  { "name": "FAT", "subfields": [] },
+                  { "name": "NTFS", "subfields": [] },
+                  { "name": "Ext4", "subfields": [] }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Distributed Systems",
+            "subfields": [
+              {
+                "name": "Consensus Algorithms",
+                "subfields": [
+                  { "name": "Raft", "subfields": [] },
+                  { "name": "Paxos", "subfields": [] },
+                  { "name": "Viewstamped Replication", "subfields": [] }
+                ]
+              },
+              {
+                "name": "Fault Tolerance",
+                "subfields": [
+                  { "name": "Replication Strategies", "subfields": [] },
+                  { "name": "Failure Detection", "subfields": [] },
+                  { "name": "Checkpointing", "subfields": [] }
+                ]
+              },
+              {
+                "name": "Distributed File Systems",
+                "subfields": [
+                  { "name": "Hadoop DFS", "subfields": [] },
+                  { "name": "Google File System", "subfields": [] },
+                  { "name": "Ceph", "subfields": [] }
+                ]
+              },
+              {
+                "name": "Peer-to-Peer Networks",
+                "subfields": [
+                  { "name": "BitTorrent", "subfields": [] },
+                  { "name": "Gnutella", "subfields": [] },
+                  { "name": "Kademlia", "subfields": [] }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Computer Hardware/Architectures",
+            "subfields": [
+              {
+                "name": "Instruction Set Architectures (ISA)",
+                "subfields": [
+                  { "name": "x86", "subfields": [] },
+                  { "name": "ARM", "subfields": [] },
+                  { "name": "RISC-V", "subfields": [] }
+                ]
+              },
+              {
+                "name": "Cache Memory Hierarchies",
+                "subfields": [
+                  { "name": "Direct-Mapped", "subfields": [] },
+                  { "name": "Associative", "subfields": [] },
+                  { "name": "Set-Associative", "subfields": [] }
+                ]
+              },
+              {
+                "name": "Parallel and Distributed Processing",
+                "subfields": [
+                  { "name": "Flynn's Taxonomy", "subfields": [] },
+                  { "name": "SIMD Architectures", "subfields": [] },
+                  { "name": "MIMD Architectures", "subfields": [] }
+                ]
+              },
+              {
+                "name": "Embedded Systems Design",
+                "subfields": [
+                  { "name": "Real-Time Operating Systems", "subfields": [] },
+                  { "name": "System-on-Chip (SoC)", "subfields": [] },
+                  { "name": "FPGA-based Design", "subfields": [] }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+        {
+          "name": "Artificial Intelligence & Machine Learning",
           "subfields": [
-            { "name": "Regular Languages and Finite Automata", "subfields":[] },
-            { "name": "Context-Free Languages and Grammars", "subfields":[] },
-            { "name": "Context-Sensitive Languages", "subfields":[] },
-            { "name": "Parsing and Syntax Analysis", "subfields":[] }
+            {
+              "name": "Neural Networks",
+              "subfields": [
+                { "name": "Convolutional Neural Networks (CNNs)", "subfields": [] },
+                { "name": "Recurrent Neural Networks (RNNs)", "subfields": [] },
+                { "name": "Generative Adversarial Networks (GANs)", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Natural Language Processing (NLP)",
+              "subfields": [
+                { "name": "Sentiment Analysis", "subfields": [] },
+                { "name": "Machine Translation", "subfields": [] },
+                { "name": "Named Entity Recognition", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Reinforcement Learning",
+              "subfields": [
+                { "name": "Q-Learning", "subfields": []},
+                { "name": "Policy Gradient Methods", "subfields": []},
+                { "name": "Deep Reinforcement Learning", "subfields": []}
+              ]
+            },
+            {
+              "name": "Computer Vision",
+              "subfields": [
+                { "name": "Image Classification", "subfields": []},
+                { "name": "Object Detection", "subfields": []},
+                { "name": "Image Segmentation", "subfields": []}
+              ]
+            },
+            {
+              "name": "Robotics",
+              "subfields": [
+                { "name": "Motion Planning", "subfields": []},
+                { "name": "Robot Perception", "subfields": []},
+                { "name": "Human-Robot Interaction", "subfields": []}
+              ]
+            }
           ]
         },
         {
-            "name": "Cryptography (Theoretical)",
-            "subfields": [
-              { "name": "Public-Key Cryptography", "subfields":[] },
-              { "name": "Zero-Knowledge Proofs", "subfields":[] },
-              { "name": "Lattice-Based Cryptography", "subfields":[] },
-              { "name": "Provable Security", "subfields":[] }
-            ]
+          "name": "Software Engineering",
+          "subfields": [
+            {
+              "name": "Software Design Patterns",
+              "subfields": [
+                { "name": "Creational Patterns", "subfields": [] },
+                { "name": "Structural Patterns", "subfields": [] },
+                { "name": "Behavioral Patterns", "subfields": [] }
+              ]
+            },
+            {
+              "name": "DevOps",
+              "subfields": [
+                { "name": "Continuous Integration", "subfields": [] },
+                { "name": "Continuous Deployment", "subfields": [] },
+                { "name": "Infrastructure as Code", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Agile Methodology",
+              "subfields": [
+                { "name": "Scrum", "subfields": [] },
+                { "name": "Kanban", "subfields": [] },
+                { "name": "Extreme Programming", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Quality Assurance",
+              "subfields": [
+                { "name": "Static Analysis", "subfields": [] },
+                { "name": "Performance Testing", "subfields": [] },
+                { "name": "Security Testing", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Software Testing",
+              "subfields": [
+                { "name": "Unit Testing", "subfields": [] },
+                { "name": "Integration Testing", "subfields": [] },
+                { "name": "System Testing", "subfields": [] }
+              ]
+            }
+          ]
         },
         {
-            "name": "Quantum Computing Theory",
-            "subfields": [
-              { "name": "Quantum Algorithms", "subfields":[] },
-              { "name": "Quantum Complexity Theory", "subfields":[] },
-              { "name": "Quantum Error Correction", "subfields":[] },
-              { "name": "Quantum Information Theory", "subfields":[] }
-            ]
+          "name": "Data Science & Databases",
+          "subfields": [
+            {
+              "name": "Database Systems",
+              "subfields": [
+                { "name": "Relational Databases", "subfields": [] },
+                { "name": "NoSQL Databases", "subfields": [] },
+                { "name": "Distributed Databases", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Big Data Analytics",
+              "subfields": [
+                { "name": "MapReduce & Spark", "subfields": [] },
+                { "name": "Data Warehousing", "subfields": [] },
+                { "name": "Real-Time Analytics", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Data Mining",
+              "subfields": [
+                { "name": "Clustering", "subfields": [] },
+                { "name": "Classification", "subfields": [] },
+                { "name": "Anomaly Detection", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Information Retrieval",
+              "subfields": [
+                { "name": "Search Engine Algorithms", "subfields": [] },
+                { "name": "Text Mining", "subfields": [] },
+                { "name": "Relevance Ranking", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Data Visualization",
+              "subfields": [
+                { "name": "Interactive Visualization", "subfields": [] },
+                { "name": "Statistical Graphics", "subfields": [] },
+                { "name": "Geospatial Visualization", "subfields": [] }
+              ]
+            }
+          ]
         },
         {
-            "name": "Automata Theory",
-            "subfields": [
-              { "name": "Finite Automata", "subfields":[] },
-              { "name": "Pushdown Automata", "subfields":[] },
-              { "name": "Turing Machines", "subfields":[] },
-              { "name": "Cellular Automata", "subfields":[] }
-            ]
+          "name": "Networking & Communications",
+          "subfields": [
+            {
+              "name": "Internet Protocols (TCP/IP)",
+              "subfields": [
+                { "name": "Routing Protocols", "subfields": [] },
+                { "name": "Transport Protocols", "subfields": [] },
+                { "name": "Application Layer Protocols", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Cloud Computing",
+              "subfields": [
+                { "name": "Infrastructure as a Service (IaaS)", "subfields": [] },
+                { "name": "Platform as a Service (PaaS)", "subfields": [] },
+                { "name": "Software as a Service (SaaS)", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Wireless Networks",
+              "subfields": [
+                { "name": "WiFi", "subfields": [] },
+                { "name": "Cellular Networks", "subfields": [] },
+                { "name": "Ad Hoc Networks", "subfields": [] }
+              ]
+            },
+            {
+              "name": "IoT Systems",
+              "subfields": [
+                { "name": "Edge Computing", "subfields": [] },
+                { "name": "Sensor Networks", "subfields": [] },
+                { "name": "IoT Protocols", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Network Security",
+              "subfields": [
+                { "name": "Encryption Techniques", "subfields": [] },
+                { "name": "Intrusion Detection Systems", "subfields": [] },
+                { "name": "Firewall Technologies", "subfields": [] }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Cybersecurity & Privacy",
+          "subfields": [
+            {
+              "name": "Applied Cryptography",
+              "subfields": [
+                { "name": "Symmetric Cryptography", "subfields": [] },
+                { "name": "Asymmetric Cryptography", "subfields": [] },
+                { "name": "Cryptographic Hash Functions", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Ethical Hacking",
+              "subfields": [
+                { "name": "Penetration Testing", "subfields": [] },
+                { "name": "Vulnerability Assessment", "subfields": [] },
+                { "name": "Social Engineering", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Digital Forensics",
+              "subfields": [
+                { "name": "Computer Forensics", "subfields": [] },
+                { "name": "Network Forensics", "subfields": [] },
+                { "name": "Mobile Device Forensics", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Blockchain Security",
+              "subfields": [
+                { "name": "Smart Contract Auditing", "subfields": [] },
+                { "name": "Consensus Mechanism Security", "subfields": [] },
+                { "name": "Cryptocurrency Security", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Privacy Engineering",
+              "subfields": [
+                { "name": "Data Anonymization", "subfields": [] },
+                { "name": "Access Control Mechanisms", "subfields": [] },
+                { "name": "Privacy by Design", "subfields": [] }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Human-Computer Interaction (HCI)",
+          "subfields": [
+            {
+              "name": "UX/UI Design",
+              "subfields": [
+                { "name": "Interaction Design", "subfields": [] },
+                { "name": "Visual Design", "subfields": [] },
+                { "name": "Information Architecture", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Accessibility",
+              "subfields": [
+                { "name": "Screen Readers", "subfields": [] },
+                { "name": "Keyboard Navigation", "subfields": [] },
+                { "name": "Assistive Technologies", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Virtual Reality (VR)",
+              "subfields": [
+                { "name": "Immersive Environment Design", "subfields": [] },
+                { "name": "VR Interaction Techniques", "subfields": [] },
+                { "name": "Motion Tracking", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Usability Testing",
+              "subfields": [
+                { "name": "User Interviews & Surveys", "subfields": [] },
+                { "name": "A/B Testing", "subfields": [] },
+                { "name": "Heuristic Evaluation", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Augmented Reality (AR)",
+              "subfields": [
+                { "name": "Marker-Based AR", "subfields": [] },
+                { "name": "Markerless AR", "subfields": [] },
+                { "name": "Spatial Mapping", "subfields": [] }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Computer Graphics & Visualization",
+          "subfields": [
+            {
+              "name": "3D Graphics Rendering",
+              "subfields": [
+                { "name": "Ray Tracing", "subfields": [] },
+                { "name": "Rasterization", "subfields": [] },
+                { "name": "Physically Based Rendering", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Animation",
+              "subfields": [
+                { "name": "Keyframe Animation", "subfields": [] },
+                { "name": "Procedural Animation", "subfields": [] },
+                { "name": "Motion Capture", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Scientific Visualization",
+              "subfields": [
+                { "name": "Volume Rendering", "subfields": [] },
+                { "name": "Data Mapping", "subfields": [] },
+                { "name": "Simulation Visualization", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Game Engine Development",
+              "subfields": [
+                { "name": "Real-Time Rendering", "subfields": [] },
+                { "name": "Physics Simulation", "subfields": [] },
+                { "name": "Scripting and AI Integration", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Geometric Modeling",
+              "subfields": [
+                { "name": "Mesh Generation", "subfields": [] },
+                { "name": "Surface Reconstruction", "subfields": [] },
+                { "name": "Parametric Modeling", "subfields": [] }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Programming Languages & Compilers",
+          "subfields": [
+            {
+              "name": "Programming Language Theory",
+              "subfields": [
+                { "name": "Operational Semantics", "subfields": [] },
+                { "name": "Denotational Semantics", "subfields": [] },
+                { "name": "Axiomatic Semantics", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Compiler Design",
+              "subfields": [
+                { "name": "Lexical Analysis", "subfields": [] },
+                { "name": "Parsing Techniques", "subfields": [] },
+                { "name": "Code Optimization", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Type Systems",
+              "subfields": [
+                { "name": "Static Typing", "subfields": [] },
+                { "name": "Dynamic Typing", "subfields": [] },
+                { "name": "Type Inference", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Concurrency Models",
+              "subfields": [
+                { "name": "Thread-based Concurrency", "subfields": [] },
+                { "name": "Message Passing", "subfields": [] },
+                { "name": "Actor Model", "subfields": [] }
+              ]
+            },
+            {
+              "name": "Functional Programming",
+              "subfields": [
+                { "name": "Immutable Data Structures", "subfields": [] },
+                { "name": "Higher-Order Functions", "subfields": [] },
+                { "name": "Lazy Evaluation", "subfields": [] }
+              ]
+            }
+          ]
         }
       ]
     };
+
+    let selectedNode = null;
+    
+    function handleSelect(event) {
+      selectedNode = event.detail;
+      console.log("Selected tag:", selectedNode.name);
+    }
+
 </script>
   
   <div id="registration">
@@ -369,15 +885,15 @@
           <h2>Step 2: Account Setup</h2>
           <form>
             <div id="username">
-              <!-- {#if username_validation} -->
+              {#if username_validation}
                 <input id="username_in" class="element" type="text" bind:value={username} placeholder="Username" readonly/>
-                <!-- <button id="valid_username" type="button" onclick={valid_username}>Change</button> -->
-                <!-- <span id="username_message" style="color:green;">Valid Username</span> -->
-              <!-- {:else}
+                <button id="valid_username" type="button" onclick={valid_username}>Change</button>
+                <span id="username_message" style="color:green;">Valid Username</span>
+              {:else}
                 <input id="username_in" class="element" type="text" bind:value={username} placeholder="Username" />
                 <button id="valid_username" type="button" onclick={valid_username}>CHECK</button>
                 <span id="username_message" style="color:red;">Invalid Username</span>
-              {/if} -->
+              {/if}
             </div>
             <div id="password" type= "text">
                 <input class="element" name="password" id="password_in" type="password" placeholder="Password" bind:value={password} onkeydown={pw_length_check} onkeyup={(pw_match_check)} />
@@ -397,12 +913,38 @@
         {#if currentStage === 3}
           <h2>Step 3: Selecting Tags</h2>
           <form>
-            <div class="tree-section">
-              <Tree data={treeData} />
+            <div class="tag-selection-container">
+              <div class="tree-container">
+                <h3>Topics</h3>
+                <Tree 
+                  data={treeData} 
+                  {selectedTopics}
+                  on:topicOperation={handleTopicOperation} 
+                />
+              </div>
+              
+              <div class="selected-tags-container">
+                <h3>Selected Topics ({selectedTopics.length})</h3>
+                {#if selectedTopics.length === 0}
+                  <p class="empty-selection">No topics selected. Click the "+" button next to a topic to add it. You can choose up to a maximum of 5 topics.</p>
+                {:else}
+                  <div class="selected-tags-list">
+                    {#each selectedTopics as topic}
+                      <div class="selected-tag">
+                        <span>{topic.name}</span>
+                        <button type="button" class="remove-btn" onclick={() => removeTopic(topic)}>×</button>
+                      </div>
+                    {/each}
+                  </div>
+                {/if}
+              </div>
             </div>
+            
             <div class="nav-buttons">
               <button type="button" onclick={previousStage}>Back</button>
-              <button type="button" onclick={finalStage}>Submit</button>
+              <button type="button" class="submit-btn" onclick={finalStage} disabled={selectedTopics.length === 0}>
+                Submit
+              </button>
             </div>
           </form>
         {/if}
@@ -422,31 +964,6 @@
       box-sizing: border-box;
       background-color: white;
       cursor: pointer;
-    }
-
-    #tags {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
-
-    .tag_btn {
-      padding: 12px 20px;
-      background-color: grey;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: bold;
-      transition: background-color 0.3s ease, transform 0.1s ease;
-    }
-
-    .tag_btn:hover {
-      background-color: #2980b9;
-      transform: scale(1.05);
     }
 
     #registration {
@@ -593,46 +1110,105 @@
 
     /* tags */
 
-    .node-wrapper {
-      width: 100%;
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .tag-selection-container {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+      min-height: 400px;
+      color: black;
     }
     
-    .node {
+    .tree-container {
+      flex: 1;
+      border: 1px solid #e8e8e8;
+      border-radius: 6px;
+      padding: 15px;
+      background-color: #fafafa;
+      min-height: 400px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    
+    .selected-tags-container {
+      flex: 1;
+      border: 1px solid #e8e8e8;
+      border-radius: 6px;
+      padding: 15px;
+      background-color: #fafafa;
+      min-height: 400px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    
+    .selected-tags-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .selected-tag {
       display: flex;
       align-items: center;
-      cursor: pointer;
-      padding: 5px;
-      border-radius: 4px;
-      transition: all 0.2s;
-    }
-    
-    .node:hover {
-      background-color: #f0f0f0;
-    }
-    
-    .node.selected {
       background-color: #e6f7ff;
-      border-left: 3px solid #1890ff;
-      padding-left: 2px;
+      padding: 6px 12px;
+      border-radius: 30px;
+      font-size: 14px;
+      border: 1px solid #91caff;
     }
     
-    .has-children {
-      font-weight: 500;
+    .empty-selection {
+      color: #888;
+      font-style: italic;
     }
     
-    .node-icon {
-      width: 20px;
-      color: #555;
+    .remove-btn {
+      background: none;
+      border: none;
+      color: #ff4d4f;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      margin: -5px -5px -5px 5px;
+      padding: 0 5px;
+      height: 24px;
+      width: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
     }
     
-    .node-name {
-      margin-left: 5px;
+    .remove-btn:hover {
+      background-color: rgba(255, 77, 79, 0.1);
     }
     
-    .children {
-      margin-left: 10px;
-      border-left: 1px solid #ddd;
-      padding-left: 10px;
+    .submit-btn {
+      background-color: #52c41a;
     }
+    
+    .submit-btn:hover {
+      background-color: #389e0d;
+    }
+    
+    @media (min-width: 768px) {
+      .tag-selection-container {
+        flex-direction: row;
+      }
+      
+      .tree-container {
+        width: 60%;
+      }
+      
+      .selected-tags-container {
+        width: 40%;
+      }
+    }
+
 
   </style>
