@@ -9,7 +9,7 @@
     };
     
     // selected topics array passed from parent
-    export let selectedTopics = [];
+    export let selectedTags = [];
 
     let expandedNodes = new Set();
     
@@ -33,7 +33,7 @@
       node={data}
       level={0}
       {expandedNodes}
-      {selectedTopics}
+      {selectedTags}
       on:topicOperation={handleTopicOperation}
       on:expandUpdate={handleExpandUpdate}
     />

@@ -12,7 +12,7 @@
     let confirm_password = $state('');
     let description = $state('');
     let profile_img = $state('');
-    let selectedTopics = $state([]);
+    let selectedTags = $state([]);
 
     let currentStage = $state(1);
   
@@ -273,23 +273,23 @@
         const { topic, operation } = event.detail;
         
         if (operation === 'add') {
-            if (!selectedTopics.some(t => t.name === topic.name)) {
+            if (!selectedTags.some(t => t.name === topic.name)) {
                 // check if reached max
-                if (selectedTopics.length >= 5) {
+                if (selectedTags.length >= 5) {
                     console.log('Maximum 5 topics allowed');
                     return;
                 }
-                selectedTopics = [...selectedTopics, topic];
+                selectedTags = [...selectedTags, topic];
                 console.log('Added topic:', topic.name);
             }
         } else if (operation === 'remove') {
-            selectedTopics = selectedTopics.filter(t => t.name !== topic.name);
+          selectedTags = selectedTags.filter(t => t.name !== topic.name);
             console.log('Removed topic:', topic.name);
         }
     }
 
     function removeTopic(topic) {
-        selectedTopics = selectedTopics.filter(t => t.name !== topic.name);
+      selectedTags = selectedTags.filter(t => t.name !== topic.name);
         console.log('Removed topic:', topic.name);
     }
     
@@ -918,18 +918,18 @@
                 <h3>Topics</h3>
                 <Tree 
                   data={treeData} 
-                  {selectedTopics}
+                  {selectedTags}
                   on:topicOperation={handleTopicOperation} 
                 />
               </div>
               
               <div class="selected-tags-container">
-                <h3>Selected Topics ({selectedTopics.length})</h3>
-                {#if selectedTopics.length === 0}
+                <h3>Selected Topics ({selectedTags.length})</h3>
+                {#if selectedTags.length === 0}
                   <p class="empty-selection">No topics selected. Click the "+" button next to a topic to add it. You can choose up to a maximum of 5 topics.</p>
                 {:else}
                   <div class="selected-tags-list">
-                    {#each selectedTopics as topic}
+                    {#each selectedTags as topic}
                       <div class="selected-tag">
                         <span>{topic.name}</span>
                         <button type="button" class="remove-btn" onclick={() => removeTopic(topic)}>×</button>
@@ -942,7 +942,7 @@
             
             <div class="nav-buttons">
               <button type="button" onclick={previousStage}>Back</button>
-              <button type="button" class="submit-btn" onclick={finalStage} disabled={selectedTopics.length === 0}>
+              <button type="button" class="submit-btn" onclick={finalStage} disabled={selectedTags.length === 0}>
                 Submit
               </button>
             </div>

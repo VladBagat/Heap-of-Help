@@ -5,7 +5,7 @@
   export let node;
   export let level = 0;
   export let expandedNodes = new Set();
-  export let selectedTopics = [];
+  export let selectedTags = [];
   
   const dispatch = createEventDispatcher();
   
@@ -37,7 +37,7 @@
     return node.subfields && node.subfields.length > 0;
   }
   
-  $: isSelected = selectedTopics.some(topic => topic.name === node.name);
+  $: isSelected = selectedTags.some(topic => topic.name === node.name);
   $: isExpanded = expandedNodes.has(node.name);
 </script>
 
@@ -75,7 +75,7 @@
           node={childNode}
           level={level + 1}
           {expandedNodes}
-          {selectedTopics}
+          {selectedTags}
           on:topicOperation
           on:expandUpdate
         />
