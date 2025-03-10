@@ -15,6 +15,8 @@
     let selectedTags = $state([]);
 
     let currentStage = $state(1);
+
+    const regex = new RegExp('^[a-z0-9_-]{3,15}$');
   
     function nextStage() {
       if (validation(currentStage)) {
@@ -24,7 +26,9 @@
 
     function finalStage() {
       if (validation(currentStage)){
+        registration();
         ProfileRedirect();
+        console.log(selectedTags);
       }
     }
 
@@ -114,17 +118,17 @@
     }
 
     function pw_length_check() {
-      if (password.length >= 7) {
-        document.getElementById('pw_length_message').style.color = 'green';
-        document.getElementById('pw_length_message').innerHTML = 'Good';
-      } else {
+      if (password.length < 8) {
         document.getElementById('pw_length_message').style.color = 'red';
         document.getElementById('pw_length_message').innerHTML = 'At least 8 characters';
+      } else {
+        document.getElementById('pw_length_message').style.color = 'green';
+        document.getElementById('pw_length_message').innerHTML = 'Good';
       }
     }
 
 	function pw_match_check() {
-      if (password == confirm_password) {
+      if (password == confirm_password & password != "") {
         document.getElementById('pw_match_message').style.color = 'green';
         document.getElementById('pw_match_message').innerHTML = 'matching';
       } else {
@@ -148,6 +152,14 @@
         console.log(password)
         console.log(confirm_password)
         console.log(description)
+        console.log(selectedTags)
+
+        let tag_list = []
+
+        for (let i = 0; i < selectedTags.length; i++) {
+          tag_list.push(selectedTags[i].name);
+        }
+        console.log(tag_list)
 
         // If pass not valid, user isn't registered
         //let valid = Password_Validation(password, confirm_password)
@@ -165,7 +177,8 @@
               confirm_password: confirm_password, 
               education: education,
               description: description, 
-              profile_img: base64Image};
+              profile_img: base64Image,
+              selectedTags: tag_list};
             console.log(payload);
 
             const res = await fetch('api/registration', {
@@ -237,8 +250,12 @@
 	let username_validation = $state(false);
     async function valid_username() {
       if (username.trim() == "") {
+        alert("Username cannot be empty")
         username_validation = false;
       } else if (username_validation){
+        username_validation = false;
+      } else if (!regex.test(username)) { 
+        alert("Username must be between 3 to 15 characters and only containing letters, numbers and underscore")
         username_validation = false;
       } else {
         const payload = {username: username};
@@ -896,11 +913,11 @@
               {/if}
             </div>
             <div id="password" type= "text">
-                <input class="element" name="password" id="password_in" type="password" placeholder="Password" bind:value={password} onkeydown={pw_length_check} onkeyup={(pw_match_check)} />
+                <input class="element" name="password" id="password_in" type="password" placeholder="Password" bind:value={password} onkeyup={()=>{ pw_length_check(); pw_match_check();}} />
 				        <span id='pw_length_message'></span>
 			      </div>
 			      <div id="password">
-                <input class="element" type="password" name="confirm_password" id="confirm_password" placeholder="Confrim Password" bind:value={confirm_password} onkeyup={pw_match_check} /> 
+                <input class="element" type="password" name="confirm_password" id="confirm_password" placeholder="Confrim Password" bind:value={confirm_password} onkeyup={()=>{pw_match_check();}} /> 
                 <span id='pw_match_message'></span>
             </div>
             <input class="element" type="file" id="profile-pic" accept="image/*" onchange={handle_profile_img}/>
