@@ -1,14 +1,14 @@
 <script>
   import { slide } from 'svelte/transition';
   import { createEventDispatcher } from 'svelte';
-
+  
   export let node;
   export let level = 0;
   export let expandedNodes = new Set();
   export let selectedTags = [];
-  
+    
   const dispatch = createEventDispatcher();
-  
+    
   function toggleExpand() {
     if (hasChildren(node)) {
       if (expandedNodes.has(node.name)) {
@@ -19,7 +19,7 @@
       dispatch('expandUpdate', expandedNodes);
     }
   }
-  
+    
   function addTopic() {
     // create a shallow copy of the node to avoid reference issues
     const topicToAdd = {
@@ -28,15 +28,18 @@
     };
     dispatch('topicOperation', { topic: topicToAdd, operation: 'add' });
   }
-  
+    
   function removeTopic() {
     dispatch('topicOperation', { topic: node, operation: 'remove' });
   }
-  
+    
   function hasChildren(node) {
     return node.subfields && node.subfields.length > 0;
   }
-  
+
+  // Check if the current node is "Computer Science" (the root node)
+  $: isComputerScience = node.name === "Computer Science";
+    
   $: isSelected = selectedTags.some(topic => topic.name === node.name);
   $: isExpanded = expandedNodes.has(node.name);
 </script>
@@ -54,20 +57,21 @@
       </span>
       <span class="node-name">{node.name}</span>
     </div>
-    
+        
     <div class="node-actions">
       {#if isSelected}
         <button type="button" class="action-btn remove-btn" on:click={removeTopic} title="Remove this topic">
           −
         </button>
-      {:else}
+      {:else if !isComputerScience}
+        <!-- Only show the add button if it's not Computer Science -->
         <button type="button" class="action-btn add-btn" on:click={addTopic} title="Add this topic">
           +
         </button>
       {/if}
     </div>
   </div>
-  
+    
   {#if isExpanded && hasChildren(node)}
     <div class="children" transition:slide={{ duration: 200 }}>
       {#each node.subfields as childNode}
