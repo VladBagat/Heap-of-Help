@@ -41,13 +41,13 @@
       name: "Emily Davis",
       description:
         "A software engineer focusing on front-end development with a love for UX/UI design.",
-      tags: ["Python", "Senior", "Sigma"],
+      tags: ["Python", "Senior", "Sigma","Python", "Senior", "Sigma","Python", "Senior", "Sigma","Python", "Senior", "Sigma"],
     },
     {
       name: "Chris Lee",
       description:
-        "A product manager with a background in business analysis and project leadership.",
-      tags: ["Python", "Senior", "Sigma"],
+        "A product manager with a background in business analysis and project leadership.A passionate graphic designer specializing in digital art and branding.A passionate graphic designer specializing in digital art and branding.A passionate graphic designer specializing in digital art and branding.A passionate graphic designer specializing in digital art and branding.A passionate graphic designer specializing in digital art and branding.A passionate graphic designer specializing in digital art and branding.A passionate graphic designer specializing in digital art and branding.A passionate graphic designer specializing in digital art and branding.",
+      tags: ["Python", "Senior", "Sigma","Python", "Senior"],
     },
     {
       name: "Samantha Green",
@@ -71,7 +71,7 @@
       name: "Alex Johnson",
       description:
         "A data scientist with expertise in machine learning and artificial intelligence.",
-      tags: ["Python", "Senior", "Sigma"],
+      tags: ["Senior"],
     },
     {
       name: "Emily Davis",
@@ -97,9 +97,9 @@
 
   // Default category is recommended
   let category = $state("Recommended Users");
-
+  let userID = 123;
   function handleCardClick(card_id) {
-    if (isMobile) goto(`/profile/${category}`);
+    if (isMobile) goto(`/profile/${userID}`);
     else {
       showModal = true;
       selected_card = card_id;
@@ -146,12 +146,18 @@
               alt="Profile"
             />
           </div>
-          <div class="description">{tile.description}</div>
+          <div class="description"><p class="description-text">{tile.description}</p></div>
           <div class="name">{tile.name}</div>
           <div class="tags-container">
+            {#if tile.tags.length > 3}
+            <div class="tag">{tile.tags[0]}</div>
+            <div class="tag">{tile.tags[1]}</div>
+            <div class="tag">{"..."}</div>
+            {:else}
             {#each tile.tags as tag}
               <div class="tag">{tag}</div>
             {/each}
+            {/if}
           </div>
         </button>
       {/each}
@@ -159,13 +165,15 @@
   </div>
 </div>
 {#if count > 0}
-  <div class="show-more">
-    <button class="show-more-btn" onclick={() => ShowMore()}>
-      {"Show More"}
-    </button>
-  </div>
+<div class="show-more">
+  <button class="show-more-btn" onclick={() => ShowMore()}>
+    {"Show More"}
+  </button>
+</div>
+{:else}
+<p>No more users to show :(</p>
 {/if}
-<Modal bind:showModal>
+<Modal bind:showModal userID={userID}>
   {#snippet header()}
     <h2 class="category">Profile</h2>
   {/snippet}
@@ -243,7 +251,7 @@
   .card {
     color: black;
     width: 100%;
-    height: 250px;
+    height: 300px;
     font-family: "Arial";
     padding: 1rem;
     cursor: pointer;
@@ -257,6 +265,7 @@
     grid-template-rows: repeat(2, 1fr);
     grid-column-gap: 0.2rem;
     grid-row-gap: 0px;
+    overflow: hidden;
   }
   .card:hover {
     box-shadow: 0px 8px 16px 0px hwb(0 0% 100% / 0.1);
@@ -274,27 +283,32 @@
     grid-column: 2;
     grid-row: 1;
     align-self: center;
+    font-size: 28px;
+    font-weight: 600;
   }
   .description {
     grid-column: 1 / span 2;
     grid-row: 2;
     max-width: 400px;
+    max-height: 2.7rem;
     align-content: center;
-    white-space: nowrap;
+    padding: 0 0 30px 0; /*t r b l*/
     overflow: hidden;
+    text-align: left;
     text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;        /* Limit to 3 lines of text */
+    -webkit-box-orient: vertical;
   }
   .modal-description {
-    grid-column: 1 / span 2;
+    grid-column: 1 / span 3;
     grid-row: 2;
-    max-width: 400px;
     text-align: left;
     margin: 0 0 10px 0;
-
     overflow: hidden;
   }
   .tags-container {
-    grid-column: 1 / span 2;
+    grid-column: 1 / span 3;
     grid-row: 3;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
