@@ -60,8 +60,12 @@
           alert("Please enter your education");
           return false;
         }
-        if (age <= 0 || age > 100) {
+        if (age <= 0 || age > 99) {
           alert("Please enter a valid age");
+          return false;
+        }
+        if(age <= 12){
+          alert("You must be older than 13 to join")
           return false;
         }
         if (language.trim() === "") {
@@ -972,23 +976,12 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
 
-    #selection {
-      padding: 10px;
-      border: 1px solid #aaa;
-      font-size: 15px;
-      border-radius: 5px;
-      width: 100%;
-      box-sizing: border-box;
-      background-color: white;
-      cursor: pointer;
-    }
-
     #registration {
       display: flex;
       justify-content: center;
       align-items: flex-start;
       background-color: #f8f8f8;
-      height: 100vh;
+      height: 90vh;
       padding: 20px;
     }
 
@@ -996,26 +989,30 @@
       display: flex;
       flex-direction: row;
       align-items: flex-start;
-      gap: 30px;
-      width: 80%;
+      position: relative;
+      gap: 40px;
+      width: 75%;
       max-width: 1200px;
       margin: auto;
       padding: 20px;
-      position: relative;
+    }
+  
+    /* selecting student/tutor box  */
+    #selection {
+      cursor: pointer;
     }
 
     #sidebar {
-      width: 250px;
-      flex-shrink: 0;
-      background-color: #e0e0e0;
-      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      width: 230px;
       padding: 20px;
+      background-color: #ececec;
+      color: black;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
       border: 1px solid #ccc;
-      font-family: 'Poppins', sans-serif;
-      border-radius: 10px;
+      border-radius: 15px;
       height: auto;
       align-self: flex-start;
-      color: black;
+      font-family: 'Poppins', sans-serif;
     }
 
     #form-content {
@@ -1046,11 +1043,11 @@
     }
 
     #password {
-		display: flex;
-      	align-items: center;
-      	gap: 20px;
-      	flex-wrap: wrap;
-      	margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 10px;
     }
   
     form {
@@ -1085,7 +1082,6 @@
       background-color: #d3d3d3;
       color: #333;
       border: none;
-      border-radius: 5px;
       cursor: pointer;
       font-weight: bold;
       transition: background-color 0.3s ease, transform 0.1s ease;
@@ -1097,7 +1093,6 @@
     }
 
     /*for sidebar */
-
     .progress-item {
       padding: 10px 0;
       display: flex;
@@ -1111,38 +1106,35 @@
       background-color: #ccc;
       color: white;
       border-radius: 50%;
-      text-align: center;
-      line-height: 25px;
       margin-right: 10px;
       font-weight: bold;
     }
 
     .current .progress-number {
-      background-color: blue;
+      background-color: rgb(46, 108, 174);
     }
 
     .completed .progress-number {
-      background-color: green;
+      background-color: rgb(76, 135, 76);
     }
 
     /* tags */
-
     .nav-buttons {
       display: flex;
       justify-content: space-between;
-      margin-top: 20px;
+      margin-top: 15px;
     }
 
     .tag-selection-container {
       display: flex;
+      flex-direction: column; /* Change to column to stack vertically */
       gap: 20px;
       margin-bottom: 20px;
-      min-height: 400px;
       color: black;
     }
-    
+
     .tree-container {
-      flex: 1;
+      width: 95%;
       border: 1px solid #e8e8e8;
       border-radius: 6px;
       padding: 15px;
@@ -1151,48 +1143,45 @@
       max-height: 500px;
       overflow-y: auto;
     }
-    
+
     .selected-tags-container {
-      flex: 1;
+      width: 95%;
       border: 1px solid #e8e8e8;
       border-radius: 6px;
       padding: 15px;
       background-color: #fafafa;
-      min-height: 400px;
-      max-height: 500px;
+      min-height: 200px;
       overflow-y: auto;
     }
-    
+
     .selected-tags-list {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
     }
-    
+
     .selected-tag {
       display: flex;
       align-items: center;
       background-color: #e6f7ff;
-      padding: 6px 12px;
+      padding: 7px 12px;
       border-radius: 30px;
-      font-size: 14px;
+      font-size: 15px;
       border: 1px solid #91caff;
     }
-    
+
     .empty-selection {
-      color: #888;
+      color: grey;
       font-style: italic;
     }
-    
+
     .remove-btn {
       background: none;
-      border: none;
-      color: #ff4d4f;
+      color: red;
       cursor: pointer;
-      font-size: 18px;
+      font-size: 19px;
       font-weight: bold;
       margin: -5px -5px -5px 5px;
-      padding: 0 5px;
       height: 24px;
       width: 24px;
       display: flex;
@@ -1200,32 +1189,17 @@
       justify-content: center;
       border-radius: 50%;
     }
-    
+
     .remove-btn:hover {
       background-color: rgba(255, 77, 79, 0.1);
     }
-    
+
     .submit-btn {
-      background-color: #52c41a;
-    }
-    
-    .submit-btn:hover {
-      background-color: #389e0d;
-    }
-    
-    @media (min-width: 768px) {
-      .tag-selection-container {
-        flex-direction: row;
-      }
-      
-      .tree-container {
-        width: 60%;
-      }
-      
-      .selected-tags-container {
-        width: 40%;
-      }
+      background-color: #95dc71;
     }
 
+    .submit-btn:hover {
+      background-color: #65ab45;
+    }
 
   </style>
