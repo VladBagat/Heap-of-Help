@@ -44,19 +44,19 @@
           alert("Please select if you are a Tutor or Student");
           return false;
         }
-        if (forename == "") {
-          alert("Please enter your forename");
+        if (forename == "" || forename.match(/\d/)) {
+          alert("Please enter a valid forename");
           return false;
         }
-        if (surname.trim() === "") {
-          alert("Please enter your surname");
+        if (surname.trim() == "" || surname.match(/\d/)) {
+          alert("Please enter a valid surname");
           return false;
         }
-        if (email.trim() === "") {
+        if (email.trim() == "") {
           alert("Please enter your email");
           return false;
         }
-        if (education.trim() === "") {
+        if (education.trim() == "") {
           alert("Please enter your education");
           return false;
         }
@@ -68,18 +68,18 @@
           alert("You must be older than 13 to join")
           return false;
         }
-        if (language.trim() === "") {
-          alert("Please enter your language");
+        if (language.trim() == "" || language.match(/\d/)) {
+          alert("Please enter a valid language");
           return false;
         }
-        if (timezone.trim() === "") {
+        if (timezone.trim() == "") {
           alert("Please enter your time zone");
           return false;
         }
         return true;
         }
       else if (currentStage == 2){
-        if (!username || username.trim() === "") {
+        if (!username || username.trim() == "") {
           alert("Please enter a username");
           return false;
         }
@@ -87,7 +87,7 @@
           alert("Please check the username")
           return false;
         }
-        if (!password || password.trim() === "") {
+        if (!password || password.trim() == "") {
           alert("Please enter a password");
           return false;
         }
@@ -95,15 +95,15 @@
           alert("Password must be at least 8 characters");
           return false;
         }
-        if (!confirm_password || confirm_password.trim() === "") {
+        if (!confirm_password || confirm_password.trim() == "") {
           alert("Please confirm your password");
           return false;
         }
-        if (password !== confirm_password) {
+        if (password != confirm_password) {
           alert("Passwords do not match");
           return false;
         }
-        if (!description || description.trim() === "") {
+        if (!description || description.trim() == "") {
           alert("Please enter a short description");
           return false;
         }
