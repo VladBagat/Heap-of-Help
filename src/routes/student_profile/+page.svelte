@@ -1,6 +1,5 @@
-<script lang="js">
+<script>
     import { onMount } from "svelte";
-    import { goto } from '$app/navigation';
 
     let isEditing = false;
 
@@ -12,13 +11,13 @@
         description:""
     }
 
-    let tutorProfile = {};
+    let tuteeProfile = {};
     let errorMessage = "";
     let loading = true;
 
-    async function fetchTutorProfile() {
+    async function fetchTuteeProfile() {
         try {
-            const res = await fetch(`api/get_tutor_profile`, {
+            const res = await fetch(`api/get_tutee_profile`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -26,7 +25,7 @@
             console.log(json);
 
             if (json.success) {
-                tutorProfile = json.data;
+                tuteeProfile = json.data; //
             } else {
                 errorMessage = json.message;
             }
@@ -59,6 +58,13 @@
             isowner = false;
         }
     }
+    function RegisterRedirect(){
+        goto('/register');
+    }
+
+    function IndexRedirect(){
+        goto('/')
+    }
 
     function editProfile() {
         isEditing = !isEditing;
@@ -71,10 +77,18 @@
     }
 
     onMount(() => {
-        fetchTutorProfile();
+        fetchTuteeProfile();
     });
 
+    function handleChat() {
+        console.log("Chat button clicked");
+    }
+
+    function handleEdit() {
+        console.log("Edit button clicked");
+    }
 </script>
+
 <div class="profile-page">
     <div class="profile-container">
         {#if isEditing}
@@ -96,9 +110,9 @@
             <button class="btn save" onclick={saveChanges}> Save </button>
         {:else}
             <div class="profile-header">
-                <img src="data:image/png;base64, {tutorProfile.profile_img}" alt="Profile Image" class="profile-image" id="profileImage">  
+                <img src="data:image/png;base64, {tuteeProfile.profile_img}" alt="Profile Image" class="profile-image" id="profileImage">  
                 <div class="user-info">
-                    <h2 class="username">{tutorProfile.first_name} {tutorProfile.last_name}</h2>
+                    <h2 class="username">{tuteeProfile.first_name} {tuteeProfile.last_name}</h2>
                     <p class="role">Product Designer</p>
                     <p class="location">📍 New York, NY</p>
                     <p class="rating"><strong>8.6</strong> ⭐⭐⭐⭐☆</p>
@@ -107,7 +121,7 @@
                     </div>
                     <div class="content">
                         <h3>Description</h3>
-                        <p>{tutorProfile.description}</p>
+                        <p>{tuteeProfile.description}</p>
                     </div>
                     <div class="buttons">
                         {#if isowner}
@@ -250,5 +264,5 @@
     border-radius: 5px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
-    
+   
 </style>

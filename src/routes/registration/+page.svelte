@@ -222,10 +222,6 @@
         goto('/login');
     }
 
-    function IndexRedirect(){
-        goto('/profile')
-    }
-
     function submitForm() {
       alert('Submit!');
     }

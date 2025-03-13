@@ -1,0 +1,316 @@
+<script>
+  import Modal from "../../lib/modal.svelte";
+  import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
+
+  let isMobile = $state(false);
+
+  // Media query check with proper cleanup
+  onMount(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const updateMobile = () => (isMobile = mediaQuery.matches);
+
+    updateMobile();
+    mediaQuery.addEventListener("change", updateMobile);
+
+    return () => mediaQuery.removeEventListener("change", updateMobile);
+  });
+  let showModal = $state(false);
+  let selected_card = $state(0);
+
+  let temp = $state([
+    {
+      name: "Jonanson Smith",
+      description:
+        "A passionate graphic designer specializing in digital art and branding.",
+      tags: ["Senior", "Sigma"],
+    },
+    {
+      name: "Jane Smith",
+      description:
+        "A passionate graphic designer specializing in digital art and branding.A passionate graphic designer specializing in digital art and branding.A passionate graphic designer specializing in digital art and branding.A passionate graphic designer specializing in digital art and branding.A passionate graphic designer specializing in digital art and branding.A passionate graphic designer specializing in digital art and branding.A passionate graphic designer specializing in digital art and branding.A passionate graphic designer specializing in digital art and branding.",
+      tags: ["Python", "Senior", "Sigma"],
+    },
+    {
+      name: "Alex Johnson",
+      description:
+        "A data scientist with expertise in machine learning and artificial intelligence.",
+      tags: ["Python", "Senior", "Sigma"],
+    },
+    {
+      name: "Emily Davis",
+      description:
+        "A software engineer focusing on front-end development with a love for UX/UI design.",
+      tags: ["Python", "Senior", "Sigma"],
+    },
+    {
+      name: "Chris Lee",
+      description:
+        "A product manager with a background in business analysis and project leadership.",
+      tags: ["Python", "Senior", "Sigma"],
+    },
+    {
+      name: "Samantha Green",
+      description:
+        "A creative writer and content strategist with a flair for storytelling.",
+      tags: ["Python", "Senior", "Sigma"],
+    },
+    {
+      name: "Jane Smith",
+      description:
+        "A passionate graphic designer specializing in digital art and branding.",
+      tags: ["Python", "Senior", "Sigma"],
+    },
+    {
+      name: "Jane Smith",
+      description:
+        "A passionate graphic designer specializing in digital art and branding.",
+      tags: ["Python", "Senior", "Sigma"],
+    },
+    {
+      name: "Alex Johnson",
+      description:
+        "A data scientist with expertise in machine learning and artificial intelligence.",
+      tags: ["Python", "Senior", "Sigma"],
+    },
+    {
+      name: "Emily Davis",
+      description:
+        "A software engineer focusing on front-end development with a love for UX/UI design.",
+      tags: ["Python", "Senior", "Sigma"],
+    },
+    {
+      name: "Chris Lee",
+      description:
+        "A product manager with a background in business analysis and project leadership.",
+      tags: ["Python", "Senior", "Sigma"],
+    },
+    {
+      name: "Samantha Green",
+      description:
+        "A creative writer and content strategist with a flair for storytelling.",
+      tags: ["Python", "Senior", "Sigma"],
+    },
+  ]);
+  //Proposed data model
+  //data = [{"name":"John", "profile-img":blob, "image":blob, "description":"some limited description"}, ...]
+
+  // not sure if this is needed
+  let { things } = $props();
+  // Default category is recommended
+  let category = $state("Recommended Users");
+
+  function handleCardClick(card_id) {
+    if (isMobile) goto(`/profile/${category}`);
+    else {
+      showModal = true;
+      selected_card = card_id;
+    }
+  }
+  function handleCategoryChange(event) {
+    category = event.target.value;
+  }
+  // Count is just used to convey the button dissapears when there are no more cards to show
+  // Simulates loading more users atm
+  let count = $state(10);
+  function ShowMore() {
+    let rnd = Math.floor(Math.random()*2) + 1;
+    console.log(rnd);
+    for (let i = 0; i < rnd; i++) {
+      temp = [...temp, temp[0]];
+    }
+    count -= rnd;
+  }
+</script>
+
+<div class="page-container">
+  <h1 class="main-header">Discovery</h1>
+  <div class="search">
+    <h2 class="category">{category}</h2>
+    <div class="sort">
+      <label for="sort">Sort By:</label>
+      <select value={category} onchange={handleCategoryChange}>
+        <option value="Recommended Users" selected>Recommended</option>
+        <option value="Most Popular Users">Most Popular</option>
+        <option value="Closest Users">Closest</option>
+      </select>
+    </div>
+  </div>
+  <div class="main-grid-container">
+    {#key temp}
+      {#each temp as tile, id}
+        <button {id} class="card" onclick={() => handleCardClick(id)}>
+          <div class="card-image">
+            <img
+              src="https://picsum.photos/id/1005/400/300"
+              width="150"
+              height="150"
+              alt="Profile"
+            />
+          </div>
+          <div class="description">{tile.description}</div>
+          <div class="name">{tile.name}</div>
+          <div class="tags-container">
+            {#each tile.tags as tag}
+              <div class="tag">{tag}</div>
+            {/each}
+          </div>
+        </button>
+      {/each}
+    {/key}
+  </div>
+</div>
+{#if count > 0}
+  <div class="show-more">
+    <button class="show-more-btn" onclick={() => ShowMore()}>
+      {"Show More"}
+    </button>
+  </div>
+{/if}
+<Modal bind:showModal>
+  {#snippet header()}
+    <h2 class="category">Profile</h2>
+  {/snippet}
+  <div class="modal-container">
+    <div class="card-image">
+      <img
+        src="https://picsum.photos/id/1005/400/300"
+        width="150"
+        height="150"
+        alt="Profile"
+      />
+    </div>
+    <div class="name">{temp[selected_card].name}</div>
+    <div class="modal-description">{temp[selected_card].description}</div>
+    <div class="tags-container">
+      {#each temp[selected_card].tags as tag}
+        <div class="tag">{tag}</div>
+      {/each}
+    </div>
+  </div>
+</Modal>
+
+<style>
+  .page-container {
+    margin: 0 auto 25px auto;
+    width: 90%;
+  }
+  .main-header {
+    text-align: center;
+    font-size: clamp(1.5rem, 2.5vw, 3rem);
+    font-weight: 600;
+    color: #363434;
+    padding: 10px 7px 0px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ececec;
+    font-family: sans-serif;
+  }
+
+  .category {
+    text-transform: uppercase;
+    text-align: start;
+    font-size: clamp(1rem, 1.7vh, 2rem);
+    font-weight: 600;
+    color: #363434;
+    border-bottom: px solid #ececec;
+  }
+  .search {
+    color: black;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    text-transform: uppercase;
+    text-align: start;
+    font-family: sans-serif;
+    padding: 5px 7px 10px;
+  }
+  .sort {
+    font-size: clamp(0.8rem, 1.5vh, 1.8rem);
+  }
+  .main-grid-container {
+    color: #000;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
+    row-gap: 1.5rem;
+    column-gap: 0.5rem;
+
+    place-content: center;
+    margin-bottom: 10px;
+  }
+  .modal-container {
+    display: grid;
+    flex-direction: column;
+  }
+  .card {
+    color: black;
+    width: 100%;
+    height: 250px;
+    font-family: "Arial";
+    padding: 1rem;
+    cursor: pointer;
+    border: 0px;
+    border-radius: 0.75rem;
+    background: #f7f7f8;
+    box-shadow: 0px 4px 4px 0px rgb(0 0 0 / 20%);
+    place-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 0.2rem;
+    grid-row-gap: 0px;
+  }
+  .card:hover {
+    box-shadow: 0px 8px 16px 0px hwb(0 0% 100% / 0.1);
+    transform: translateY(-2px);
+    transition: all 0.3s ease-in-out;
+  }
+  .card-image {
+    grid-column: 1;
+    grid-row: 1;
+    /* From W3Schools */
+    mask-image: radial-gradient(circle, black 50%, rgba(0, 0, 0, 0) 50%);
+  }
+  .name {
+    color: black;
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+  }
+  .description {
+    grid-column: 1 / span 2;
+    grid-row: 2;
+    max-width: 400px;
+    align-content: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .modal-description {
+    grid-column: 1 / span 2;
+    grid-row: 2;
+    max-width: 400px;
+    text-align: left;
+    margin: 0 0 10px 0;
+
+    overflow: hidden;
+  }
+  .tags-container {
+    grid-column: 1 / span 2;
+    grid-row: 3;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .tag {
+    background-color: #333333;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-transform: capitalize;
+    place-content: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
