@@ -27,28 +27,3 @@
     </div>
     
 </div>
-
-
-<style>
-    .input-wrapper {
-        position: relative;
-    }
-
-    .element {
-        font-size: 1.25vw;
-    }
-
-    #eye-icon {
-        position: absolute;
-        top: 50%;
-        right: 1vw;
-        cursor: pointer;
-    }
-
-    #hidden{
-        width: 0;
-        overflow: hidden;
-        position: fixed;
-        left: 2000px;
-    }
-</style>
