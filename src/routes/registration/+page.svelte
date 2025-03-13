@@ -19,7 +19,7 @@
     const regex = new RegExp('^[a-z0-9_-]{3,15}$');
   
     function nextStage() {
-      if (validation(currentStage)) {
+      if (currentStage < 3) {
         currentStage += 1;
       }
     }
@@ -878,6 +878,7 @@
           <span>Selecting Tags</span>
         </div>
         
+        <h3>Sidebar</h3>
         <p>Current Stage: {currentStage}</p>
         <button class="redirect" onclick={LoginRedirect}>Already on Heap of Help?</button>
       </div>
@@ -1049,6 +1050,70 @@
       flex-wrap: wrap;
       margin-top: 10px;
     }
+    
+    .tag_btn {
+      padding: 12px 20px;
+      background-color: grey;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.1s ease;
+    }
+
+    .tag_btn:hover {
+      background-color: #2980b9;
+      transform: scale(1.05);
+    }
+  
+    #container {
+      display: flex;
+      justify-content: flex-start;
+      gap: 20px;
+      width: 80%;
+      padding: 20px;
+      position: relative;
+    }
+  
+    #sidebar {
+      position: sticky;
+      top: 0;
+      width: 200px;
+      height: 100%;
+      background-color: #e0e0e0;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      border: 1px solid #ccc;
+      font-family: 'Poppins', sans-serif;
+    }
+  
+    #form-content {
+      flex-grow: 1;
+      padding: 20px;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 2px 2px 10px 
+      rgba(0, 0, 0, 0.1);
+    }
+
+    #pass-inp {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+      width: 100%;
+    }
+
+    #pass-inp .element {
+      padding: 11px;
+      border: 1px solid #aaa;
+      font-size: 15px;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
   
     form {
       display: flex;
@@ -1082,6 +1147,7 @@
       background-color: #d3d3d3;
       color: #333;
       border: none;
+      border-radius: 5px;
       cursor: pointer;
       font-weight: bold;
       transition: background-color 0.3s ease, transform 0.1s ease;
