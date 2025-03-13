@@ -2,8 +2,10 @@
     import { onMount } from "svelte";
     import { goto } from '$app/navigation';
 
-    let isEditing = false;
+   
 
+    let isEditing = false;
+    let rating = 5.0;
     let isowner=true;
     let user = {
         name:"",
@@ -75,6 +77,11 @@
     });
 
 </script>
+
+ <svelte:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+</svelte:head>
+
 <div class="profile-page">
     <div class="profile-container">
         {#if isEditing}
@@ -101,7 +108,33 @@
                     <h2 class="username">{tutorProfile.first_name} {tutorProfile.last_name}</h2>
                     <p class="role">Product Designer</p>
                     <p class="location">📍 New York, NY</p>
-                    <p class="rating"><strong>8.6</strong> ⭐⭐⭐⭐☆</p>
+
+                    {#if rating === 0.5}
+                        <img src="/stars/0.5s.jpg" alt="0.5" class="rating">
+                    {:else if rating === 1.0}
+                        <img src="/stars/1s.jpg" alt="1.0" class="rating">
+                    {:else if rating === 1.5}
+                        <img src="/stars/1.5s.jpg" alt="1.5" class="rating">
+                    {:else if rating === 2.0}
+                        <img src="/stars/2s.jpg" alt="2.0" class="rating">
+                    {:else if rating === 2.5}
+                        <img src="/stars/2.5s.jpg" alt="2.5" class="rating">
+                    {:else if rating === 3.0}
+                        <img src="/stars/3s.jpg" alt="3.0" class="rating">
+                    {:else if rating === 3.5}
+                        <img src="/stars/3.5s.jpg" alt="3.5" class="rating">
+                    {:else if rating === 4.0}
+                        <img src="/stars/4.0s.jpg" alt="4.0" class="rating">
+                    {:else if rating === 4.5}
+                        <img src="/stars/4.5s.jpg" alt="4.5" class="rating">
+                    {:else if rating === 5.0}
+                        <img src="/stars/5.0s.jpg" alt="5.0" class="rating">
+
+                    {/if}
+
+
+
+                    
                     <div class="tags">
                         <p>tag 1, tag 2, tag 3</p>
                     </div>

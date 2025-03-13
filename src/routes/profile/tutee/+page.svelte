@@ -95,27 +95,30 @@
             <div class="edit-profile">
                 <h2>Edit Profile</h2>
 
-                <label>Name:</label>
-                <input type="text" bind:value={user.name} />
+                <label>Name:
+                    <input type="text" bind:value={user.name} />
+                </label>
 
-                <label>Location:</label>
-                <input type="text" bind:value={user.location} />
+                <label>Location:
+                    <input type="text" bind:value={user.location} />
+                </label>
 
-                <label>Email:</label>
-                <input type="email" bind:value={user.email} />
+                <label>Email:
+                    <input type="email" bind:value={user.email} />
+                </label>
 
-                <label>Description:</label>
-                <textarea bind:value={user.description}></textarea>
+                <label>Description:
+                    <textarea bind:value={user.description}></textarea>
+                </label>
             </div>
             <button class="btn save" onclick={saveChanges}> Save </button>
         {:else}
             <div class="profile-header">
-                <img src="data:image/png;base64, {tuteeProfile.profile_img}" alt="Profile Image" class="profile-image" id="profileImage">  
+                <img src="data:image/png;base64, {tuteeProfile.profile_img}" alt="" class="profile-image" id="profileImage">  
                 <div class="user-info">
                     <h2 class="username">{tuteeProfile.first_name} {tuteeProfile.last_name}</h2>
                     <p class="role">Product Designer</p>
                     <p class="location">📍 New York, NY</p>
-                    <p class="rating"><strong>8.6</strong> ⭐⭐⭐⭐☆</p>
                     <div class="tags">
                         <p>tag 1, tag 2, tag 3</p>
                     </div>
@@ -164,6 +167,7 @@
     min-height: 100vh; /* Full viewport height */
     background-color: #f8f9fa; /* Light gray background */
     padding: 20px;
+    color: #222
 }
 
 /* Main Container */
@@ -186,16 +190,12 @@
     padding-left: 50px;
 }
 
-.profile-header > .div > h2, p{
-    margin: 5px;
-}
-
 .profile-image {
     width: 200px;  
     height: 200px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #ddd;
+    border: 3px solid #ccc;
 }
 
 /* User Info */
@@ -224,11 +224,14 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out
 }
 
 .btn.primary {
-    background: #007bff;
+    background: #222;
     color: white;
+    border: 2px solid #444
 }
 
 .btn.secondary {
@@ -238,9 +241,11 @@
 }
 
 .btn.danger {
-    background: red;
+    background:  #9b2c2c;
     color: white;
+    border: 2px solid #7a1d1d
 }
+
 
 /* Description Section */
 .content {
