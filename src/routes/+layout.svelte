@@ -25,7 +25,7 @@
     }
 
     async function logout() {
-        await fetch("/logout", { method: "POST", credentials: "include" });
+        await fetch("api/logout", { method: "POST", credentials: "include" });
         isLoggedIn = false;
         goto("/login");
     }
