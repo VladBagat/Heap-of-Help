@@ -87,7 +87,7 @@
     }
 
     function IndexRedirect(){
-        goto('/index')
+        goto('/')
     }
 
     function submitForm() {
