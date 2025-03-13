@@ -167,6 +167,7 @@
     min-height: 100vh; /* Full viewport height */
     background-color: #f8f9fa; /* Light gray background */
     padding: 20px;
+    color: #222
 }
 
 /* Main Container */
@@ -194,7 +195,7 @@
     height: 200px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #ddd;
+    border: 3px solid #ccc;
 }
 
 /* User Info */
@@ -223,11 +224,14 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out
 }
 
 .btn.primary {
-    background: #007bff;
+    background: #222;
     color: white;
+    border: 2px solid #444
 }
 
 .btn.secondary {
@@ -237,9 +241,11 @@
 }
 
 .btn.danger {
-    background: red;
+    background:  #9b2c2c;
     color: white;
+    border: 2px solid #7a1d1d
 }
+
 
 /* Description Section */
 .content {
