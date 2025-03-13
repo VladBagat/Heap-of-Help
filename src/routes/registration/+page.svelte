@@ -185,7 +185,7 @@
               selectedTags: tag_list};
             console.log(payload);
 
-            const res = await fetch('api/registration', {
+            const res = await fetch('/api/registration', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {

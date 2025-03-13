@@ -7,7 +7,7 @@
 
     async function checkAuth() {
         try {
-            const res = await fetch('api/auth', {
+            const res = await fetch('/api/auth', {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -25,7 +25,7 @@
     }
 
     async function logout() {
-        await fetch("api/logout", { method: "POST", credentials: "include" });
+        await fetch("/api/logout", { method: "POST", credentials: "include" });
         isLoggedIn = false;
         goto("/login");
     }
