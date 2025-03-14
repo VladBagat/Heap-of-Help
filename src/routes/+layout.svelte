@@ -15,11 +15,16 @@
       <a href="/" class="logo">Heap of Help</a>
       
       <nav class="nav" class:open={menuOpen}>
-        <a href="/" class="nav-link">Tutors</a>
-        <a href="/" class="nav-link">Chat</a>
-        {#if $isLoggedIn}          <a href="/profile" class="nav-link">Profile</a>
+        {#if $isLoggedIn}
+          <a href="/discovery" class="nav-link">Tutors</a>
+          <a href="/" class="nav-link">Chat</a>
+          <a href="/news" class="nav-link">News</a>
+          <a href="/profile" class="nav-link">Profile</a>
           <a href="/index" class="nav-link" on:click={logout}>Logout</a>
-          {:else}
+        {:else}
+          <a href="/" class="nav-link">Tutors</a>
+          <a href="/" class="nav-link">Chat</a>
+          <a href="/" class="nav-link">News</a>
           <a href="/login" class="nav-link">Login</a>
         {/if}
       </nav>
