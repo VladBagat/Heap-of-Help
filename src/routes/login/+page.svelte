@@ -41,11 +41,11 @@
     }
 
     function TutorProfileRedirect(){
-        goto('/profile')
+        goto('/profile/tutor')
     }
 
     function TuteeProfileRedirect() {
-        goto('/student_profile')
+        goto('/profile/tutee')
     }
 
 </script>
