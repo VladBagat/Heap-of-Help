@@ -1028,22 +1028,6 @@
       margin-top: 10px;
     }
 
-    /* #pass-inp {
-      display: flex;
-      flex-direction: column;
-      gap: 13px;
-      width: 100%;
-    }
-
-    #pass-inp .element {
-      padding: 11px;
-      border: 1px solid #aaa;
-      font-size: 15px;
-      border-radius: 5px;
-      width: 100%;
-      box-sizing: border-box;
-    } */
-
     form {
       display: flex;
       flex-direction: column;
@@ -1129,7 +1113,6 @@
       margin-bottom: 8px;
       font-weight: bold;
       position: relative;
-      z-index: 1; /* Place above the connecting line */
     }
 
     .current .progress-number {
@@ -1148,15 +1131,16 @@
     }
 
     .tag-selection-container {
+      width: 685px;
       display: flex;
-      flex-direction: column; /* Change to column to stack vertically */
+      flex-direction: column;
       gap: 20px;
       margin-bottom: 20px;
       color: black;
     }
 
     .tree-container {
-      width: 95%;
+      width: 650px;
       border: 1px solid #e8e8e8;
       border-radius: 6px;
       padding: 15px;
