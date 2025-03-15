@@ -19,7 +19,7 @@
     const regex = new RegExp('^[a-z0-9_-]{3,15}$');
   
     function nextStage() {
-      if (currentStage < 3) {
+      if (currentStage < 3 && validation(currentStage)) {
         currentStage += 1;
       }
     }
@@ -1045,23 +1045,6 @@
       gap: 20px;
       flex-wrap: wrap;
       margin-top: 10px;
-    }
-    
-    .tag_btn {
-      padding: 12px 20px;
-      background-color: grey;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: bold;
-      transition: background-color 0.3s ease, transform 0.1s ease;
-    }
-
-    .tag_btn:hover {
-      background-color: #2980b9;
-      transform: scale(1.05);
     }
   
     #container {
