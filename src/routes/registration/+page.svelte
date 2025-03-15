@@ -859,24 +859,22 @@
       <div id="sidebar">
         <h3>Creating Account</h3>
         
-        <div class="progress-item {currentStage === 1 ? 'current' : ''} {currentStage > 1 ? 'completed' : ''}">
-          <span class="progress-number">1</span>
-          <span>Personal Details</span>
+        <div class="progress-container">
+          <div class="progress-item {currentStage === 1 ? 'current' : ''} {currentStage > 1 ? 'completed' : ''}">
+            <span class="progress-number">1</span>
+            <span>Personal Details</span>
+          </div>
+      
+          <div class="progress-item {currentStage === 2 ? 'current' : ''} {currentStage > 2 ? 'completed' : ''}">
+            <span class="progress-number">2</span>
+            <span>Account Setup</span>
+          </div>
+      
+          <div class="progress-item {currentStage === 3 ? 'current' : ''} {currentStage > 3 ? 'completed' : ''}">
+            <span class="progress-number">3</span>
+            <span>Selecting Tags</span>
+          </div>
         </div>
-
-        <div class="progress-item {currentStage === 2 ? 'current' : ''} {currentStage > 2 ? 'completed' : ''}">
-          <span class="progress-number">2</span>
-          <span>Account Setup</span>
-        </div>
-
-        <div class="progress-item {currentStage === 3 ? 'current' : ''} {currentStage > 3 ? 'completed' : ''}">
-          <span class="progress-number">3</span>
-          <span>Selecting Tags</span>
-        </div>
-        
-        <h3>Sidebar</h3>
-        <p>Current Stage: {currentStage}</p>
-        <button class="redirect" onclick={LoginRedirect}>Already on Heap of Help?</button>
       </div>
   
       <div id="form-content">
@@ -984,39 +982,22 @@
 
     #container {
       display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      position: relative;
-      gap: 40px;
+      flex-direction: column;
       width: 75%;
       max-width: 1200px;
       margin: auto;
       padding: 20px;
     }
-  
+
     /* selecting student/tutor box  */
     #selection {
       cursor: pointer;
     }
 
-    #sidebar {
-      width: 230px;
-      padding: 20px;
-      background-color: #ececec;
-      color: black;
-      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-      border: 1px solid #ccc;
-      border-radius: 15px;
-      height: auto;
-      align-self: flex-start;
-      font-family: 'Poppins', sans-serif;
-    }
-
     #form-content {
-      flex-grow: 1;
-      padding: 20px;
-      min-width: 500px;
+      width: 100%;
       max-width: 700px;
+      padding: 20px;
       background-color: #ffffff;
       border: 1px solid #ccc;
       border-radius: 10px;
@@ -1046,39 +1027,8 @@
       flex-wrap: wrap;
       margin-top: 10px;
     }
-  
-    #container {
-      display: flex;
-      justify-content: flex-start;
-      gap: 20px;
-      width: 80%;
-      padding: 20px;
-      position: relative;
-    }
-  
-    #sidebar {
-      position: sticky;
-      top: 0;
-      width: 200px;
-      height: 100%;
-      background-color: #e0e0e0;
-      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      border: 1px solid #ccc;
-      font-family: 'Poppins', sans-serif;
-    }
-  
-    #form-content {
-      flex-grow: 1;
-      padding: 20px;
-      background-color: #ffffff;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      box-shadow: 2px 2px 10px 
-      rgba(0, 0, 0, 0.1);
-    }
 
-    #pass-inp {
+    /* #pass-inp {
       display: flex;
       flex-direction: column;
       gap: 13px;
@@ -1092,14 +1042,14 @@
       border-radius: 5px;
       width: 100%;
       box-sizing: border-box;
-    }
-  
+    } */
+
     form {
       display: flex;
       flex-direction: column;
       gap: 13px;
     }
-  
+
     .element {
       padding: 11px;
       border: 1px solid #aaa;
@@ -1116,11 +1066,11 @@
 
     h3 {
       font-family: 'Poppins', sans-serif;
-      font-size: 23px;
+      font-size: 20px;
       color: #333;
       margin-bottom: 15px;
     }
-  
+
     button {
       padding: 12px;
       background-color: #d3d3d3;
@@ -1131,28 +1081,65 @@
       font-weight: bold;
       transition: background-color 0.3s ease, transform 0.1s ease;
     }
-  
+
     button:hover {
       background-color: #b0b0b0;
       transform: scale(1.02);
     }
 
     /*for sidebar */
+
+    #sidebar {
+      width: 100%;
+      max-width: 700px;
+      padding: 20px;
+      background-color: #ececec;
+      color: black;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      border: 1px solid #ccc;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      font-family: 'Poppins', sans-serif;
+    }
+
     .progress-item {
-      padding: 10px 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
+      text-align: center;
+      flex: 1;
+      padding: 0 5px;
+    }
+
+    /* Add connecting lines between progress circles */
+    .progress-container {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .progress-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin: 5px 0;
     }
 
     .progress-number {
-      display: inline-block;
-      width: 25px;
-      height: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
       background-color: #ccc;
       color: white;
       border-radius: 50%;
-      margin-right: 10px;
+      margin-bottom: 8px;
       font-weight: bold;
+      position: relative;
+      z-index: 1; /* Place above the connecting line */
     }
 
     .current .progress-number {
