@@ -1088,7 +1088,6 @@
     }
 
     /*for sidebar */
-
     #sidebar {
       width: 100%;
       max-width: 700px;
@@ -1109,15 +1108,6 @@
       text-align: center;
       flex: 1;
       padding: 0 5px;
-    }
-
-    /* Add connecting lines between progress circles */
-    .progress-container {
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      margin: 10px 0;
     }
 
     .progress-container {
