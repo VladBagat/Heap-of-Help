@@ -16,6 +16,29 @@
 
     let currentStage = $state(1);
 
+    const languages = [ "Abkhazian", "Achinese", "Acoli", "Adangme", "Adyghe", "Afar", "Afrikaans", "Akan",
+    "Akkadian", "Albanian", "Aleut", "Amharic", "Angika", "Apache languages", "Arabic","Aragonese", "Arapaho", "Arawak", 
+    "Armenian", "Aromanian", "Assamese", "Asturian","Avaric", "Avestan", "Awadhi", "Aymara", "Azerbaijani", "Balinese", "Baluchi",
+    "Bambara", "Bashkir", "Basque", "Beja", "Belarusian", "Bemba", "Bengali", "Bhojpuri",
+    "Bikol", "Bini", "Bislama", "Blin", "Bosnian", "Breton", "Buginese", "Bulgarian","Burmese", "Caddo", "Carib", "Catalan",
+    "Cebuano", "Chagatai", "Chamorro", "Chechen", "Cherokee", "Cheyenne", "Chibcha", "Chichewa", "Chinese", "Chinook Jargon",
+    "Choctaw", "Chukchi", "Chuvash", "Cornish", "Corsican", "Cree", "Creek", "Crimean Tatar", "Croatian", "Czech", "Dakota", "Danish",
+    "Dargwa", "Dari", "Dinka", "Divehi", "Dogri", "Dutch", "Dzongkha", "Efik", "English", "Erzya", "Esperanto", "Estonian",
+    "Ewe", "Faroese", "Fijian", "Filipino", "Finnish", "French", "Friulian", "Fula", "Ga", "Galician", "Ganda", "Georgian", "German",
+    "Gilbertese", "Gondi", "Gorontalo", "Greek", "Guarani", "Gujarati", "Haitian Creole", "Hausa", "Hawaiian", "Hebrew","Herero", "Hindi", "Hiri Motu",
+    "Hmong", "Hungarian", "Hupa", "Iban", "Icelandic", "Igbo", "Ilocano", "Indonesian", "Ingush", "Inuktitut", "Irish", "Italian", "Japanese",
+    "Javanese", "Judeo-Arabic", "Judeo-Persian", "Kabyle", "Kachin", "Kalaallisut", "Kannada", "Kanuri", "Karakalpak", "Kashmiri", "Kazakh",
+    "Khmer", "Kikuyu", "Kinyarwanda", "Komi", "Kongo", "Konkani", "Korean", "Kurdish", "Lao", "Latin", "Latvian", "Limburgish",
+    "Lingala", "Lithuanian", "Lombard", "Luba-Katanga", "Luo", "Luxembourgish", "Macedonian", "Magahi", "Maithili", "Malagasy", "Malay",
+    "Malayalam", "Maltese", "Mandarin", "Manx", "Maori", "Marathi", "Marshallese", "Mayan languages", "Mende", "Minangkabau", "Mizo",
+    "Mongolian", "Montenegrin", "Mossi", "Nahuatl", "Nauru", "Navajo", "Ndonga", "Nepali", "Newar", "Nigerian Fulfulde", "Niuean", "Nogai",
+    "Norwegian", "Nuer", "Nyanja", "Occitan", "Ojibwa", "Oromo", "Ossetian", "Palauan", "Pali", "Pangasinan", "Pashto", "Persian",
+    "Polish", "Portuguese", "Punjabi", "Quechua", "Rajasthani", "Rapanui", "Romanian", "Romansh", "Rundi", "Russian", "Samoan",
+    "Sango", "Sanskrit", "Sardinian", "Scots", "Scottish Gaelic", "Serbian", "Shan", "Shona", "Sindhi", "Sinhala", "Slovak", "Slovene",
+    "Somali", "Sotho", "Spanish", "Sundanese", "Swahili", "Swati", "Swedish", "Tagalog", "Tahitian", "Tajik", "Tamil", "Tatar", "Telugu", "Tetum", "Thai",
+    "Tibetan", "Tigrinya", "Tongan", "Tswana", "Turkish", "Turkmen", "Twi", "Udmurt", "Uighur", "Ukrainian", "Urdu", "Uzbek", "Venda", "Vietnamese",
+    "Walloon", "Welsh", "Western Frisian", "Wolof", "Xhosa", "Yiddish", "Yoruba", "Zhuang", "Zulu" ];
+
     const regex = new RegExp('^[a-z0-9_-]{3,15}$');
     const emailregex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     const passwordregex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/;
@@ -42,7 +65,7 @@
     
     function validation(){
       if (currentStage == 1){
-        if (profile === "") {
+        if (profile == "") {
           alert("Please select if you are a Tutor or Student");
           return false;
         }
@@ -74,8 +97,8 @@
           alert("You must be older than 13 to join")
           return false;
         }
-        if (language.trim() == "" || language.match(/\d/)) {
-          alert("Please enter a valid language");
+        if (language == "") {
+          alert("Please select a language");
           return false;
         }
         if (timezone.trim() == "") {
@@ -907,7 +930,12 @@
             <input class="element" type="text" bind:value={email} placeholder="Email" /> 
             <input class="element" type="text" bind:value={education} placeholder="Education" />
             <input class="element" type="number" bind:value={age} placeholder="Age" />
-            <input class="element" type="text" bind:value={language} placeholder="Language" />
+            <select id="language" name="language" class="element" bind:value={language}>
+              <option value="">Select a language</option>
+              {#each languages as lang}
+                <option value={lang}>{lang}</option>
+              {/each}
+            </select>
             <input class="element" type="text" bind:value={timezone} placeholder="Time Zone" />
             <button type="button" onclick={nextStage}>Next</button>
           </form>
