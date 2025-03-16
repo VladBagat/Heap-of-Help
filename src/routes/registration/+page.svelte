@@ -16,6 +16,32 @@
 
     let currentStage = $state(1);
 
+    const timezones = [
+      "UTC", "GMT", "EST", "EDT", "CST","CDT", "MST", "MDT", "PST", "PDT","AST","AKST","AKDT","HST","HDT","IST",  // India Standard Time
+      "CET",  // Central European Time
+      "CEST", // Central European Summer Time
+      "EET",  // Eastern European Time
+      "EEST", // Eastern European Summer Time
+      "BST",  // British Summer Time
+      "AEST", // Australian Eastern Standard Time
+      "AEDT", // Australian Eastern Daylight Time
+      "ACST", // Australian Central Standard Time
+      "ACDT", // Australian Central Daylight Time
+      "AWST", // Australian Western Standard Time
+      "JST",  // Japan Standard Time
+      "KST",  // Korea Standard Time
+      "NZST", // New Zealand Standard Time
+      "NZDT", // New Zealand Daylight Time
+      "SAST", // South Africa Standard Time
+      "WIB",  // Western Indonesia Time
+      "WIT",  // Eastern Indonesia Time
+      "MSK",  // Moscow Time
+      "CST6CDT", // Central Standard Time (North America)
+      "EST5EDT", // Eastern Standard Time (North America)
+      "PST8PDT", // Pacific Standard Time (North America)
+      "HST10HDT", // Hawaii Standard Time
+    ];
+
     const languages = [ "Abkhazian", "Achinese", "Acoli", "Adangme", "Adyghe", "Afar", "Afrikaans", "Akan",
     "Akkadian", "Albanian", "Aleut", "Amharic", "Angika", "Apache languages", "Arabic","Aragonese", "Arapaho", "Arawak", 
     "Armenian", "Aromanian", "Assamese", "Asturian","Avaric", "Avestan", "Awadhi", "Aymara", "Azerbaijani", "Balinese", "Baluchi",
@@ -101,8 +127,8 @@
           alert("Please select a language");
           return false;
         }
-        if (timezone.trim() == "") {
-          alert("Please enter your time zone");
+        if (timezone == "") {
+          alert("Please select a time zone");
           return false;
         }
         return true;
@@ -936,7 +962,12 @@
                 <option value={lang}>{lang}</option>
               {/each}
             </select>
-            <input class="element" type="text" bind:value={timezone} placeholder="Time Zone" />
+            <select class="element" bind:value={timezone}>
+              <option value="" disabled selected>Select Time Zone</option>
+              {#each timezones as tz}
+                <option value={tz}>{tz}</option>
+              {/each}
+            </select>
             <button type="button" onclick={nextStage}>Next</button>
           </form>
         {/if}
