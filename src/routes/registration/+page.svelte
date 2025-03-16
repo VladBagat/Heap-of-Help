@@ -17,6 +17,8 @@
     let currentStage = $state(1);
 
     const regex = new RegExp('^[a-z0-9_-]{3,15}$');
+    const emailregex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const passwordregex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/;
   
     function nextStage() {
       if (currentStage < 3 && validation(currentStage)) {
@@ -54,6 +56,10 @@
         }
         if (email.trim() == "") {
           alert("Please enter your email");
+          return false;
+        }
+        if (!emailregex.test(email.trim())) {
+          alert("Please enter a valid email address");
           return false;
         }
         if (education.trim() == "") {
@@ -121,23 +127,33 @@
       return false;
     }
 
+    function pw_values_check(){
+      if (!passwordregex.test(password)) {
+        document.getElementById('pw_values_message').style.color = 'red';
+        document.getElementById('pw_values_message').innerHTML = 'At least one uppercase, one number and one special character';
+      } else {
+        document.getElementById('pw_values_message').style.color = 'green';
+        document.getElementById('pw_values_message').innerHTML = 'Complexity ✓';
+      }
+    }
+
     function pw_length_check() {
       if (password.length < 8) {
         document.getElementById('pw_length_message').style.color = 'red';
         document.getElementById('pw_length_message').innerHTML = 'At least 8 characters';
       } else {
         document.getElementById('pw_length_message').style.color = 'green';
-        document.getElementById('pw_length_message').innerHTML = 'Good';
+        document.getElementById('pw_length_message').innerHTML = 'Length ✓';
       }
     }
 
 	function pw_match_check() {
       if (password == confirm_password & password != "") {
         document.getElementById('pw_match_message').style.color = 'green';
-        document.getElementById('pw_match_message').innerHTML = 'matching';
+        document.getElementById('pw_match_message').innerHTML = 'Matching ✓';
       } else {
         document.getElementById('pw_match_message').style.color = 'red';
-        document.getElementById('pw_match_message').innerHTML = 'not matching';
+        document.getElementById('pw_match_message').innerHTML = 'Not matching';
       }
     }
 
@@ -912,11 +928,12 @@
               {/if}
             </div>
             <div id="password" type= "text">
-                <input class="element" name="password" id="password_in" type="password" placeholder="Password" bind:value={password} onkeyup={()=>{ pw_length_check(); pw_match_check();}} />
+                <input class="element" name="password" id="password_in" type="password" placeholder="Password" bind:value={password} onkeyup={()=>{ pw_length_check(); pw_values_check(); pw_match_check();}} />
 				        <span id='pw_length_message'></span>
+                <span style="margin-left: 10px;" id='pw_values_message'></span>
 			      </div>
 			      <div id="password">
-                <input class="element" type="password" name="confirm_password" id="confirm_password" placeholder="Confrim Password" bind:value={confirm_password} onkeyup={()=>{pw_match_check();}} /> 
+                <input class="element" type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" bind:value={confirm_password} onkeyup={()=>{pw_match_check();}} /> 
                 <span id='pw_match_message'></span>
             </div>
             <input class="element" type="file" id="profile-pic" accept="image/*" onchange={handle_profile_img}/>
