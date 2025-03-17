@@ -4,52 +4,110 @@
     import { page } from '$app/stores';  
     const id = $page.params.id; 
 
-    let isEditing = false;
-    let rating = 5.0;
-    let isowner=true;
-    let user = {
-        name:"",
-        location:"",
-        email:"",
-        description:""
-    }
 
-    let tutorProfile = {};
-    let errorMessage = "";
-    let loading = true;
+let isEditing = false;
+let rating = 5.0;
+let isowner = false;
+let isTutor = false;  
+let user = {
+    forename: "",
+    surname: "",
+    email: "",
+    age: "",
+    education: "",
+    language: "",
+    timezone: "",
+    description: "",
+    profile_img: ""
+};
 
-    async function fetchTutorProfile() {
-        try {
-            const payload = { id:id };
-            const res = await fetch(`/api/get_tutor_profile`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            });
-            const json = await res.json();
-            console.log(json);
+let errorMessage = "";
+let loading = true;
 
-            if (json.success) {
-                tutorProfile = json.data;
-            } else {
-                errorMessage = json.message;
-            }
-        } catch (error) {
-            console.error("Failed to connect to the server: ", error);
-        } finally {
-            loading = false;
+    async function fetchProfile() {
+    try {
+        const tutorRes = await fetch(`/api/get_tutor_profile?id=${id}`, {
+            method: 'GET',
+            credentials: 'include',
+        });
+
+        const tutorJson = await tutorRes.json();
+
+        if (tutorJson.success) {
+            isTutor = true;  // Mark user as tutor
+            setUserProfile(tutorJson.data);
+            return;
         }
-        console.log(user);
+
+        // If tutor profile is not found, try fetching as a tutee
+        const tuteeRes = await fetch(`/api/get_tutee_profile?id=${id}`, {
+            method: 'GET',
+            credentials: 'include',
+        });
+
+        const tuteeJson = await tuteeRes.json();
+
+        if (tuteeJson.success) {
+            isTutor = false;  // Mark user as tutee
+            setUserProfile(tuteeJson.data);
+        } else {
+            errorMessage = "Profile not found.";
+        }
+    } catch (error) {
+        console.error("Failed to fetch profile:", error);
+    } finally {
+        loading = false;
     }
+}
 
-    async function ownerCheck() {
+async function ownerCheck() {
+    const res = await fetch('/api/auth', {
+        method: 'GET',
+        credentials: 'include',
+    });
 
-        const payload = { username: login };
+    const json = await res.json();
 
-        const res = await fetch('/api/pageowner', {
+    if (json.success && json.user_id == id) {
+        isowner = true;
+    } else {
+        isowner = false;
+    }
+}
+
+function setUserProfile(data) {
+    user = {
+        forename: data.first_name,
+        surname: data.last_name,
+        email: data.email,
+        age: data.age || "",
+        education: data.education || "",
+        language: data.language || "",
+        timezone: data.timezone || "",
+        description: data.description || "",
+        profile_img: data.profile_img ? `data:image/png;base64,${data.profile_img}` : "/default-profile.jpg"
+    };
+}
+
+
+function editProfile() {
+    isEditing = !isEditing;
+}
+
+async function saveChanges() {
+    try {
+        const payload = {
+            forename: user.forename,
+            surname: user.surname,
+            email: user.email,
+            age: user.age,
+            education: user.education,
+            language: user.language,
+            timezone: user.timezone,
+            description: user.description
+        };
+
+        const res = await fetch('/api/update_profile', {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -60,28 +118,23 @@
 
         const json = await res.json();
 
-        if (res.ok) {
-            isowner = true;
+        if (json.success) {
+            console.log("Profile updated successfully");
+        } else {
+            console.error("Failed to update profile:", json.message);
         }
-        else {
-            isowner = false;
-        }
+    } catch (error) {
+        console.error("Error updating profile:", error);
     }
 
-    function editProfile() {
-        isEditing = !isEditing;
-    }
+    isEditing = false;
+    await fetchProfile();  // Refresh profile data after saving
+}
 
-    function saveChanges() {
-        // TODO: Send updated data to the backend
-        console.log("Saved user data:", user);
-        isEditing = false; // Exit edit mode
-    }
-
-    onMount(() => {
-        fetchTutorProfile();
-    });
-
+onMount(() => {
+    fetchProfile();
+    ownerCheck();
+});
 </script>
 
  <svelte:head>
@@ -94,90 +147,57 @@
             <div class="edit-profile">
                 <h2>Edit Profile</h2>
 
-                <div>Name:</div>
-                <input type="text" bind:value={user.name} />
+                <div>First Name:</div>
+                <input type="text" bind:value={user.forename} />
 
-                <div>Location:</div>
-                <input type="text" bind:value={user.location} />
+                <div>Last Name:</div>
+                <input type="text" bind:value={user.surname} />
 
                 <div>Email:</div>
                 <input type="email" bind:value={user.email} />
 
+                <div>Age:</div>
+                <input type="number" bind:value={user.age} />
+
+                <div>Education:</div>
+                <input type="text" bind:value={user.education} />
+
+                <div>Language:</div>
+                <input type="text" bind:value={user.language} />
+
+                <div>Timezone:</div>
+                <input type="text" bind:value={user.timezone} />
+
                 <div>Description:</div>
                 <textarea bind:value={user.description}></textarea>
+
+                <button class="btn save" on:click={saveChanges}> Save </button>
             </div>
-            <button class="btn save" onclick={saveChanges}> Save </button>
         {:else}
             <div class="profile-header">
-                <img src="data:image/png;base64, {tutorProfile.profile_img}" alt="Profile" class="profile-image" id="profileImage">  
+                <img src="{user.profile_img}" alt="Profile" class="profile-image">  
                 <div class="user-info">
-                    <h2 class="username">{tutorProfile.first_name} {tutorProfile.last_name}</h2>
-                    <p class="role">Product Designer</p>
-                    <p class="location">📍 New York, NY</p>
+                    <h2 class="username">{user.forename} {user.surname}</h2>
+                    <p class="email">📧 {user.email}</p>
+                    <p class="age">🎂 Age: {user.age}</p>
+                    <p class="education">🎓 {user.education}</p>
+                    <p class="language">🗣️ {user.language}</p>
+                    <p class="timezone">⏰ {user.timezone}</p>
 
-                    {#if rating === 0.5}
-                        <img src="/stars/0.5s.jpg" alt="0.5" class="rating">
-                    {:else if rating === 1.0}
-                        <img src="/stars/1s.jpg" alt="1.0" class="rating">
-                    {:else if rating === 1.5}
-                        <img src="/stars/1.5s.jpg" alt="1.5" class="rating">
-                    {:else if rating === 2.0}
-                        <img src="/stars/2s.jpg" alt="2.0" class="rating">
-                    {:else if rating === 2.5}
-                        <img src="/stars/2.5s.jpg" alt="2.5" class="rating">
-                    {:else if rating === 3.0}
-                        <img src="/stars/3s.jpg" alt="3.0" class="rating">
-                    {:else if rating === 3.5}
-                        <img src="/stars/3.5s.jpg" alt="3.5" class="rating">
-                    {:else if rating === 4.0}
-                        <img src="/stars/4.0s.jpg" alt="4.0" class="rating">
-                    {:else if rating === 4.5}
-                        <img src="/stars/4.5s.jpg" alt="4.5" class="rating">
-                    {:else if rating === 5.0}
-                        <img src="/stars/5.0s.jpg" alt="5.0" class="rating">
-
-                    {/if}
-
-
-
-                    
-                    <div class="tags">
-                        <p>tag 1, tag 2, tag 3</p>
-                    </div>
                     <div class="content">
                         <h3>Description</h3>
-                        <p>{tutorProfile.description}</p>
+                        <p>{user.description}</p>
                     </div>
-                    <div class="buttons">
-                        {#if isowner}
-                            <button class="btn edit" onclick={editProfile}> Edit Profile</button>
-                        {/if}
-                        <button class="btn primary">Send Message</button>
-                        <button class="btn secondary">Contacts</button>
-                        <button class="btn danger">Report User</button>
-                    </div> 
+
+                    {#if isowner}
+                        <button class="btn" on:click={editProfile}> Edit Profile</button>
+                    {/if}
                 </div>
             </div>
         {/if}
-
-        <div class="work-contact">
-            <div class="work">
-                <h2>WORK</h2>
-                <div>
-                    <h3>Google</h3>
-                    <p>Software Developer</p>
-                </div>
-            </div>
-            <div class="contact">
-                <h2>CONTACT</h2>
-                <div>
-                    <p><b>Email:</b> qwerty@gmail.com</p>
-                    <p><b>Phone:</b> 000000000</p>
-                </div>
-            </div>
-        </div>    
     </div>
-</div>    
+</div>
+
 
 
 
