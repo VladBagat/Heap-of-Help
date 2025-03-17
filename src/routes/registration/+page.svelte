@@ -283,7 +283,7 @@
     }
 
 
-    import Tree from '../../lib/Tree.svelte';
+    import Tree from '../../lib/tree.svelte';
     
     // topic selection
     function handleTopicOperation(event) {
