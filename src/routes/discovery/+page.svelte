@@ -168,7 +168,7 @@
         <button {id} class="card" onclick={() => handleCardClick(id)}>
           <div class="card-image">
             <img
-              src="https://picsum.photos/id/1005/400/300"
+              src="data:image/png;base64, {tile.profile_img}",
               width="150"
               height="150"
               alt="Profile"
