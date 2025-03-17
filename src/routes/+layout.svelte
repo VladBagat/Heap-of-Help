@@ -3,24 +3,52 @@
     import "../styles.css";
     import { onMount } from "svelte";
     import { goto } from "$app/navigation";
-    import { isLoggedIn, checkAuth, logout } from "../auth.js";
+    let isLoggedIn = false;
+    let user_id = null; // Define user_id at the component level
+
+    async function checkAuth() {
+        try {
+            const res = await fetch('/api/auth', {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (res.ok) {
+              const data = await res.json();
+              user_id = data[0].user_id; // Assign the user_id from response
+                
+              isLoggedIn = true; // User is authenticated
+            } else {
+              isLoggedIn = false; // User is not authenticated
+            }
+        } catch (error) {
+            console.error('Error fetching auth:', error);
+            isLoggedIn = false;
+        }
+    }
+
+    async function logout() {
+        await fetch("/api/logout", { method: "POST", credentials: "include" });
+        isLoggedIn = false;
+        user_id = null;
+        goto("/login");
+    }
 
     onMount(() => {
         checkAuth();
-    }); 
+    });
 </script>
   
-  <header class="header">
+<header class="header">
     <div class="container">
       <a href="/" class="logo">Heap of Help</a>
       
       <nav class="nav" class:open={menuOpen}>
-        {#if $isLoggedIn}
-          <a href="/discovery" class="nav-link">Tutors</a>
-          <a href="/" class="nav-link">Chat</a>
-          <a href="/news" class="nav-link">News</a>
-          <a href="/profile" class="nav-link">Profile</a>
-          <a href="/index" class="nav-link" on:click={logout}>Logout</a>
+        <a href="/discovery" class="nav-link">Tutors</a>
+        <a href="/" class="nav-link">Chat</a>
+        {#if isLoggedIn}
+          <a href={`/profile/${user_id}`} class="nav-link">Profile</a>
+          <a href = "/" class="nav-link" on:click={logout}>Logout</a>
         {:else}
           <a href="/" class="nav-link">Tutors</a>
           <a href="/" class="nav-link">Chat</a>
@@ -51,6 +79,5 @@
       </nav>
     </div>
   </footer>
-  
 
-  
+

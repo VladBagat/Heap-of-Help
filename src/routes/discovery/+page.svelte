@@ -4,6 +4,13 @@
   import { goto } from "$app/navigation";
 
   let isMobile = $state(false);
+  let temp = $state(
+    [{
+      name: "John Doe",
+      description: "Lorem ipsum dolore",
+      tags: [""]
+    }]
+  );
 
   // Media query check with proper cleanup
   onMount(async () => {
@@ -12,11 +19,12 @@
 
     updateMobile();
     temp = await fetch_content();
+    console.log("Temp is", temp)
     return () => mediaQuery.removeEventListener("change", updateMobile);
   });
 
   async function fetch_content(){
-    const res = await fetch('api/content', {
+    const res = await fetch('/api/content', {
       method: 'GET',
       credentials: 'include',
     });
@@ -34,7 +42,7 @@
   let showModal = $state(false);
   let selected_card = $state(0);
 
-  let temp = $state([
+  /*let temp = $state([
     {
       name: "Jonanson Smith",
       description:
@@ -107,15 +115,18 @@
         "A creative writer and content strategist with a flair for storytelling.",
       tags: ["Python", "Senior", "Sigma"],
     },
-  ]);
+  ]);*/
   
   //Proposed data model
   //data = [{"name":"John", "profile-img":blob, "image":blob, "description":"some limited description"}, ...]
 
   // Default category is recommended
   let category = $state("Recommended Users");
-  let userID = 123;
+  let userID = $state(123);
   function handleCardClick(card_id) {
+    userID = temp[card_id].user_id;
+    console.log(userID);
+
     if (isMobile) goto(`/profile/${userID}`);
     else {
       showModal = true;

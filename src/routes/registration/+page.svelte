@@ -185,7 +185,7 @@
               selectedTags: tag_list};
             console.log(payload);
 
-            const res = await fetch('api/registration', {
+            const res = await fetch('/api/registration', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -198,7 +198,7 @@
 
             console.log(json)
 
-            if (json[0].success) {
+            if (json.success) {
                 IndexRedirect()
             }
         }
@@ -227,7 +227,7 @@
     }
 
     function ProfileRedirect(){
-      goto('\profile');
+      goto('/discovery');
     }
 
     let base64Image = $state('');
@@ -274,7 +274,7 @@
 
         console.log(json)
 
-        if (json[0].success) {
+        if (json.success) {
           username_validation = true;
         } else {
           username_validation = false;
@@ -885,8 +885,8 @@
           <form>
             <select id="selection" class="element" bind:value={profile}>
               <option value="" disabled selected>Select Tutor/Student</option>
-              <option value="tutor">Tutor</option>
-              <option value="tutee">Student</option>
+              <option value={true}>Tutor</option>
+              <option value={false}>Student</option>
             </select>
             <input class="element" type="text" bind:value={forename} placeholder="Forename" />
             <input class="element" type="text" bind:value={surname} placeholder="Surname" /> 
