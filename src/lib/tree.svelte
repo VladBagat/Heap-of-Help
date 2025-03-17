@@ -1,6 +1,6 @@
 <script>
     import { slide } from 'svelte/transition';
-    import Node from './Node.svelte';
+    import Node from './node.svelte';
     import { createEventDispatcher } from 'svelte';
     
     export let data = {

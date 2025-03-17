@@ -88,6 +88,7 @@
   {/if}
 </div>
 
+
 <style>
   .node-wrapper {
     width: 100%;
