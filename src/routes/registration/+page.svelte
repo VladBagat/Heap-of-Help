@@ -16,10 +16,61 @@
 
     let currentStage = $state(1);
 
+    const timezones = [
+      "UTC", "GMT", "EST", "EDT", "CST","CDT", "MST", "MDT", "PST", "PDT","AST","AKST","AKDT","HST","HDT","IST",  // India Standard Time
+      "CET",  // Central European Time
+      "CEST", // Central European Summer Time
+      "EET",  // Eastern European Time
+      "EEST", // Eastern European Summer Time
+      "BST",  // British Summer Time
+      "AEST", // Australian Eastern Standard Time
+      "AEDT", // Australian Eastern Daylight Time
+      "ACST", // Australian Central Standard Time
+      "ACDT", // Australian Central Daylight Time
+      "AWST", // Australian Western Standard Time
+      "JST",  // Japan Standard Time
+      "KST",  // Korea Standard Time
+      "NZST", // New Zealand Standard Time
+      "NZDT", // New Zealand Daylight Time
+      "SAST", // South Africa Standard Time
+      "WIB",  // Western Indonesia Time
+      "WIT",  // Eastern Indonesia Time
+      "MSK",  // Moscow Time
+      "CST6CDT", // Central Standard Time (North America)
+      "EST5EDT", // Eastern Standard Time (North America)
+      "PST8PDT", // Pacific Standard Time (North America)
+      "HST10HDT", // Hawaii Standard Time
+    ];
+
+    const languages = [ "Abkhazian", "Achinese", "Acoli", "Adangme", "Adyghe", "Afar", "Afrikaans", "Akan",
+    "Akkadian", "Albanian", "Aleut", "Amharic", "Angika", "Apache languages", "Arabic","Aragonese", "Arapaho", "Arawak", 
+    "Armenian", "Aromanian", "Assamese", "Asturian","Avaric", "Avestan", "Awadhi", "Aymara", "Azerbaijani", "Balinese", "Baluchi",
+    "Bambara", "Bashkir", "Basque", "Beja", "Belarusian", "Bemba", "Bengali", "Bhojpuri",
+    "Bikol", "Bini", "Bislama", "Blin", "Bosnian", "Breton", "Buginese", "Bulgarian","Burmese", "Caddo", "Carib", "Catalan",
+    "Cebuano", "Chagatai", "Chamorro", "Chechen", "Cherokee", "Cheyenne", "Chibcha", "Chichewa", "Chinese", "Chinook Jargon",
+    "Choctaw", "Chukchi", "Chuvash", "Cornish", "Corsican", "Cree", "Creek", "Crimean Tatar", "Croatian", "Czech", "Dakota", "Danish",
+    "Dargwa", "Dari", "Dinka", "Divehi", "Dogri", "Dutch", "Dzongkha", "Efik", "English", "Erzya", "Esperanto", "Estonian",
+    "Ewe", "Faroese", "Fijian", "Filipino", "Finnish", "French", "Friulian", "Fula", "Ga", "Galician", "Ganda", "Georgian", "German",
+    "Gilbertese", "Gondi", "Gorontalo", "Greek", "Guarani", "Gujarati", "Haitian Creole", "Hausa", "Hawaiian", "Hebrew","Herero", "Hindi", "Hiri Motu",
+    "Hmong", "Hungarian", "Hupa", "Iban", "Icelandic", "Igbo", "Ilocano", "Indonesian", "Ingush", "Inuktitut", "Irish", "Italian", "Japanese",
+    "Javanese", "Judeo-Arabic", "Judeo-Persian", "Kabyle", "Kachin", "Kalaallisut", "Kannada", "Kanuri", "Karakalpak", "Kashmiri", "Kazakh",
+    "Khmer", "Kikuyu", "Kinyarwanda", "Komi", "Kongo", "Konkani", "Korean", "Kurdish", "Lao", "Latin", "Latvian", "Limburgish",
+    "Lingala", "Lithuanian", "Lombard", "Luba-Katanga", "Luo", "Luxembourgish", "Macedonian", "Magahi", "Maithili", "Malagasy", "Malay",
+    "Malayalam", "Maltese", "Mandarin", "Manx", "Maori", "Marathi", "Marshallese", "Mayan languages", "Mende", "Minangkabau", "Mizo",
+    "Mongolian", "Montenegrin", "Mossi", "Nahuatl", "Nauru", "Navajo", "Ndonga", "Nepali", "Newar", "Nigerian Fulfulde", "Niuean", "Nogai",
+    "Norwegian", "Nuer", "Nyanja", "Occitan", "Ojibwa", "Oromo", "Ossetian", "Palauan", "Pali", "Pangasinan", "Pashto", "Persian",
+    "Polish", "Portuguese", "Punjabi", "Quechua", "Rajasthani", "Rapanui", "Romanian", "Romansh", "Rundi", "Russian", "Samoan",
+    "Sango", "Sanskrit", "Sardinian", "Scots", "Scottish Gaelic", "Serbian", "Shan", "Shona", "Sindhi", "Sinhala", "Slovak", "Slovene",
+    "Somali", "Sotho", "Spanish", "Sundanese", "Swahili", "Swati", "Swedish", "Tagalog", "Tahitian", "Tajik", "Tamil", "Tatar", "Telugu", "Tetum", "Thai",
+    "Tibetan", "Tigrinya", "Tongan", "Tswana", "Turkish", "Turkmen", "Twi", "Udmurt", "Uighur", "Ukrainian", "Urdu", "Uzbek", "Venda", "Vietnamese",
+    "Walloon", "Welsh", "Western Frisian", "Wolof", "Xhosa", "Yiddish", "Yoruba", "Zhuang", "Zulu" ];
+
     const regex = new RegExp('^[a-z0-9_-]{3,15}$');
+    const emailregex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const passwordregex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/;
   
     function nextStage() {
-      if (currentStage < 3) {
+      if (currentStage < 3 && validation(currentStage)) {
         currentStage += 1;
       }
     }
@@ -40,7 +91,7 @@
     
     function validation(){
       if (currentStage == 1){
-        if (profile === "") {
+        if (profile == "") {
           alert("Please select if you are a Tutor or Student");
           return false;
         }
@@ -56,6 +107,10 @@
           alert("Please enter your email");
           return false;
         }
+        if (!emailregex.test(email.trim())) {
+          alert("Please enter a valid email address");
+          return false;
+        }
         if (education.trim() == "") {
           alert("Please enter your education");
           return false;
@@ -68,12 +123,12 @@
           alert("You must be older than 13 to join")
           return false;
         }
-        if (language.trim() == "" || language.match(/\d/)) {
-          alert("Please enter a valid language");
+        if (language == "") {
+          alert("Please select a language");
           return false;
         }
-        if (timezone.trim() == "") {
-          alert("Please enter your time zone");
+        if (timezone == "") {
+          alert("Please select a time zone");
           return false;
         }
         return true;
@@ -121,26 +176,36 @@
       return false;
     }
 
+    function pw_values_check(){
+      if (!passwordregex.test(password)) {
+        document.getElementById('pw_values_message').style.color = 'red';
+        document.getElementById('pw_values_message').innerHTML = 'At least one uppercase, one number and one special character';
+      } else {
+        document.getElementById('pw_values_message').style.color = 'green';
+        document.getElementById('pw_values_message').innerHTML = 'Complexity ✓';
+      }
+    }
+
     function pw_length_check() {
       if (password.length < 8) {
         document.getElementById('pw_length_message').style.color = 'red';
         document.getElementById('pw_length_message').innerHTML = 'At least 8 characters';
       } else {
         document.getElementById('pw_length_message').style.color = 'green';
-        document.getElementById('pw_length_message').innerHTML = 'Good';
+        document.getElementById('pw_length_message').innerHTML = 'Length ✓';
       }
     }
 
 	function pw_match_check() {
       if (password == confirm_password & password != "") {
         document.getElementById('pw_match_message').style.color = 'green';
-        document.getElementById('pw_match_message').innerHTML = 'matching';
+        document.getElementById('pw_match_message').innerHTML = 'Matching ✓';
       } else {
         document.getElementById('pw_match_message').style.color = 'red';
-        document.getElementById('pw_match_message').innerHTML = 'not matching';
+        document.getElementById('pw_match_message').innerHTML = 'Not matching';
       }
     }
-
+    // import Eye from "./eye.svelte";
     import Password from '$lib/password.svelte';
 
     async function registration()
@@ -859,24 +924,22 @@
       <div id="sidebar">
         <h3>Creating Account</h3>
         
-        <div class="progress-item {currentStage === 1 ? 'current' : ''} {currentStage > 1 ? 'completed' : ''}">
-          <span class="progress-number">1</span>
-          <span>Personal Details</span>
+        <div class="progress-container">
+          <div class="progress-item {currentStage === 1 ? 'current' : ''} {currentStage > 1 ? 'completed' : ''}">
+            <span class="progress-number">1</span>
+            <span>Personal Details</span>
+          </div>
+      
+          <div class="progress-item {currentStage === 2 ? 'current' : ''} {currentStage > 2 ? 'completed' : ''}">
+            <span class="progress-number">2</span>
+            <span>Account Setup</span>
+          </div>
+      
+          <div class="progress-item {currentStage === 3 ? 'current' : ''} {currentStage > 3 ? 'completed' : ''}">
+            <span class="progress-number">3</span>
+            <span>Selecting Tags</span>
+          </div>
         </div>
-
-        <div class="progress-item {currentStage === 2 ? 'current' : ''} {currentStage > 2 ? 'completed' : ''}">
-          <span class="progress-number">2</span>
-          <span>Account Setup</span>
-        </div>
-
-        <div class="progress-item {currentStage === 3 ? 'current' : ''} {currentStage > 3 ? 'completed' : ''}">
-          <span class="progress-number">3</span>
-          <span>Selecting Tags</span>
-        </div>
-        
-        <h3>Sidebar</h3>
-        <p>Current Stage: {currentStage}</p>
-        <button class="redirect" onclick={LoginRedirect}>Already on Heap of Help?</button>
       </div>
   
       <div id="form-content">
@@ -893,8 +956,18 @@
             <input class="element" type="text" bind:value={email} placeholder="Email" /> 
             <input class="element" type="text" bind:value={education} placeholder="Education" />
             <input class="element" type="number" bind:value={age} placeholder="Age" />
-            <input class="element" type="text" bind:value={language} placeholder="Language" />
-            <input class="element" type="text" bind:value={timezone} placeholder="Time Zone" />
+            <select id="language" name="language" class="element" bind:value={language}>
+              <option value="">Select a language</option>
+              {#each languages as lang}
+                <option value={lang}>{lang}</option>
+              {/each}
+            </select>
+            <select class="element" bind:value={timezone}>
+              <option value="" disabled selected>Select Time Zone</option>
+              {#each timezones as tz}
+                <option value={tz}>{tz}</option>
+              {/each}
+            </select>
             <button type="button" onclick={nextStage}>Next</button>
           </form>
         {/if}
@@ -914,11 +987,12 @@
               {/if}
             </div>
             <div id="password" type= "text">
-                <input class="element" name="password" id="password_in" type="password" placeholder="Password" bind:value={password} onkeyup={()=>{ pw_length_check(); pw_match_check();}} />
+                <input class="element" name="password" id="password_in" type="password" placeholder="Password" bind:value={password} onkeyup={()=>{ pw_length_check(); pw_values_check(); pw_match_check();}} />
 				        <span id='pw_length_message'></span>
+                <span style="margin-left: 10px;" id='pw_values_message'></span>
 			      </div>
 			      <div id="password">
-                <input class="element" type="password" name="confirm_password" id="confirm_password" placeholder="Confrim Password" bind:value={confirm_password} onkeyup={()=>{pw_match_check();}} /> 
+                <input class="element" type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" bind:value={confirm_password} onkeyup={()=>{pw_match_check();}} /> 
                 <span id='pw_match_message'></span>
             </div>
             <input class="element" type="file" id="profile-pic" accept="image/*" onchange={handle_profile_img}/>
@@ -984,39 +1058,22 @@
 
     #container {
       display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      position: relative;
-      gap: 40px;
+      flex-direction: column;
       width: 75%;
       max-width: 1200px;
       margin: auto;
       padding: 20px;
     }
-  
+
     /* selecting student/tutor box  */
     #selection {
       cursor: pointer;
     }
 
-    #sidebar {
-      width: 230px;
-      padding: 20px;
-      background-color: #ececec;
-      color: black;
-      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-      border: 1px solid #ccc;
-      border-radius: 15px;
-      height: auto;
-      align-self: flex-start;
-      font-family: 'Poppins', sans-serif;
-    }
-
     #form-content {
-      flex-grow: 1;
-      padding: 20px;
-      min-width: 500px;
+      width: 100%;
       max-width: 700px;
+      padding: 20px;
       background-color: #ffffff;
       border: 1px solid #ccc;
       border-radius: 10px;
@@ -1046,77 +1103,13 @@
       flex-wrap: wrap;
       margin-top: 10px;
     }
-    
-    .tag_btn {
-      padding: 12px 20px;
-      background-color: grey;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: bold;
-      transition: background-color 0.3s ease, transform 0.1s ease;
-    }
 
-    .tag_btn:hover {
-      background-color: #2980b9;
-      transform: scale(1.05);
-    }
-  
-    #container {
-      display: flex;
-      justify-content: flex-start;
-      gap: 20px;
-      width: 80%;
-      padding: 20px;
-      position: relative;
-    }
-  
-    #sidebar {
-      position: sticky;
-      top: 0;
-      width: 200px;
-      height: 100%;
-      background-color: #e0e0e0;
-      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      border: 1px solid #ccc;
-      font-family: 'Poppins', sans-serif;
-    }
-  
-    #form-content {
-      flex-grow: 1;
-      padding: 20px;
-      background-color: #ffffff;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      box-shadow: 2px 2px 10px 
-      rgba(0, 0, 0, 0.1);
-    }
-
-    #pass-inp {
-      display: flex;
-      flex-direction: column;
-      gap: 13px;
-      width: 100%;
-    }
-
-    #pass-inp .element {
-      padding: 11px;
-      border: 1px solid #aaa;
-      font-size: 15px;
-      border-radius: 5px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-  
     form {
       display: flex;
       flex-direction: column;
       gap: 13px;
     }
-  
+
     .element {
       padding: 11px;
       border: 1px solid #aaa;
@@ -1133,11 +1126,11 @@
 
     h3 {
       font-family: 'Poppins', sans-serif;
-      font-size: 23px;
+      font-size: 20px;
       color: #333;
       margin-bottom: 15px;
     }
-  
+
     button {
       padding: 12px;
       background-color: #d3d3d3;
@@ -1148,28 +1141,54 @@
       font-weight: bold;
       transition: background-color 0.3s ease, transform 0.1s ease;
     }
-  
+
     button:hover {
       background-color: #b0b0b0;
       transform: scale(1.02);
     }
 
     /*for sidebar */
+    #sidebar {
+      width: 100%;
+      max-width: 700px;
+      padding: 20px;
+      background-color: #ececec;
+      color: black;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      border: 1px solid #ccc;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      font-family: 'Poppins', sans-serif;
+    }
+
     .progress-item {
-      padding: 10px 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
+      text-align: center;
+      flex: 1;
+      padding: 0 5px;
+    }
+
+    .progress-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin: 5px 0;
     }
 
     .progress-number {
-      display: inline-block;
-      width: 25px;
-      height: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
       background-color: #ccc;
       color: white;
       border-radius: 50%;
-      margin-right: 10px;
+      margin-bottom: 8px;
       font-weight: bold;
+      position: relative;
     }
 
     .current .progress-number {
@@ -1188,15 +1207,16 @@
     }
 
     .tag-selection-container {
+      width: 685px;
       display: flex;
-      flex-direction: column; /* Change to column to stack vertically */
+      flex-direction: column;
       gap: 20px;
       margin-bottom: 20px;
       color: black;
     }
 
     .tree-container {
-      width: 95%;
+      width: 650px;
       border: 1px solid #e8e8e8;
       border-radius: 6px;
       padding: 15px;
