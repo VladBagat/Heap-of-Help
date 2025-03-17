@@ -205,8 +205,19 @@
         document.getElementById('pw_match_message').innerHTML = 'Not matching';
       }
     }
-
     import Password from '$lib/password.svelte';
+    import Eye from "$lib/eye.svelte";
+  
+    let showPassword = $state(false);
+    let showConfirmPassword = $state(false);
+    
+    function togglePasswordVisibility() {
+      showPassword = !showPassword;
+    }
+    
+    function toggleConfirmPasswordVisibility() {
+      showConfirmPassword = !showConfirmPassword;
+    }
 
     async function registration()
      {
@@ -986,13 +997,19 @@
                 <span id="username_message" style="color:red;">Invalid Username</span>
               {/if}
             </div>
-            <div id="password" type= "text">
-                <input class="element" name="password" id="password_in" type="password" placeholder="Password" bind:value={password} onkeyup={()=>{ pw_length_check(); pw_values_check(); pw_match_check();}} />
-				        <span id='pw_length_message'></span>
-                <span style="margin-left: 10px;" id='pw_values_message'></span>
+            <div id="password" type= "text" class="password-wrapper">
+                <input class="element" name="password" id="password_in" type={showPassword ? "text" : "password"} placeholder="Password" bind:value={password} onkeyup={()=>{ pw_length_check(); pw_values_check(); pw_match_check();}} />
+				        <div id="eye-icon">
+                  <Eye ToggleVisability={togglePasswordVisibility} />
+                </div>
+                <span id='pw_length_message'></span>
+                <span id='pw_values_message'></span>
 			      </div>
-			      <div id="password">
-                <input class="element" type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" bind:value={confirm_password} onkeyup={()=>{pw_match_check();}} /> 
+			      <div id="password"  class="password-wrapper">
+                <input class="element" type={showConfirmPassword ? "text" : "password"} name="confirm_password" id="confirm_password" placeholder="Confirm Password" bind:value={confirm_password} onkeyup={()=>{pw_match_check();}} /> 
+                <div id="eye-icon">
+                  <Eye ToggleVisability={togglePasswordVisibility} />
+                </div>
                 <span id='pw_match_message'></span>
             </div>
             <input class="element" type="file" id="profile-pic" accept="image/*" onchange={handle_profile_img}/>
@@ -1102,6 +1119,18 @@
       gap: 20px;
       flex-wrap: wrap;
       margin-top: 10px;
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+    
+    #eye-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
     }
 
     form {
