@@ -1,4 +1,4 @@
-<script>
+<script lang="js">
     let menuOpen = false;
     import "../styles.css";
     import { onMount } from "svelte";
@@ -50,6 +50,9 @@
           <a href={`/profile/${user_id}`} class="nav-link">Profile</a>
           <a href = "/" class="nav-link" on:click={logout}>Logout</a>
         {:else}
+          <a href="/" class="nav-link">Tutors</a>
+          <a href="/" class="nav-link">Chat</a>
+          <a href="/" class="nav-link">News</a>
           <a href="/login" class="nav-link">Login</a>
         {/if}
       </nav>
