@@ -61,19 +61,25 @@ let loading = true;
 }
 
 async function ownerCheck() {
-    const res = await fetch('/api/auth', {
-        method: 'GET',
-        credentials: 'include',
-    });
+    try {
+        const res = await fetch('/api/auth', {
+            method: 'GET',
+            credentials: 'include',
+        });
 
-    const json = await res.json();
+        const json = await res.json();
 
-    if (json.success && json.user_id == id) {
-        isowner = true;
-    } else {
+        if (json.success && json.user_id == id) {
+            isowner = true;
+        } else {
+            isowner = false;
+        }
+    } catch (error) {
+        console.error("Failed to check ownership:", error);
         isowner = false;
     }
 }
+
 
 function setUserProfile(data) {
     user = {
@@ -172,6 +178,7 @@ onMount(() => {
                 <textarea bind:value={user.description}></textarea>
 
                 <button class="btn save" on:click={saveChanges}> Save </button>
+                <button class="btn cancel" on:click={editProfile}> Cancel </button>
             </div>
         {:else}
             <div class="profile-header">
@@ -189,14 +196,40 @@ onMount(() => {
                         <p>{user.description}</p>
                     </div>
 
+                    <div class="rating-container">
+                        <h3>Rating:</h3>
+                        {#if rating === 0.5}
+                            <img src="/stars/0.5s.jpg" alt="0.5" class="rating">
+                        {:else if rating === 1.0}
+                            <img src="/stars/1s.jpg" alt="1.0" class="rating">
+                        {:else if rating === 1.5}
+                            <img src="/stars/1.5s.jpg" alt="1.5" class="rating">
+                        {:else if rating === 2.0}
+                            <img src="/stars/2s.jpg" alt="2.0" class="rating">
+                        {:else if rating === 2.5}
+                            <img src="/stars/2.5s.jpg" alt="2.5" class="rating">
+                        {:else if rating === 3.0}
+                            <img src="/stars/3s.jpg" alt="3.0" class="rating">
+                        {:else if rating === 3.5}
+                            <img src="/stars/3.5s.jpg" alt="3.5" class="rating">
+                        {:else if rating === 4.0}
+                            <img src="/stars/4.0s.jpg" alt="4.0" class="rating">
+                        {:else if rating === 4.5}
+                            <img src="/stars/4.5s.jpg" alt="4.5" class="rating">
+                        {:else if rating === 5.0}
+                            <img src="/stars/5.0s.jpg" alt="5.0" class="rating">
+                        {/if}
+                    </div>
+
                     {#if isowner}
-                        <button class="btn" on:click={editProfile}> Edit Profile</button>
+                        <button class="btn edit" on:click={editProfile}> Edit Profile</button>
                     {/if}
                 </div>
             </div>
         {/if}
     </div>
 </div>
+
 
 
 
