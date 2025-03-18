@@ -4,33 +4,37 @@
   import { goto } from "$app/navigation";
 
   let isMobile = $state(false);
-  let temp = $state(
-    [{
-      name: "John Doe",
-      description: "Lorem ipsum dolore",
-      tags: [""]
-    }]
-  );
-
+  let useBase64 = $state(false);
+  
+  let exclusion = $state([]);
   // Media query check with proper cleanup
   onMount(async () => {
     const mediaQuery = window.matchMedia("(max-width: 768px)");
     const updateMobile = () => (isMobile = mediaQuery.matches);
+    fetchImages()
 
+  
     updateMobile();
     temp = await fetch_content();
-    console.log("Temp is", temp)
     return () => mediaQuery.removeEventListener("change", updateMobile);
   });
 
   async function fetch_content(){
+    const payload = { exclusion }
     const res = await fetch('/api/content', {
-      method: 'GET',
+      method: 'POST',
       credentials: 'include',
+      headers: {
+                    'Content-Type': 'application/json',
+                },
+      body: JSON.stringify(payload)
     });
 
     const json = await res.json();
-    let users = json[0].content;
+    useBase64 = true;
+    exclusion = json[0].content.exclusion;
+    let users = json[0].content.items;
+    
     users.forEach(user => {
       user.name = `${user.first_name} ${user.last_name}`;
       delete user.first_name;
@@ -39,10 +43,26 @@
     return users;
   }
 
+  async function fetchImages() {
+    try {
+        const response = await fetch('https://randomuser.me/api/?inc=picture&results=20');
+        const data = await response.json();
+
+        temp = temp.map((user, i) => {
+          if (data.results[i]?.picture?.large) {
+            user.profile_img = data.results[i].picture.large;
+        }
+          return user;
+});
+    } catch (error) {
+        console.error('Error fetching images:', error);
+    }
+}
+
   let showModal = $state(false);
   let selected_card = $state(0);
 
-  /*let temp = $state([
+  let temp = $state([
     {
       name: "Jonanson Smith",
       description:
@@ -115,17 +135,12 @@
         "A creative writer and content strategist with a flair for storytelling.",
       tags: ["Python", "Senior", "Sigma"],
     },
-  ]);*/
-  
-  //Proposed data model
-  //data = [{"name":"John", "profile-img":blob, "image":blob, "description":"some limited description"}, ...]
+  ]);
 
-  // Default category is recommended
   let category = $state("Recommended Users");
   let userID = $state(123);
   function handleCardClick(card_id) {
     userID = temp[card_id].user_id;
-    console.log(userID);
 
     if (isMobile) goto(`/profile/${userID}`);
     else {
@@ -139,13 +154,20 @@
   // Count is just used to convey the button dissapears when there are no more cards to show
   // Simulates loading more users atm
   let count = $state(10);
-  function ShowMore() {
-    let rnd = Math.floor(Math.random()*2) + 1;
-    console.log(rnd);
-    for (let i = 0; i < rnd; i++) {
-      temp = [...temp, temp[0]];
+    async function ShowMore() {
+    try {
+      const newUsers = await fetch_content();
+      if (newUsers && newUsers.length > 0) {
+        temp = [...temp, ...newUsers];
+        count -= newUsers.length;
+      } else {
+        count = 0;
+      }
+      console.log(cot)
+    } catch (error) {
+      count = 0;
+      console.error("Error fetching new content:", error);
     }
-    count -= rnd;
   }
 </script>
 
@@ -167,12 +189,21 @@
       {#each temp as tile, id}
         <button {id} class="card" onclick={() => handleCardClick(id)}>
           <div class="card-image">
-            <img
-              src="data:image/png;base64, {tile.profile_img}",
-              width="150"
-              height="150"
-              alt="Profile"
-            />
+            {#if useBase64}
+              <img
+                src="data:image/png;base64,{tile.profile_img}"
+                width="150"
+                height="150"
+                alt="Profile"
+              />
+            {:else}
+              <img
+                src={tile.profile_img}
+                width="150"
+                height="150"
+                alt="Profile"
+              />
+            {/if}
           </div>
           <div class="description"><p class="description-text">{tile.description}</p></div>
           <div class="name">{tile.name}</div>
@@ -192,7 +223,7 @@
     {/key}
   </div>
 </div>
-{#if count > 0}
+{#if count != 0}
 <div class="show-more">
   <button class="show-more-btn" onclick={() => ShowMore()}>
     {"Show More"}
@@ -207,12 +238,21 @@
   {/snippet}
   <div class="modal-container">
     <div class="card-image">
-      <img
-        src="https://picsum.photos/id/1005/400/300"
-        width="150"
-        height="150"
-        alt="Profile"
-      />
+      {#if useBase64}
+        <img
+          src="data:image/png;base64,{temp[selected_card].profile_img}"
+          width="150"
+          height="150"
+          alt="Profile"
+        />
+      {:else}
+        <img
+          src={temp[selected_card].profile_img}
+          width="150"
+          height="150"
+          alt="Profile"
+        />
+      {/if}
     </div>
     <div class="name">{temp[selected_card].name}</div>
     <div class="modal-description">{temp[selected_card].description}</div>
