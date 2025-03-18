@@ -16,6 +16,21 @@
 
     let currentStage = $state(1);
 
+    import Eye from "../../lib/eye.svelte";
+  
+    // Add these state variables
+    let showPassword = $state(false);
+    let showConfirmPassword = $state(false);
+    
+    // Add these toggle functions
+    function togglePasswordVisibility() {
+      showPassword = !showPassword;
+    }
+    
+    function toggleConfirmPasswordVisibility() {
+      showConfirmPassword = !showConfirmPassword;
+    }
+
     const timezones = [
       "UTC", "GMT", "EST", "EDT", "CST","CDT", "MST", "MDT", "PST", "PDT","AST","AKST","AKDT","HST","HDT","IST",  // India Standard Time
       "CET",  // Central European Time
@@ -986,14 +1001,24 @@
                 <span id="username_message" style="color:red;">Invalid Username</span>
               {/if}
             </div>
-            <div id="password" type= "text">
-                <input class="element" name="password" id="password_in" type="password" placeholder="Password" bind:value={password} onkeyup={()=>{ pw_length_check(); pw_values_check(); pw_match_check();}} />
-				        <span id='pw_length_message'></span>
-                <span style="margin-left: 10px;" id='pw_values_message'></span>
-			      </div>
-			      <div id="password">
-                <input class="element" type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" bind:value={confirm_password} onkeyup={()=>{pw_match_check();}} /> 
-                <span id='pw_match_message'></span>
+            <div id="password" type="text" class="password-field">
+              <div class="icon">
+                <input class="element" name="password" id="password_in" type={showPassword ? "text" : "password"} placeholder="Password" bind:value={password} onkeyup={()=>{ pw_length_check(); pw_values_check(); pw_match_check();}} />
+                <div class="eye-position">
+                  <Eye ToggleVisability={togglePasswordVisibility} />
+                </div>
+              </div>
+              <span id='pw_length_message'></span>
+              <span id='pw_values_message'></span>
+            </div>
+            <div id="password" class="password-field">
+              <div class="icon">
+                <input class="element" type={showConfirmPassword ? "text" : "password"} name="confirm_password" id="confirm_password" placeholder="Confirm Password" bind:value={confirm_password} onkeyup={()=>{pw_match_check();}} /> 
+                <div class="eye-position">
+                  <Eye ToggleVisability={toggleConfirmPasswordVisibility} />
+                </div>
+              </div>
+              <span id='pw_match_message'></span>
             </div>
             <input class="element" type="file" id="profile-pic" accept="image/*" onchange={handle_profile_img}/>
             <textarea class="element" bind:value={description} placeholder="Description"></textarea>
@@ -1099,10 +1124,60 @@
 
     #password {
       display: flex;
-      align-items: center;
-      gap: 20px;
+      align-items: flex-start;
+      gap: 10px;
       flex-wrap: wrap;
       margin-top: 10px;
+      position: relative;
+    }
+
+    .password-field {
+      margin-bottom: 10px;
+      width: 59%;
+      position: relative;
+    }
+
+    #pw_length_message {
+      position: absolute;
+      left: 85%;
+      top: 40%;
+      transform: translateY(-50%);
+      white-space: nowrap; 
+    }
+
+    #pw_values_message {
+      position: absolute;
+      left: 123%;
+      top: 15%;
+      width: max-content;
+      max-width: 200px;
+    }
+
+    #pw_match_message {
+      position: absolute;
+      top: 25%;
+      left: 85%;
+      white-space: nowrap; 
+    }
+        
+    .icon {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+    
+    .eye-position {
+      position: absolute;
+      right: 100px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: auto;
+    }
+    
+    /* input doesn't overlap eye icon */
+    .icon input {
+      padding-right: 35px;
+      width: 50%;
     }
 
     form {
