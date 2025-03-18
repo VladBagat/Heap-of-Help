@@ -4,14 +4,26 @@
   import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
   import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
   import { goto } from "$app/navigation";
+  import LoginModal from './LoginModal.svelte';
+  
+  let showLoginModal = $state(false);
  
-  let { showModal = $bindable(), header, children, userID} = $props();
+  let { showModal = $bindable(), header, children, userID, canRedirect} = $props();
 
   let dialog = $state(); // HTMLDialogElement
 
   $effect(() => {
     if (showModal) dialog.showModal();
   });
+
+  function ProfileRedirect() {
+    if (canRedirect) {
+      goto(`/profile/${userID}`)
+    }
+    else {
+      showLoginModal = true;
+    }
+  }
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
@@ -64,7 +76,7 @@
     <button
       type="button"
       class="see-prf"
-      onclick={() => goto(`/profile/${userID}`)}
+      onclick={() => ProfileRedirect()}
     >
       View Profile
       <svg viewBox="0 0 24 24">
@@ -78,6 +90,8 @@
     >
   </div>
 </dialog>
+
+<LoginModal bind:showModal={showLoginModal} />
 
 <style>
   .modal-container {
