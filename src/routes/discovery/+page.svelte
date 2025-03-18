@@ -61,6 +61,7 @@
 
   let showModal = $state(false);
   let selected_card = $state(0);
+  let showLoginModal = $state(false);
 
   let temp = $state([
     {
@@ -141,12 +142,20 @@
   let userID = $state(123);
   function handleCardClick(card_id) {
     userID = temp[card_id].user_id;
-
-    if (isMobile) goto(`/profile/${userID}`);
+    if (isMobile) {
+      if (useBase64){
+        goto(`/profile/${userID}`);
+      }
+      else {
+          showLoginModal = true;
+      }
+      
+    } 
     else {
       showModal = true;
       selected_card = card_id;
     }
+    
   }
   function handleCategoryChange(event) {
     category = event.target.value;
@@ -232,7 +241,7 @@
 {:else}
 <p>No more users to show :(</p>
 {/if}
-<Modal bind:showModal userID={userID}>
+<Modal bind:showModal userID={userID} canRedirect={useBase64}>
   {#snippet header()}
     <h2 class="category">Profile</h2>
   {/snippet}
@@ -365,7 +374,8 @@
     text-align: left;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 3;        /* Limit to 3 lines of text */
+    -webkit-line-clamp: 3;  
+    line-clamp:3;      /* Limit to 3 lines of text */
     -webkit-box-orient: vertical;
   }
   .modal-description {
