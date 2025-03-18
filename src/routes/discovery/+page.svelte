@@ -147,12 +147,34 @@
     }
     count -= rnd;
   }
+
+  let keyword = $state("")
+  let search = $state(false);
+  let users = $state([])
+  function searchTag() {
+    if (keyword.trim() == "") {
+      search = false;
+    } else {
+      search = true;
+      users = temp.filter(user =>
+      user.tags.some(tag => {
+        return tag.toLowerCase().includes(keyword.toLowerCase());
+      })
+    );
+    }
+}
 </script>
 
 <div class="page-container">
   <h1 class="main-header">Discovery</h1>
   <div class="search">
     <h2 class="category">{category}</h2>
+    <form onsubmit={(e) => {e.preventDefault(); searchTag();}}>
+      <input type="search" placeholder="Search your interest!" bind:value={keyword} />
+      <button type="submit" class="search-button" aria-label="Open settings">
+        <i class="fa fa-search"></i>
+      </button>
+    </form>
     <div class="sort">
       <label for="sort">Sort By:</label>
       <select value={category} onchange={handleCategoryChange}>
@@ -163,8 +185,38 @@
     </div>
   </div>
   <div class="main-grid-container">
-    {#key temp}
-      {#each temp as tile, id}
+    {#if search}
+      {#key users}
+        {#each users as tile, id}
+          <button {id} class="card" onclick={() => handleCardClick(id)}>
+            <div class="card-image">
+              <img
+                src="data:image/png;base64, {tile.profile_img}",
+                width="150"
+                height="150"
+                alt="Profile"
+              />
+            </div>
+            <div class="description"><p class="description-text">{tile.description}</p></div>
+            <div class="name">{tile.name}</div>
+            <div class="tags-container">
+              {#if tile.tags.length > 3}
+              <div class="tag">{tile.tags[0]}</div>
+              <div class="tag">{tile.tags[1]}</div>
+              <div class="tag">{"..."}</div>
+              {:else}
+              {#each tile.tags as tag}
+                <div class="tag">{tag}</div>
+              {/each}
+              {/if}
+            </div>
+          </button>
+        {/each}
+      {/key}
+    {:else}
+      {#key temp}
+        {#each temp as tile, id}
+        
         <button {id} class="card" onclick={() => handleCardClick(id)}>
           <div class="card-image">
             <img
@@ -190,6 +242,7 @@
         </button>
       {/each}
     {/key}
+  {/if}
   </div>
 </div>
 {#if count > 0}
@@ -208,7 +261,7 @@
   <div class="modal-container">
     <div class="card-image">
       <img
-        src="https://picsum.photos/id/1005/400/300"
+        src="data:image/png;base64, {temp[selected_card].profile_img}",
         width="150"
         height="150"
         alt="Profile"
@@ -225,6 +278,8 @@
 </Modal>
 
 <style>
+  @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+
   .page-container {
     margin: 0 auto 25px auto;
     width: 90%;
@@ -352,5 +407,23 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  .search-button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  outline: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  }
+
+  .search-button:hover {
+    background-color: #555;
+  }
+
+  .search-button i {
+    font-size: 1rem;
   }
 </style>
