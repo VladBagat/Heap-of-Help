@@ -1052,8 +1052,9 @@
       justify-content: center;
       align-items: flex-start;
       background-color: #f8f8f8;
-      height: 90vh;
+      min-height: 80vh;
       padding: 20px;
+      margin-bottom: 70px;
     }
 
     #container {
