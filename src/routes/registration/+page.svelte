@@ -93,7 +93,6 @@
     function finalStage() {
       if (validation(currentStage)){
         registration();
-        ProfileRedirect();
         console.log(selectedTags);
       }
     }
@@ -279,7 +278,22 @@
             console.log(json)
 
             if (json.success) {
-                IndexRedirect()
+              const payload = { username: username, password: password, remember:false};
+              const res = await fetch('/api/login', {
+                  method: 'POST',
+                  credentials: 'include',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(payload),
+              });
+
+              const json = await res.json();
+
+              const user_id = json.id
+              if (json.success) {
+                  goto('/discovery');
+              }
             }
         }
         else{
