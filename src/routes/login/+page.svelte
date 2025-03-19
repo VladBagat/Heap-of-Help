@@ -48,19 +48,22 @@
 
 <div id="login-form">
     <div id="container">
-        <input class="element" type="text" bind:value={login} placeholder="Username" />
+        <h1>Sign In</h1>
+        <div class="input-group">
+            <input type="text" bind:value={login} placeholder="Username" />
+        </div>
         <div class="password-field">
             <input class="element" type={showPassword ? "text" : "password"} bind:value={password} placeholder="Password" /> 
             <div class="eye">
                 <Eye ToggleVisability={togglePasswordVisibility} />
             </div>
         </div>
-        <button class="element" onclick={Login}> Login </button>
-        <label>
+        <button class="login-btn" onclick={Login}>Login</button>
+        <label class="remember-label">
             <input type="checkbox" bind:checked={is_remember}/>
             <span>Remember me</span>
         </label>
-        <button class="redirect" on:click={RegRedirect}>Not on Heap of Help?</button>
+        <button class="redirect" onclick={RegRedirect}>Not on Heap of Help?</button>
     </div>
 </div>
 
@@ -177,17 +180,28 @@
 
     .password-field {
         position: relative;
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .password-field input {
+        padding-right: 40px;
     }
 
     .password-field .element {
-        width: 76%;
-        padding-right: 34px;
+        width: 103%;
+        padding-right: 40px;
+        box-sizing: border-box;
     }
-    
+
     .eye {
         position: absolute;
-        right: 30px;
+        right: -5px;
         top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        z-index: 1;
     }
+
 
 </style>
