@@ -211,30 +211,16 @@ onMount(() => {
                         <p>{user.description}</p>
                     </div>
 
-                    <div class="rating-container">
-                        <h3>Rating:</h3>
-                        {#if rating === 0.5}
-                            <img src="/stars/0.5s.jpg" alt="0.5" class="rating">
-                        {:else if rating === 1.0}
-                            <img src="/stars/1s.jpg" alt="1.0" class="rating">
-                        {:else if rating === 1.5}
-                            <img src="/stars/1.5s.jpg" alt="1.5" class="rating">
-                        {:else if rating === 2.0}
-                            <img src="/stars/2s.jpg" alt="2.0" class="rating">
-                        {:else if rating === 2.5}
-                            <img src="/stars/2.5s.jpg" alt="2.5" class="rating">
-                        {:else if rating === 3.0}
-                            <img src="/stars/3s.jpg" alt="3.0" class="rating">
-                        {:else if rating === 3.5}
-                            <img src="/stars/3.5s.jpg" alt="3.5" class="rating">
-                        {:else if rating === 4.0}
-                            <img src="/stars/4.0s.jpg" alt="4.0" class="rating">
-                        {:else if rating === 4.5}
-                            <img src="/stars/4.5s.jpg" alt="4.5" class="rating">
-                        {:else if rating === 5.0}
-                            <img src="/stars/5.0s.jpg" alt="5.0" class="rating">
-                        {/if}
-                    </div>
+                    <div class="rating">
+                        {#each Array(5) as _, i}
+                          <span
+                            class="fa"
+                            class:fa-star={i < Math.floor(rating)}   
+                            class:fa-star-half-o={i + 0.5 === rating}
+                            class:checked={i < rating}              
+                          ></span>
+                        {/each}
+                      </div>
 
                     <div class="buttons">
                         {#if isowner}
@@ -270,6 +256,8 @@ onMount(() => {
 
 
 <style>
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+
 .profile-page {
     display: flex;
     justify-content: center; /* Centers horizontally */
