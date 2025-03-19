@@ -5,6 +5,15 @@
 
     let is_remember = $state(false);
 
+    import Eye from "../../lib/eye.svelte";
+    import Password from '$lib/password.svelte';
+
+    let showPassword = $state(false);
+    
+    function togglePasswordVisibility() {
+        showPassword = !showPassword;
+    }
+
     async function Login() {
         console.log(login);
         console.log(password);
@@ -32,7 +41,6 @@
             }
         }
     }
-    
 
     import { goto } from '$app/navigation';
 
@@ -53,7 +61,12 @@
 <div id="login-form">
     <div id="container">
         <input class="element" type="text" bind:value={login} placeholder="Username" />
-        <input class="element" type="text" bind:value={password} placeholder="Password" /> 
+        <div class="password-field">
+            <input class="element" type={showPassword ? "text" : "password"} bind:value={password} placeholder="Password" /> 
+            <div class="eye">
+                <Eye ToggleVisability={togglePasswordVisibility} />
+            </div>
+        </div>
         <button class="element" onclick={Login}> Login </button>
         <label>
             <input type="checkbox" bind:checked={is_remember}/>
@@ -97,4 +110,22 @@
         text-decoration: underline;
         cursor: pointer;
     }
+
+    /* password visibility */
+
+    .password-field {
+        position: relative;
+    }
+
+    .password-field .element {
+        width: 76%;
+        padding-right: 34px;
+    }
+    
+    .eye {
+        position: absolute;
+        right: 30px;
+        top: 50%;
+    }
+
 </style>

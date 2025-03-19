@@ -92,6 +92,7 @@
 <style>
   .node-wrapper {
     width: 100%;
+    position: relative;
   }
   
   .node {
@@ -102,6 +103,8 @@
     border-radius: 4px;
     transition: all 0.2s;
     border: 1px solid transparent;
+    width: calc(100% - 10px);
+    position: relative;
   }
   
   .node:hover {
@@ -138,6 +141,10 @@
   .node-actions {
     display: flex;
     gap: 5px;
+    position: absolute; /* Position absolutely */
+    right: 110px; /* Align to the right */
+    top: 50%;
+    transform: translateY(-50%);
   }
   
   .action-btn {
@@ -154,6 +161,7 @@
     margin: 0;
     transition: all 0.2s;
     border: 1px solid;
+    z-index: 10;
   }
   
   .add-btn {
@@ -182,5 +190,6 @@
     margin-left: 10px;
     border-left: 1px solid #ddd;
     padding-left: 10px;
+    position: relative;
   }
 </style>
