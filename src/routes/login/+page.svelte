@@ -48,15 +48,18 @@
 
 <div id="login-form">
     <div id="container">
-        <input class="element" type="text" bind:value={login} placeholder="Username" />
+        <h1>Sign In</h1>
+        <div class="input-group">
+            <input type="text" bind:value={login} placeholder="Username" />
+        </div>
         <div class="password-field">
             <input class="element" type={showPassword ? "text" : "password"} bind:value={password} placeholder="Password" /> 
             <div class="eye">
                 <Eye ToggleVisability={togglePasswordVisibility} />
             </div>
         </div>
-        <button class="element" onclick={Login}> Login </button>
-        <label>
+        <button class="login-btn" on:click={Login}>Login</button>
+        <label class="remember-label">
             <input type="checkbox" bind:checked={is_remember}/>
             <span>Remember me</span>
         </label>
@@ -180,13 +183,12 @@
     }
 
     .password-field .element {
-        width: 76%;
         padding-right: 34px;
     }
     
     .eye {
         position: absolute;
-        right: 30px;
+        right: -100px;
         top: 50%;
     }
 
