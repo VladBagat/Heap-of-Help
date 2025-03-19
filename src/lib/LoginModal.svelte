@@ -1,15 +1,20 @@
-<script lang="js">
+<script>
+    import { goto } from '$app/navigation';
+    
+    let { showModal = $bindable() } = $props();
+    
+    let dialog = $state(); // HTMLDialogElement
+    
+    $effect(() => {
+        if (showModal) dialog.showModal();
+    });
     
     let login = $state('');
     let password = $state('');
-
     let is_remember = $state(false);
 
     async function Login() {
-        console.log(login);
-        console.log(password);
-
-        const payload = { username: login, password: password, remember:is_remember };
+        const payload = { username: login, password: password, remember: is_remember };
 
         const res = await fetch('/api/login', {
             method: 'POST',
@@ -22,24 +27,29 @@
 
         const json = await res.json();
 
-        const user_id = json.id
+        const user_id = json.id;
         if (json.success) {
-            goto(`/profile/${user_id}`)
+            dialog.close();
+            goto(`/profile/${user_id}`);
         }
     }
-    
 
-    import { goto } from '$app/navigation';
-
-    function RegRedirect(){
+    function RegRedirect() {
+        dialog.close();
         goto('/registration');
     }
-
-
 </script>
 
-<div id="login-form">
+<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
+<dialog
+    bind:this={dialog}
+    onclose={() => (showModal = false)}
+    onclick={(e) => {
+        if (e.target === dialog) dialog.close();
+    }}
+>
     <div id="container">
+        <button class="close-btn" onclick={() => dialog.close()}>×</button>
         <h1>Sign In</h1>
         <div class="input-group">
             <input type="text" bind:value={login} placeholder="Username" />
@@ -47,37 +57,93 @@
         <div class="input-group">
             <input type="password" bind:value={password} placeholder="Password" />
         </div>
-        <button class="login-btn" on:click={Login}>Login</button>
+        <button class="login-btn" onclick={Login}>Login</button>
         <label class="remember-label">
             <input type="checkbox" bind:checked={is_remember}/>
             <span>Remember me</span>
         </label>
-        <button class="redirect" on:click={RegRedirect}>Not on Heap of Help?</button>
+        <button class="redirect" onclick={RegRedirect}>Not on Heap of Help?</button>
     </div>
-</div>
+</dialog>
 
 <style>
-    #login-form {
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #f5f5f5;
+    dialog {
+        min-width: 240px;
+        max-width: 480px;
+        width: 100%;
+        border: none;
+        padding: 0;
+        border-radius: 12px;
+        background-color: white;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     }
-
+    
+    dialog::backdrop {
+        background: rgba(0, 0, 0, 0.5);
+    }
+    
+    dialog[open] {
+        animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    @keyframes zoom {
+        from {
+            transform: scale(0.95);
+        }
+        to {
+            transform: scale(1);
+        }
+    }
+    
+    dialog[open]::backdrop {
+        animation: fade 0.2s ease-out;
+    }
+    
+    @keyframes fade {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
     #container {
+        position: relative;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        place-content: center;
         gap: 16px;
-        background-color: white;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-        padding: 50px 45px;
-        border-radius: 12px;
-        min-width: 240px;
-        max-width: 480px;
-        width: 90%;
+        padding: 50px 50px;
+        width: 70%;
+        margin: 0 auto;
+    }
+    
+    .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 24px;
+        line-height: 1;
+        cursor: pointer;
+        color: #777;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+    }
+    
+    .close-btn:hover {
+        background-color: #f5f5f5;
+        color: #333;
     }
     
     h1 {
