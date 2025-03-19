@@ -20,7 +20,7 @@
 
         const payload = { username: login, password: password, remember:is_remember };
 
-        const res = await fetch('api/login', {
+        const res = await fetch('/api/login', {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -31,14 +31,9 @@
 
         const json = await res.json();
 
-        console.log(json)
-
-        if (json[0].success) {
-            if (json[0].isTutor) {
-                TutorProfileRedirect();
-            } else {
-                TuteeProfileRedirect();
-            }
+        const user_id = json.id
+        if (json.success) {
+            goto(`/profile/${user_id}`)
         }
     }
 
@@ -48,13 +43,6 @@
         goto('/registration');
     }
 
-    function TutorProfileRedirect(){
-        goto('/profile')
-    }
-
-    function TuteeProfileRedirect() {
-        goto('/student_profile')
-    }
 
 </script>
 

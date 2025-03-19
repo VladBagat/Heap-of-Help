@@ -1,8 +1,11 @@
-<script>
+<script lang="js">
     import { onMount } from "svelte";
+    import { goto } from '$app/navigation';
+    import { page } from '$app/stores';  
+    const id = $page.params.id; 
 
     let isEditing = false;
-
+    let rating = 5.0;
     let isowner=true;
     let user = {
         name:"",
@@ -11,36 +14,42 @@
         description:""
     }
 
-    let tuteeProfile = {};
+    let tutorProfile = {};
     let errorMessage = "";
     let loading = true;
 
-    async function fetchTuteeProfile() {
+    async function fetchTutorProfile() {
         try {
-            const res = await fetch(`api/get_tutee_profile`, {
-                method: 'GET',
+            const payload = { id:id };
+            const res = await fetch(`/api/get_tutor_profile`, {
+                method: 'POST',
                 credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
             });
             const json = await res.json();
             console.log(json);
 
             if (json.success) {
-                tuteeProfile = json.data; //
+                tutorProfile = json.data;
             } else {
                 errorMessage = json.message;
             }
         } catch (error) {
-            errorMessage = "Failed to connect to the server.";
+            console.error("Failed to connect to the server: ", error);
         } finally {
             loading = false;
         }
+        console.log(user);
     }
 
     async function ownerCheck() {
 
         const payload = { username: login };
 
-        const res = await fetch('api/pageowner', {
+        const res = await fetch('/api/pageowner', {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -58,13 +67,6 @@
             isowner = false;
         }
     }
-    function RegisterRedirect(){
-        goto('/register');
-    }
-
-    function IndexRedirect(){
-        goto('/')
-    }
 
     function editProfile() {
         isEditing = !isEditing;
@@ -77,17 +79,14 @@
     }
 
     onMount(() => {
-        fetchTuteeProfile();
+        fetchTutorProfile();
     });
 
-    function handleChat() {
-        console.log("Chat button clicked");
-    }
-
-    function handleEdit() {
-        console.log("Edit button clicked");
-    }
 </script>
+
+ <svelte:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+</svelte:head>
 
 <div class="profile-page">
     <div class="profile-container">
@@ -95,33 +94,59 @@
             <div class="edit-profile">
                 <h2>Edit Profile</h2>
 
-                <label>Name:</label>
+                <div>Name:</div>
                 <input type="text" bind:value={user.name} />
 
-                <label>Location:</label>
+                <div>Location:</div>
                 <input type="text" bind:value={user.location} />
 
-                <label>Email:</label>
+                <div>Email:</div>
                 <input type="email" bind:value={user.email} />
 
-                <label>Description:</label>
+                <div>Description:</div>
                 <textarea bind:value={user.description}></textarea>
             </div>
             <button class="btn save" onclick={saveChanges}> Save </button>
         {:else}
             <div class="profile-header">
-                <img src="data:image/png;base64, {tuteeProfile.profile_img}" alt="Profile Image" class="profile-image" id="profileImage">  
+                <img src="data:image/png;base64, {tutorProfile.profile_img}" alt="Profile" class="profile-image" id="profileImage">  
                 <div class="user-info">
-                    <h2 class="username">{tuteeProfile.first_name} {tuteeProfile.last_name}</h2>
+                    <h2 class="username">{tutorProfile.first_name} {tutorProfile.last_name}</h2>
                     <p class="role">Product Designer</p>
                     <p class="location">📍 New York, NY</p>
-                    <p class="rating"><strong>8.6</strong> ⭐⭐⭐⭐☆</p>
+
+                    {#if rating === 0.5}
+                        <img src="/stars/0.5s.jpg" alt="0.5" class="rating">
+                    {:else if rating === 1.0}
+                        <img src="/stars/1s.jpg" alt="1.0" class="rating">
+                    {:else if rating === 1.5}
+                        <img src="/stars/1.5s.jpg" alt="1.5" class="rating">
+                    {:else if rating === 2.0}
+                        <img src="/stars/2s.jpg" alt="2.0" class="rating">
+                    {:else if rating === 2.5}
+                        <img src="/stars/2.5s.jpg" alt="2.5" class="rating">
+                    {:else if rating === 3.0}
+                        <img src="/stars/3s.jpg" alt="3.0" class="rating">
+                    {:else if rating === 3.5}
+                        <img src="/stars/3.5s.jpg" alt="3.5" class="rating">
+                    {:else if rating === 4.0}
+                        <img src="/stars/4.0s.jpg" alt="4.0" class="rating">
+                    {:else if rating === 4.5}
+                        <img src="/stars/4.5s.jpg" alt="4.5" class="rating">
+                    {:else if rating === 5.0}
+                        <img src="/stars/5.0s.jpg" alt="5.0" class="rating">
+
+                    {/if}
+
+
+
+                    
                     <div class="tags">
                         <p>tag 1, tag 2, tag 3</p>
                     </div>
                     <div class="content">
                         <h3>Description</h3>
-                        <p>{tuteeProfile.description}</p>
+                        <p>{tutorProfile.description}</p>
                     </div>
                     <div class="buttons">
                         {#if isowner}
@@ -174,6 +199,7 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333; /* Add default text color for better readability */
 }
 
 /* Header Section - Profile Image & User Info */
@@ -242,11 +268,27 @@
     color: white;
 }
 
+/* Fix heading and paragraph styling */
+h2, h3 {
+    color: #222; /* Darker color for headings */
+    margin-bottom: 10px;
+}
+
+p {
+    color: #333; /* Ensure paragraph text is readable */
+    line-height: 1.5;
+}
+
 /* Description Section */
 .content {
     padding: 15px;
     background: #f8f9fa;
     border-radius: 5px;
+}
+
+/* Fix for content area */
+.content p {
+    color: #333; /* Ensure description text is readable */
 }
 
 /* Work & Contact Section */
@@ -263,6 +305,7 @@
     padding: 15px;
     border-radius: 5px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    color: #333; /* Ensure text is readable in these sections */
 }
-   
+    
 </style>
