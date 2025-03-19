@@ -142,14 +142,14 @@
     display: flex;
     gap: 5px;
     position: absolute; /* Position absolutely */
-    right: 110px; /* Align to the right */
+    right: 187px; /* Align to the right */
     top: 50%;
     transform: translateY(-50%);
   }
   
   .action-btn {
-    width: 24px;
-    height: 24px;
+    width: 23px;
+    height: 23px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -158,7 +158,6 @@
     font-weight: bold;
     cursor: pointer;
     padding: 0;
-    margin: 0;
     transition: all 0.2s;
     border: 1px solid;
     z-index: 10;
