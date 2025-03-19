@@ -17,12 +17,11 @@
     let currentStage = $state(1);
 
     import Eye from "../../lib/eye.svelte";
+    import Password from '$lib/password.svelte';
   
-    // Add these state variables
     let showPassword = $state(false);
     let showConfirmPassword = $state(false);
-    
-    // Add these toggle functions
+
     function togglePasswordVisibility() {
       showPassword = !showPassword;
     }
@@ -219,8 +218,6 @@
         document.getElementById('pw_match_message').innerHTML = 'Not matching';
       }
     }
-    // import Eye from "./eye.svelte";
-    import Password from '$lib/password.svelte';
 
     async function registration()
      {
@@ -305,12 +302,13 @@
 
     import { goto } from '$app/navigation';
 
-    function ToggleVisability(fieldId) {
-        const field = document.getElementById(fieldId);
-        // ? is a ternary operator, basically a one line if statement
-        // If password hidden when the toggle is pressed it wil be shown, otherwise it will be hidden
-        document.getElementById(fieldId).type = (field.type === "password") ? "text" : "password";
-    }
+    // old passwordfunc
+    // function ToggleVisability(fieldId) {
+    //     const field = document.getElementById(fieldId);
+    //     // ? is a ternary operator, basically a one line if statement
+    //     // If password hidden when the toggle is pressed it wil be shown, otherwise it will be hidden
+    //     document.getElementById(fieldId).type = (field.type === "password") ? "text" : "password";
+    // }
 
     function LoginRedirect(){
         goto('/login');

@@ -5,6 +5,15 @@
 
     let is_remember = $state(false);
 
+    import Eye from "../../lib/eye.svelte";
+    import Password from '$lib/password.svelte';
+
+    let showPassword = $state(false);
+    
+    function togglePasswordVisibility() {
+        showPassword = !showPassword;
+    }
+
     async function Login() {
         console.log(login);
         console.log(password);
@@ -27,7 +36,6 @@
             goto(`/profile/${user_id}`)
         }
     }
-    
 
     import { goto } from '$app/navigation';
 
@@ -40,15 +48,15 @@
 
 <div id="login-form">
     <div id="container">
-        <h1>Sign In</h1>
-        <div class="input-group">
-            <input type="text" bind:value={login} placeholder="Username" />
+        <input class="element" type="text" bind:value={login} placeholder="Username" />
+        <div class="password-field">
+            <input class="element" type={showPassword ? "text" : "password"} bind:value={password} placeholder="Password" /> 
+            <div class="eye">
+                <Eye ToggleVisability={togglePasswordVisibility} />
+            </div>
         </div>
-        <div class="input-group">
-            <input type="password" bind:value={password} placeholder="Password" />
-        </div>
-        <button class="login-btn" on:click={Login}>Login</button>
-        <label class="remember-label">
+        <button class="element" onclick={Login}> Login </button>
+        <label>
             <input type="checkbox" bind:checked={is_remember}/>
             <span>Remember me</span>
         </label>
@@ -164,4 +172,22 @@
     .redirect:hover {
         color: #000;
     }
+
+    /* password visibility */
+
+    .password-field {
+        position: relative;
+    }
+
+    .password-field .element {
+        width: 76%;
+        padding-right: 34px;
+    }
+    
+    .eye {
+        position: absolute;
+        right: 30px;
+        top: 50%;
+    }
+
 </style>
