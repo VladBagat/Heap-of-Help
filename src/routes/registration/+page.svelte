@@ -92,7 +92,6 @@
     function finalStage() {
       if (validation(currentStage)){
         registration();
-        ProfileRedirect();
         console.log(selectedTags);
       }
     }
@@ -262,7 +261,7 @@
               selectedTags: tag_list};
             console.log(payload);
 
-            const res = await fetch('api/registration', {
+            const res = await fetch('/api/registration', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -275,8 +274,23 @@
 
             console.log(json)
 
-            if (json[0].success) {
-                IndexRedirect()
+            if (json.success) {
+              const payload = { username: username, password: password, remember:false};
+              const res = await fetch('/api/login', {
+                  method: 'POST',
+                  credentials: 'include',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(payload),
+              });
+
+              const json = await res.json();
+
+              const user_id = json.id
+              if (json.success) {
+                  goto('/discovery');
+              }
             }
         }
         else{
@@ -305,7 +319,7 @@
     }
 
     function ProfileRedirect(){
-      goto('\profile');
+      goto('/discovery');
     }
 
     let base64Image = $state('');
@@ -352,7 +366,7 @@
 
         console.log(json)
 
-        if (json[0].success) {
+        if (json.success) {
           username_validation = true;
         } else {
           username_validation = false;
@@ -961,8 +975,8 @@
           <form>
             <select id="selection" class="element" bind:value={profile}>
               <option value="" disabled selected>Select Tutor/Student</option>
-              <option value="tutor">Tutor</option>
-              <option value="tutee">Student</option>
+              <option value={true}>Tutor</option>
+              <option value={false}>Student</option>
             </select>
             <input class="element" type="text" bind:value={forename} placeholder="Forename" />
             <input class="element" type="text" bind:value={surname} placeholder="Surname" /> 

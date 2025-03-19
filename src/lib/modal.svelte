@@ -3,13 +3,27 @@
   import { faTimes } from "@fortawesome/free-solid-svg-icons";
   import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
   import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-  let { showModal = $bindable(), header, children } = $props();
+  import { goto } from "$app/navigation";
+  import LoginModal from './LoginModal.svelte';
+  
+  let showLoginModal = $state(false);
+ 
+  let { showModal = $bindable(), header, children, userID, canRedirect} = $props();
 
   let dialog = $state(); // HTMLDialogElement
 
   $effect(() => {
     if (showModal) dialog.showModal();
   });
+
+  function ProfileRedirect() {
+    if (canRedirect) {
+      goto(`/profile/${userID}`)
+    }
+    else {
+      showLoginModal = true;
+    }
+  }
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
@@ -47,7 +61,7 @@
     <button
       type="button"
       class="snd-msg"
-      onclick={() => console.log("Send Message")}
+      onclick={() => goto(`/messages/${userID}`)}
       >Send Message
       <svg viewBox="0 0 24 24">
         <Fa
@@ -62,7 +76,7 @@
     <button
       type="button"
       class="see-prf"
-      onclick={() => console.log("View Profile")}
+      onclick={() => ProfileRedirect()}
     >
       View Profile
       <svg viewBox="0 0 24 24">
@@ -76,6 +90,8 @@
     >
   </div>
 </dialog>
+
+<LoginModal bind:showModal={showLoginModal} />
 
 <style>
   .modal-container {
@@ -114,7 +130,7 @@
     border-bottom: 1px solid #ccc;
   }
   dialog {
-    max-width: 32em;
+    max-width: 48em;    
     border-radius: 0.75rem;
     border: none;
     padding: 0;

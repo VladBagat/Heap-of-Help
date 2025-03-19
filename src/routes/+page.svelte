@@ -16,7 +16,7 @@
             if (res.ok) {
                 const data = await res.json();
                 const { user_id } = data[0]; //user_id for personalised content
-                goto('/discovery'); 
+                goto(`/discovery`); 
             }
             else{
                 goto('/login');
