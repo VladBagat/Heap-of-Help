@@ -58,12 +58,12 @@
                 <Eye ToggleVisability={togglePasswordVisibility} />
             </div>
         </div>
-        <button class="login-btn" on:click={Login}>Login</button>
+        <button class="login-btn" onclick={Login}>Login</button>
         <label class="remember-label">
             <input type="checkbox" bind:checked={is_remember}/>
             <span>Remember me</span>
         </label>
-        <button class="redirect" on:click={RegRedirect}>Not on Heap of Help?</button>
+        <button class="redirect" onclick={RegRedirect}>Not on Heap of Help?</button>
     </div>
 </div>
 
@@ -180,16 +180,28 @@
 
     .password-field {
         position: relative;
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .password-field input {
+        padding-right: 40px;
     }
 
     .password-field .element {
-        padding-right: 34px;
+        width: 103%;
+        padding-right: 40px;
+        box-sizing: border-box;
     }
-    
+
     .eye {
         position: absolute;
-        right: -100px;
+        right: -5px;
         top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        z-index: 1;
     }
+
 
 </style>
