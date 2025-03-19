@@ -30,31 +30,11 @@
       showConfirmPassword = !showConfirmPassword;
     }
 
-    const timezones = [
-      "UTC", "GMT", "EST", "EDT", "CST","CDT", "MST", "MDT", "PST", "PDT","AST","AKST","AKDT","HST","HDT","IST",  // India Standard Time
-      "CET",  // Central European Time
-      "CEST", // Central European Summer Time
-      "EET",  // Eastern European Time
-      "EEST", // Eastern European Summer Time
-      "BST",  // British Summer Time
-      "AEST", // Australian Eastern Standard Time
-      "AEDT", // Australian Eastern Daylight Time
-      "ACST", // Australian Central Standard Time
-      "ACDT", // Australian Central Daylight Time
-      "AWST", // Australian Western Standard Time
-      "JST",  // Japan Standard Time
-      "KST",  // Korea Standard Time
-      "NZST", // New Zealand Standard Time
-      "NZDT", // New Zealand Daylight Time
-      "SAST", // South Africa Standard Time
-      "WIB",  // Western Indonesia Time
-      "WIT",  // Eastern Indonesia Time
-      "MSK",  // Moscow Time
-      "CST6CDT", // Central Standard Time (North America)
-      "EST5EDT", // Eastern Standard Time (North America)
-      "PST8PDT", // Pacific Standard Time (North America)
-      "HST10HDT", // Hawaii Standard Time
-    ];
+    const timezones = ["UTC -12:00", "UTC -11:00", "UTC -10:00", "UTC -09:30", "UTC -09:00", "UTC -08:00", "UTC -07:00",
+    "UTC -06:00", "UTC -05:00", "UTC -04:30", "UTC -04:00", "UTC -03:30", "UTC -03:00", "UTC -02:00", "UTC -01:00", "UTC ±00:00",
+    "UTC +01:00", "UTC +02:00", "UTC +03:00", "UTC +03:30", "UTC +04:00", "UTC +04:30", "UTC +05:00", "UTC +05:30", "UTC +05:45",
+    "UTC +06:00", "UTC +06:30", "UTC +07:00", "UTC +08:00", "UTC +08:45", "UTC +09:00", "UTC +09:30", "UTC +10:00", "UTC +10:30",
+    "UTC +11:00", "UTC +12:00", "UTC +12:45", "UTC +13:00", "UTC +14:00"];
 
     const languages = [ "Abkhazian", "Achinese", "Acoli", "Adangme", "Adyghe", "Afar", "Afrikaans", "Akan",
     "Akkadian", "Albanian", "Aleut", "Amharic", "Angika", "Apache languages", "Arabic","Aragonese", "Arapaho", "Arawak", 
@@ -974,9 +954,9 @@
           <h2>Step 1: Personal Details </h2>
           <form>
             <select id="selection" class="element" bind:value={profile}>
-              <option value="" disabled selected>Select Tutor/Student</option>
-              <option value={true}>Tutor</option>
-              <option value={false}>Student</option>
+              <option value="" disabled>Select Tutor/Student</option>
+              <option value="tutor">Tutor</option>
+              <option value="student">Student</option>
             </select>
             <input class="element" type="text" bind:value={forename} placeholder="Forename" />
             <input class="element" type="text" bind:value={surname} placeholder="Surname" /> 
@@ -1091,7 +1071,7 @@
       background-color: #f8f8f8;
       min-height: 80vh;
       padding: 20px;
-      margin-bottom: 70px;
+      margin-bottom: 5px;  /*This is stopping footer overlap */
     }
 
     #container {
@@ -1101,6 +1081,7 @@
       max-width: 1200px;
       margin: auto;
       padding: 20px;
+      align-items: center;
     }
 
     /* selecting student/tutor box  */
@@ -1295,7 +1276,7 @@
     }
 
     .tag-selection-container {
-      width: 685px;
+      width: 690px;
       display: flex;
       flex-direction: column;
       gap: 20px;
@@ -1304,7 +1285,7 @@
     }
 
     .tree-container {
-      width: 650px;
+      width: 670px;
       border: 1px solid #e8e8e8;
       border-radius: 6px;
       padding: 15px;
@@ -1315,7 +1296,7 @@
     }
 
     .selected-tags-container {
-      width: 95%;
+      width: 96%;
       border: 1px solid #e8e8e8;
       border-radius: 6px;
       padding: 15px;
