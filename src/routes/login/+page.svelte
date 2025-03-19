@@ -5,6 +5,15 @@
 
     let is_remember = $state(false);
 
+    import Eye from "../../lib/eye.svelte";
+    import Password from '$lib/password.svelte';
+
+    let showPassword = $state(false);
+    
+    function togglePasswordVisibility() {
+        showPassword = !showPassword;
+    }
+
     async function Login() {
         console.log(login);
         console.log(password);
@@ -27,7 +36,6 @@
             goto(`/profile/${user_id}`)
         }
     }
-    
 
     import { goto } from '$app/navigation';
 
@@ -44,15 +52,18 @@
         <div class="input-group">
             <input type="text" bind:value={login} placeholder="Username" />
         </div>
-        <div class="input-group">
-            <input type="password" bind:value={password} placeholder="Password" />
+        <div class="password-field">
+            <input class="element" type={showPassword ? "text" : "password"} bind:value={password} placeholder="Password" /> 
+            <div class="eye">
+                <Eye ToggleVisability={togglePasswordVisibility} />
+            </div>
         </div>
-        <button class="login-btn" on:click={Login}>Login</button>
+        <button class="login-btn" onclick={Login}>Login</button>
         <label class="remember-label">
             <input type="checkbox" bind:checked={is_remember}/>
             <span>Remember me</span>
         </label>
-        <button class="redirect" on:click={RegRedirect}>Not on Heap of Help?</button>
+        <button class="redirect" onclick={RegRedirect}>Not on Heap of Help?</button>
     </div>
 </div>
 
@@ -164,4 +175,33 @@
     .redirect:hover {
         color: #000;
     }
+
+    /* password visibility */
+
+    .password-field {
+        position: relative;
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .password-field input {
+        padding-right: 40px;
+    }
+
+    .password-field .element {
+        width: 103%;
+        padding-right: 40px;
+        box-sizing: border-box;
+    }
+
+    .eye {
+        position: absolute;
+        right: -5px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        z-index: 1;
+    }
+
+
 </style>
