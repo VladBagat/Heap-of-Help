@@ -4,22 +4,11 @@
     import { page } from '$app/stores';  
     const id = $page.params.id; 
 
-    let isEditing = false;
-    let rating = 5.0;
-    let isowner=true;
-let user = {
-    forename: "",
-    surname: "",
-    email: "",
-    age: "",
-    education: "",
-    language: "",
-    timezone: "",
-    description: "",
-    profile_img: "/static/profile.avif"
-};
+    let isEditing = $state(false);
+    let rating = 5;
+    let isowner=$state(false);
 
-
+    let user = $state([])
 
     let tutorProfile = {};
     let isTutor = false;  
@@ -72,7 +61,7 @@ async function fetchProfile() {
 
     async function ownerCheck() {
 
-        const payload = { username: login };
+        const payload = { user_id: id };
 
         const res = await fetch('/api/pageowner', {
             method: 'POST',
@@ -84,12 +73,13 @@ async function fetchProfile() {
         });
 
         const json = await res.json();
-
-        if (res.ok) {
+        console.log(json)
+        if (json.success) {
             isowner = true;
-        }
-        else {
+            console.log("owner");
+        } else {
             isowner = false;
+            console.log("not owner");
         }
     }
 
@@ -149,11 +139,38 @@ function setUserProfile(data) {
     };
 }
 
+let en_rating = $state(false)
+
+async function enable_rating() {
+    const payload = {tutor_id: id};
+    
+    const res = await fetch('/api/enable_rating', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
+    const json = await res.json();
+    console.log(json)
+
+    if (json.success) {
+        console.log("can rate this tutor");
+        en_rating = true;  // Exit edit mode
+    } else {
+        en_rating = false;
+        console.log("cannot rate this tutor");
+    }
+}
+
 
 onMount(() => {
     console.log("Running onMount()");
     fetchProfile();
     ownerCheck();
+    enable_rating();
 });
 
 
@@ -211,30 +228,20 @@ onMount(() => {
                         <p>{user.description}</p>
                     </div>
 
-                    <div class="rating-container">
-                        <h3>Rating:</h3>
-                        {#if rating === 0.5}
-                            <img src="/stars/0.5s.jpg" alt="0.5" class="rating">
-                        {:else if rating === 1.0}
-                            <img src="/stars/1s.jpg" alt="1.0" class="rating">
-                        {:else if rating === 1.5}
-                            <img src="/stars/1.5s.jpg" alt="1.5" class="rating">
-                        {:else if rating === 2.0}
-                            <img src="/stars/2s.jpg" alt="2.0" class="rating">
-                        {:else if rating === 2.5}
-                            <img src="/stars/2.5s.jpg" alt="2.5" class="rating">
-                        {:else if rating === 3.0}
-                            <img src="/stars/3s.jpg" alt="3.0" class="rating">
-                        {:else if rating === 3.5}
-                            <img src="/stars/3.5s.jpg" alt="3.5" class="rating">
-                        {:else if rating === 4.0}
-                            <img src="/stars/4.0s.jpg" alt="4.0" class="rating">
-                        {:else if rating === 4.5}
-                            <img src="/stars/4.5s.jpg" alt="4.5" class="rating">
-                        {:else if rating === 5.0}
-                            <img src="/stars/5.0s.jpg" alt="5.0" class="rating">
-                        {/if}
-                    </div>
+                    <div class="rating">
+                        {#each Array(5) as _, i}
+                          {#if i < Math.floor(rating)}
+                            <!-- Full star -->
+                            <span class="fa fa-star checked"></span>
+                          {:else if i === Math.floor(rating) && (rating - Math.floor(rating) > 0)}
+                            <!-- Half star -->
+                            <span class="fa fa-star-half-o checked"></span>
+                          {:else}
+                            <!-- Empty star -->
+                            <span class="fa fa-star-o"></span>
+                          {/if}
+                        {/each}
+                      </div>
 
                     <div class="buttons">
                         {#if isowner}
@@ -242,6 +249,9 @@ onMount(() => {
                         {/if}
                         <button class="btn primary">Send Message</button>
                         <button class="btn secondary">Contacts</button>
+                        {#if en_rating}
+                            <button class="btn rating">Rate</button>
+                        {/if}
                         <button class="btn danger">Report User</button>
                     </div> 
                 </div>
@@ -320,9 +330,8 @@ onMount(() => {
 }
 
 .rating {
-    font-size: 14px;
-    font-weight: bold;
-    color: #444;
+    color:#fffa86;
+    font-size: 30px;
 }
 
 /* Buttons */
