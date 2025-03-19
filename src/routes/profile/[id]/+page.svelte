@@ -5,10 +5,10 @@
     const id = $page.params.id; 
 
     let isEditing = false;
-    let rating = 5.0;
+    let rating =3;
     let isowner=true;
 let user = {
-    forename: "",
+    forename: "name",
     surname: "",
     email: "",
     age: "",
@@ -16,7 +16,7 @@ let user = {
     language: "",
     timezone: "",
     description: "",
-    profile_img: "/static/profile.avif"
+    profile_img: ""
 };
 
 
@@ -42,7 +42,17 @@ async function fetchProfile() {
 
         if (json.success) {
             isTutor = true;
-            setUserProfile(json.data);
+            user = {
+                forename: json.data.forename,
+                surname: json.data.surname,
+                email: json.data.email,
+                age: json.data.age,
+                education: json.data.education,
+                language: json.data.language,
+                timezone: json.data.timezone,
+                description: json.data.description,
+                profile_img: json.data.profile_img
+            };
             return;
         }
 
@@ -57,7 +67,17 @@ async function fetchProfile() {
 
         if (json.success) {
             isTutor = false;
-            setUserProfile(json.data);
+            user = {
+                forename: data.forename,
+                surname: data.surname,
+                email: data.email,
+                age: data.age,
+                education: data.education,
+                language: data.language,
+                timezone: data.timezone,
+                description: data.description,
+                profile_img: data.profile_img
+            };
         } else {
             console.error("Profile not found.");
             errorMessage = "Profile not found.";
@@ -72,7 +92,7 @@ async function fetchProfile() {
 
     async function ownerCheck() {
 
-        const payload = { username: login };
+        const payload = { user_id: id };
 
         const res = await fetch('/api/pageowner', {
             method: 'POST',
@@ -135,18 +155,30 @@ async function saveChanges() {
         console.error("Error updating profile:", error);
     }
 }
-function setUserProfile(data) {
-    user = {
-        forename: data.forename || "",
-        surname: data.surname || "",
-        email: data.email || "",
-        age: data.age || "",
-        education: data.education || "",
-        language: data.language || "",
-        timezone: data.timezone || "",
-        description: data.description || "",
-        profile_img: data.profile_img ? `data:image/png;base64,${data.profile_img}` : "/default-profile.jpg"
-    };
+
+let en_rating = $state(false)
+
+async function enable_rating() {
+    const payload = {tutor_id: id};
+    
+    const res = await fetch('/api/enable_rating', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
+    console.log(res)
+
+    if (res.success) {
+        console.log("can rate this tutor");
+        en_rating = true;  // Exit edit mode
+    } else {
+        en_rating = false;
+        console.log("cannot rate this tutor");
+    }
 }
 
 
@@ -154,6 +186,7 @@ onMount(() => {
     console.log("Running onMount()");
     fetchProfile();
     ownerCheck();
+    enable_rating();
 });
 
 
@@ -198,7 +231,7 @@ onMount(() => {
             </div>
         {:else}
             <div class="profile-header">
-                <img src="{user.profile_img}" alt="Profile" class="profile-image">  
+                <img src="data:image/png;base64, {user.profile_img}" alt="Profile" class="profile-image">  
                 <div class="user-info">
                     <h2 class="username">{user.forename} {user.surname}</h2>
                     <p class="age"> Age: {user.age}</p>
@@ -213,14 +246,19 @@ onMount(() => {
 
                     <div class="rating">
                         {#each Array(5) as _, i}
-                          <span
-                            class="fa"
-                            class:fa-star={i < Math.floor(rating)}   
-                            class:fa-star-half-o={i + 0.5 === rating}
-                            class:checked={i < rating}              
-                          ></span>
+                          {#if i < Math.floor(rating)}
+                            <!-- Full star -->
+                            <span class="fa fa-star checked"></span>
+                          {:else if i === Math.floor(rating) && (rating - Math.floor(rating) > 0)}
+                            <!-- Half star -->
+                            <span class="fa fa-star-half-o checked"></span>
+                          {:else}
+                            <!-- Empty star -->
+                            <span class="fa fa-star-o"></span>
+                          {/if}
                         {/each}
                       </div>
+                      
 
                     <div class="buttons">
                         {#if isowner}
@@ -256,7 +294,7 @@ onMount(() => {
 
 
 <style>
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+    @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
 
 .profile-page {
     display: flex;
@@ -308,9 +346,8 @@ onMount(() => {
 }
 
 .rating {
-    font-size: 14px;
-    font-weight: bold;
-    color: #444;
+    color:#fffa86;
+    font-size: 30px;
 }
 
 /* Buttons */

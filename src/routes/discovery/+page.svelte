@@ -172,7 +172,7 @@
       } else {
         count = 0;
       }
-      console.log(cot)
+      console.log(count)
     } catch (error) {
       count = 0;
       console.error("Error fetching new content:", error);
