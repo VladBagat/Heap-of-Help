@@ -962,8 +962,8 @@
           <form>
             <select id="selection" class="element" bind:value={profile}>
               <option value="" disabled>Select Tutor/Student</option>
-              <option value="tutor">Tutor</option>
-              <option value="student">Student</option>
+              <option value=True>Tutor</option>
+              <option value=False>Student</option>
             </select>
             <input class="element" type="text" bind:value={forename} placeholder="Forename" />
             <input class="element" type="text" bind:value={surname} placeholder="Surname" /> 
