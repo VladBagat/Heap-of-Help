@@ -20,6 +20,7 @@
   let showDrawer = $state(false);
   let users = $state([]);
   let messages = $state([]);
+  let messagesContainer;
 
   async function getChats() {
     try {
@@ -50,11 +51,12 @@
         goto("/messages");
         return;
       }
-      messages = await [
+      messages = [
         ...messages,
-        ...(data[0]["content"]["received"].length ? [[0, ...data[0]["content"]["received"]]] : []),
-        ...(data[0]["content"]["sent"].length ? [[1, ...data[0]["content"]["sent"]]] : []), 
+        ...data[0]["content"]["received"].map(item => [0, item.content, item.timestamp]) ,
+        ...data[0]["content"]["sent"].map(item => [1, item.content, item.timestamp]), 
       ];
+      messages.sort((a, b) => new Date(a[2]) - new Date(b[2]));
     } catch (err) {
       console.error("Error fetching messages:", err);
     }
@@ -83,17 +85,16 @@
       });
       }
       catch(err){
-        console.log(err);
+        console.error(err);
       }
-      messages = [...messages, [1, {"content": message,"timestamp":new Date(Date.now()).toISOString().slice(0, 19).replace("T", " ")}]];
-      
-      console.log(messages);
+      messages = [...messages, [1, message, new Date(Date.now()).toISOString().slice(0, 19).replace("T", " ")]];
       messageBox.innerText = "";
       handleInput();
-    } else {
+     } else {
       alert("Message is too long");
     }
   }
+  
   let charcnt = $state(0);
   function handleInput(event) {
     message = messageBox.textContent;
@@ -117,16 +118,16 @@
       <h2 class="chat-subhead">Remember to be polite :)</h2>
     {/if}
     <div class="messages-container">
-      {#each messages as message}
+      {#each messages as message, msg_id}
         {#if message[0] == 1}
-        <div class="timestamp" class:sender={true}>{message[1]["timestamp"]}</div>
+        <div class="timestamp" class:sender={true}>{message[2]}</div>
           <div class="bubble" class:sender={true}>
-            {message[1]["content"]}
+            {message[1]}
           </div>
         {:else}
-          <div class="timestamp" class:receiver={true}>{message[1]["timestamp"]}</div>
+          <div class="timestamp" class:receiver={true}>{message[2]}</div>
           <div class="bubble" class:receiver={true}>
-            {message[1]["content"]}
+            {message[1]}
           </div>
         {/if}
       {/each}
@@ -299,7 +300,7 @@
     overflow-y: scroll;
     height: 90vh;
     width: 80vw;
-    justify-content: end;
+    justify-content: flex-start; 
   }
   .bubble {
     max-width: 80%;

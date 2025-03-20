@@ -2,10 +2,15 @@
     import { onMount } from "svelte";
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';  
+    import { browser } from '$app/environment';
+    import Modal from "$lib/modal.svelte";
+    import { faSortNumericAsc } from "@fortawesome/free-solid-svg-icons";
+
     const id = $page.params.id; 
 
     let isEditing = $state(false);
-    let rating = 5;
+    let ratingValue = $state(5);
+    let ratedValue = $state();
     let isowner=$state(false);
 
     let user = $state([])
@@ -141,6 +146,10 @@ function setUserProfile(data) {
 
 let en_rating = $state(false)
 
+async function message()  {
+    goto (`/messages/${id}`)
+}
+
 async function enable_rating() {
     const payload = {tutor_id: id};
     
@@ -165,12 +174,73 @@ async function enable_rating() {
     }
 }
 
+    let showRatingPopup = $state(false);
+    let rating_before = $state(false);
+    let average_rating = $state(0);
+
+    async function load_rating() {
+        const payload = {tutor_id: id};
+    
+        const res = await fetch('/api/rating_check', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+        const json = await res.json();
+        console.log(json)
+
+        if (json.success) {
+            rating_before = false;
+            console.log("not rated");
+        } else {
+            rating_before = true;
+            console.log("rated");
+            ratedValue = json.rating
+        }
+        average_rating = json.average;
+    }
+
+    async function show_rating() {
+        showRatingPopup= true;
+    }
+
+    async function close_rating() {
+        showRatingPopup= false;
+        console.log(ratingValue);
+        const payload = {tutor_id: id, rated: rating_before, rating: ratingValue};
+        console.log(payload);
+        const res = await fetch('/api/rating', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+        const json = await res.json();
+        console.log(json)
+
+        if (json.success) {
+            console.log("successfully rate the tutor");
+        } else {
+            console.log("fail to rate");
+        }
+        load_rating()
+    }
+
+
 
 onMount(() => {
     console.log("Running onMount()");
     fetchProfile();
     ownerCheck();
     enable_rating();
+    load_rating();
 });
 
 
@@ -210,8 +280,8 @@ onMount(() => {
                 <div>Description:</div>
                 <textarea bind:value={user.description}></textarea>
 
-                <button class="btn save" on:click={saveChanges}> Save </button>
-                <button class="btn cancel" on:click={editProfile}> Cancel </button>
+                <button class="btn save" onclick={saveChanges}> Save </button>
+                <button class="btn cancel" onclick={editProfile}> Cancel </button>
             </div>
         {:else}
             <div class="profile-header">
@@ -219,7 +289,6 @@ onMount(() => {
                 <div class="user-info">
                     <h2 class="username">{user.forename} {user.surname}</h2>
                     <p class="age"> Age: {user.age}</p>
-                    <p class="education">Education:{user.education}</p>
                     <p class="language"> Languages:{user.language}</p>
                     <p class="timezone"> Timezone:{user.timezone}</p>
 
@@ -230,10 +299,10 @@ onMount(() => {
 
                     <div class="rating">
                         {#each Array(5) as _, i}
-                          {#if i < Math.floor(rating)}
+                          {#if i < Math.floor(average_rating)}
                             <!-- Full star -->
                             <span class="fa fa-star checked"></span>
-                          {:else if i === Math.floor(rating) && (rating - Math.floor(rating) > 0)}
+                          {:else if i === Math.floor(average_rating) && (average_rating - Math.floor(average_rating) > 0)}
                             <!-- Half star -->
                             <span class="fa fa-star-half-o checked"></span>
                           {:else}
@@ -243,14 +312,87 @@ onMount(() => {
                         {/each}
                       </div>
 
+                      {#if showRatingPopup}
+                      <!-- Overlay for the modal -->
+                            <!-- Modal content (stop propagation so clicks inside don't close it) -->
+                            <div class="modal">
+                                {#if rating_before}
+                                    <h3>You have rated {user.forename} with {ratedValue} stars</h3>
+                                    <h3>You can change the rating</h3>
+                                {:else}
+                                    <h3>Rate {user.forename}</h3>
+                                {/if}
+                                <div id="half-stars">
+                                    <div class="rating-group">
+                                      <input bind:group={ratingValue} class="rating__input rating__input--none" name="rating2" id="rating2-0" value="0" type="radio"/>
+                                      <label aria-label="0 stars" class="rating__label" for="rating2-0">&nbsp;</label>
+                                  
+                                      <label aria-label="0.5 stars" class="rating__label rating__label--half" for="rating2-05">
+                                        <i class="rating__icon rating__icon--star fa fa-star-half"></i>
+                                      </label>
+                                      <input bind:group={ratingValue} class="rating__input" name="rating2" id="rating2-05" value="0.5" type="radio" />
+                                  
+                                      <label aria-label="1 star" class="rating__label" for="rating2-10">
+                                        <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                      </label>
+                                      <input bind:group={ratingValue} class="rating__input" name="rating2" id="rating2-10" value="1" type="radio" />
+                                  
+                                      <label aria-label="1.5 stars" class="rating__label rating__label--half" for="rating2-15">
+                                        <i class="rating__icon rating__icon--star fa fa-star-half"></i>
+                                      </label>
+                                      <input bind:group={ratingValue} class="rating__input" name="rating2" id="rating2-15" value="1.5" type="radio" />
+                                  
+                                      <label aria-label="2 stars" class="rating__label" for="rating2-20">
+                                        <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                      </label>
+                                      <input bind:group={ratingValue} class="rating__input" name="rating2" id="rating2-20" value="2" type="radio" />
+                                  
+                                      <label aria-label="2.5 stars" class="rating__label rating__label--half" for="rating2-25">
+                                        <i class="rating__icon rating__icon--star fa fa-star-half"></i>
+                                      </label>
+                                      <input bind:group={ratingValue} class="rating__input" name="rating2" id="rating2-25" value="2.5" type="radio" />
+                                  
+                                      <label aria-label="3 stars" class="rating__label" for="rating2-30">
+                                        <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                      </label>
+                                      <input bind:group={ratingValue} class="rating__input" name="rating2" id="rating2-30" value="3" type="radio" />
+                                  
+                                      <label aria-label="3.5 stars" class="rating__label rating__label--half" for="rating2-35">
+                                        <i class="rating__icon rating__icon--star fa fa-star-half"></i>
+                                      </label>
+                                      <input bind:group={ratingValue} class="rating__input" name="rating2" id="rating2-35" value="3.5" type="radio" />
+                                  
+                                      <label aria-label="4 stars" class="rating__label" for="rating2-40">
+                                        <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                      </label>
+                                      <input bind:group={ratingValue} class="rating__input" name="rating2" id="rating2-40" value="4" type="radio" />
+                                  
+                                      <label aria-label="4.5 stars" class="rating__label rating__label--half" for="rating2-45">
+                                        <i class="rating__icon rating__icon--star fa fa-star-half"></i>
+                                      </label>
+                                      <input bind:group={ratingValue} class="rating__input" name="rating2" id="rating2-45" value="4.5" type="radio" />
+                                  
+                                      <label aria-label="5 stars" class="rating__label" for="rating2-50">
+                                        <i class="rating__icon rating__icon--star fa fa-star"></i>
+                                      </label>
+                                      <input bind:group={ratingValue} class="rating__input" name="rating2" id="rating2-50" value="5" type="radio" checked />
+                                    </div>
+                                  </div>
+                                <p class="desc" style="margin-bottom: 2rem; font-family: sans-serif; font-size:0.9rem"></p>
+                                <button onclick={close_rating}>Submit</button>
+                            </div>
+
+                      {/if}
+
                     <div class="buttons">
                         {#if isowner}
-                            <button class="btn edit" on:click={editProfile}> Edit Profile</button>
+                            <button class="btn edit" onclick={editProfile}> Edit Profile</button>
                         {/if}
-                        <button class="btn primary">Send Message</button>
-                        
+                      
+                        <button class="btn primary" onclick={message}>Send Message</button>
+
                         {#if en_rating}
-                            <button class="btn rating">Rate</button>
+                            <button class="btn rating" onclick={show_rating}>Rate</button>
                         {/if}
                         <button class="btn danger">Report User</button>
                     </div> 
@@ -260,10 +402,9 @@ onMount(() => {
 
         <div class="work-contact">
             <div class="work">
-                <h2>WORK</h2>
+                <h2>Education</h2>
                 <div>
-                    <h3>Google</h3>
-                    <p>Software Developer</p>
+                    <p>{user.education}</p>
                 </div>
             </div>
             <div class="contact">
@@ -334,8 +475,9 @@ onMount(() => {
 }
 
 .rating {
-    color:#fffa86;
-    font-size: 30px;
+    padding: 0 0.1em;
+    font-size: 2rem;
+    color: orange;
 }
 
 /* Buttons */
@@ -417,7 +559,7 @@ p {
         text-align: center;
     }
     .profile-image {
-        width: 120px;\=
+        width: 120px;
         height: 120px;
     }
     .buttons {
@@ -431,6 +573,82 @@ p {
     .work-contact{
         flex-direction: column;
     }
+}
+
+#half-stars {
+
+/* use display:inline-flex to prevent whitespace issues. alternatively, you can put all the children of .rating-group on a single line */
+.rating-group {
+  display: inline-flex;
+}
+
+/* make hover effect work properly in IE */
+.rating__icon {
+  pointer-events: none;
+}
+
+/* hide radio inputs */
+.rating__input {
+ position: absolute !important;
+ left: -9999px !important;
+}
+
+/* set icon padding and size */
+.rating__label {
+  cursor: pointer;
+  /* if you change the left/right padding, update the margin-right property of .rating__label--half as well. */
+  padding: 0 0.1em;
+  font-size: 2rem;
+}
+
+/* add padding and positioning to half star labels */
+.rating__label--half {
+  padding-right: 0;
+  margin-right: -0.6em;
+  z-index: 2;
+}
+
+/* set default star color */
+.rating__icon--star {
+  color: orange;
+}
+
+/* set color of none icon when unchecked */
+.rating__icon--none {
+  color: #eee;
+}
+
+/* if none icon is checked, make it red */
+.rating__input--none:checked + .rating__label .rating__icon--none {
+  color: red;
+}
+
+/* if any input is checked, make its following siblings grey */
+.rating__input:checked ~ .rating__label .rating__icon--star {
+  color: #ddd;
+}
+
+/* make all stars orange on rating group hover */
+.rating-group:hover .rating__label .rating__icon--star,
+.rating-group:hover .rating__label--half .rating__icon--star {
+  color: orange;
+}
+
+/* make hovered input's following siblings grey on hover */
+.rating__input:hover ~ .rating__label .rating__icon--star,
+.rating__input:hover ~ .rating__label--half .rating__icon--star {
+  color: #ddd;
+}
+
+/* make none icon grey on rating group hover */
+.rating-group:hover .rating__input--none:not(:hover) + .rating__label .rating__icon--none {
+   color: #eee;
+}
+
+/* make none icon red on hover */
+.rating__input--none:hover + .rating__label .rating__icon--none {
+  color: red;
+}
 }
     
 </style>
