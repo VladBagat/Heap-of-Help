@@ -388,8 +388,9 @@ onMount(() => {
                         {#if isowner}
                             <button class="btn edit" onclick={editProfile}> Edit Profile</button>
                         {/if}
+                      
                         <button class="btn primary" onclick={message}>Send Message</button>
-                        <button class="btn secondary">Contacts</button>
+
                         {#if en_rating}
                             <button class="btn rating" onclick={show_rating}>Rate</button>
                         {/if}
