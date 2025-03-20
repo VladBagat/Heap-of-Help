@@ -49,7 +49,7 @@
         overflow-y: auto;
         border: 1px solid #e8e8e8;
         position: relative;
-        overflow-x: hidden;
+        overflow-x: auto;
     }
     
   </style>
