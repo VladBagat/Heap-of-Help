@@ -16,6 +16,10 @@
     let errorMessage = "";
     let loading = true;
 
+    function ratingalert() {
+        // pop up where start appear and user can rate
+    }
+
 async function fetchProfile() {
     try {
         console.log("Fetching profile for ID:", id);
@@ -57,7 +61,6 @@ async function fetchProfile() {
         loading = false;
     }
 }
-
 
     async function ownerCheck() {
 
@@ -250,7 +253,7 @@ onMount(() => {
                         <button class="btn primary">Send Message</button>
                         <button class="btn secondary">Contacts</button>
                         {#if en_rating}
-                            <button class="btn rating">Rate</button>
+                            <button class="btn rating" onclick={ratingalert}>Rate</button>
                         {/if}
                         <button class="btn danger">Report User</button>
                     </div> 
