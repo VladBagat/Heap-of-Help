@@ -248,7 +248,7 @@ onMount(() => {
                             <button class="btn edit" on:click={editProfile}> Edit Profile</button>
                         {/if}
                         <button class="btn primary">Send Message</button>
-                        <button class="btn secondary">Contacts</button>
+                        
                         {#if en_rating}
                             <button class="btn rating">Rate</button>
                         {/if}
