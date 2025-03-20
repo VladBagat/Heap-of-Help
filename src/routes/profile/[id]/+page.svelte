@@ -421,7 +421,7 @@ p {
         text-align: center;
     }
     .profile-image {
-        width: 120px;\=
+        width: 120px;
         height: 120px;
     }
     .buttons {
