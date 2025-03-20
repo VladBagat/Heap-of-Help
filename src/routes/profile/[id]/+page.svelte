@@ -225,7 +225,6 @@ onMount(() => {
                 <div class="user-info">
                     <h2 class="username">{user.forename} {user.surname}</h2>
                     <p class="age"> Age: {user.age}</p>
-                    <p class="education">Education:{user.education}</p>
                     <p class="language"> Languages:{user.language}</p>
                     <p class="timezone"> Timezone:{user.timezone}</p>
 
@@ -266,10 +265,9 @@ onMount(() => {
 
         <div class="work-contact">
             <div class="work">
-                <h2>WORK</h2>
+                <h2>Education</h2>
                 <div>
-                    <h3>Google</h3>
-                    <p>Software Developer</p>
+                    <p>{user.education}</p>
                 </div>
             </div>
             <div class="contact">
