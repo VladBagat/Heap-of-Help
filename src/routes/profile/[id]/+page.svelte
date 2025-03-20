@@ -2,6 +2,8 @@
     import { onMount } from "svelte";
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';  
+    import { browser } from '$app/environment';
+
     const id = $page.params.id; 
 
     let isEditing = $state(false);
@@ -141,6 +143,10 @@ function setUserProfile(data) {
 
 let en_rating = $state(false)
 
+async function message()  {
+    goto (`/messages/${id}`)
+}
+
 async function enable_rating() {
     const payload = {tutor_id: id};
     
@@ -210,8 +216,8 @@ onMount(() => {
                 <div>Description:</div>
                 <textarea bind:value={user.description}></textarea>
 
-                <button class="btn save" on:click={saveChanges}> Save </button>
-                <button class="btn cancel" on:click={editProfile}> Cancel </button>
+                <button class="btn save" onclick={saveChanges}> Save </button>
+                <button class="btn cancel" onclick={editProfile}> Cancel </button>
             </div>
         {:else}
             <div class="profile-header">
@@ -245,9 +251,9 @@ onMount(() => {
 
                     <div class="buttons">
                         {#if isowner}
-                            <button class="btn edit" on:click={editProfile}> Edit Profile</button>
+                            <button class="btn edit" onclick={editProfile}> Edit Profile</button>
                         {/if}
-                        <button class="btn primary">Send Message</button>
+                        <button class="btn primary" onclick={message}>Send Message</button>
                         <button class="btn secondary">Contacts</button>
                         {#if en_rating}
                             <button class="btn rating">Rate</button>

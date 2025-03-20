@@ -24,6 +24,15 @@
       showLoginModal = true;
     }
   }
+
+  function message() {
+    if (canRedirect) {
+      goto(`/messages/${userID}`)
+    }
+    else {
+      showLoginModal = true;
+    }
+  }
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
@@ -61,7 +70,7 @@
     <button
       type="button"
       class="snd-msg"
-      onclick={() => goto(`/messages/${userID}`)}
+      onclick={() => message()}
       >Send Message
       <svg viewBox="0 0 24 24">
         <Fa
