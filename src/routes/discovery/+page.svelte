@@ -11,11 +11,16 @@
   onMount(async () => {
     const mediaQuery = window.matchMedia("(max-width: 768px)");
     const updateMobile = () => (isMobile = mediaQuery.matches);
-    fetchImages()
+    try {
+      temp = await fetch_content();
+    }
+    catch(error) {
+      fetchImages()
+    }
 
   
     updateMobile();
-    temp = await fetch_content();
+    
     return () => mediaQuery.removeEventListener("change", updateMobile);
   });
 
