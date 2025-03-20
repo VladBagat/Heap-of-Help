@@ -1,7 +1,7 @@
 <script lang="js">
   import Drawer from "../../../lib/drawer.svelte";
   import { onMount } from "svelte";
-  import { goto } from "$app/navigation";
+  import { goto, onNavigate } from "$app/navigation";
  
   let isMobile = $state(false);
   onMount(() => {
@@ -51,10 +51,15 @@
         goto("/messages");
         return;
       }
+      const newMessages = [
+        ...data[0]["content"]["received"].map(item => [0, item.content, item.timestamp]),
+        ...data[0]["content"]["sent"].map(item => [1, item.content, item.timestamp]),
+      ];
+
+      // Only append messages with timestamps not already present
       messages = [
         ...messages,
-        ...data[0]["content"]["received"].map(item => [0, item.content, item.timestamp]) ,
-        ...data[0]["content"]["sent"].map(item => [1, item.content, item.timestamp]), 
+        ...newMessages.filter(newMsg => !messages.some(oldMsg => oldMsg[2] === newMsg[2]))
       ];
       messages.sort((a, b) => new Date(a[2]) - new Date(b[2]));
     } catch (err) {
@@ -65,8 +70,17 @@
   let message = $state("");
   let isMsgValid = $state(false);
   let messageBox;
-  onMount(getChats);
-  onMount(getMessages);
+  onMount(() => {
+    getChats()
+    getMessages()
+    const interval = setInterval(getMessages, (Math.random()+0.1)*10000); 
+
+    onNavigate(() => {
+      clearInterval(interval);
+  })
+  }
+    
+  );
   async function SendMessage() {
     handleInput();
     if (isMsgValid) {
