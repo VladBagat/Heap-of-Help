@@ -2,6 +2,8 @@
     import { onMount } from "svelte";
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';  
+    import { browser } from '$app/environment';
+
     const id = $page.params.id; 
 
     let isEditing = $state(false);
@@ -141,6 +143,10 @@ function setUserProfile(data) {
 
 let en_rating = $state(false)
 
+async function message()  {
+    goto (`/messages/${id}`)
+}
+
 async function enable_rating() {
     const payload = {tutor_id: id};
     
@@ -210,8 +216,8 @@ onMount(() => {
                 <div>Description:</div>
                 <textarea bind:value={user.description}></textarea>
 
-                <button class="btn save" on:click={saveChanges}> Save </button>
-                <button class="btn cancel" on:click={editProfile}> Cancel </button>
+                <button class="btn save" onclick={saveChanges}> Save </button>
+                <button class="btn cancel" onclick={editProfile}> Cancel </button>
             </div>
         {:else}
             <div class="profile-header">
@@ -219,7 +225,6 @@ onMount(() => {
                 <div class="user-info">
                     <h2 class="username">{user.forename} {user.surname}</h2>
                     <p class="age"> Age: {user.age}</p>
-                    <p class="education">Education:{user.education}</p>
                     <p class="language"> Languages:{user.language}</p>
                     <p class="timezone"> Timezone:{user.timezone}</p>
 
@@ -245,9 +250,9 @@ onMount(() => {
 
                     <div class="buttons">
                         {#if isowner}
-                            <button class="btn edit" on:click={editProfile}> Edit Profile</button>
+                            <button class="btn edit" onclick={editProfile}> Edit Profile</button>
                         {/if}
-                        <button class="btn primary">Send Message</button>
+                        <button class="btn primary" onclick={message}>Send Message</button>
                         <button class="btn secondary">Contacts</button>
                         {#if en_rating}
                             <button class="btn rating">Rate</button>
@@ -260,10 +265,9 @@ onMount(() => {
 
         <div class="work-contact">
             <div class="work">
-                <h2>WORK</h2>
+                <h2>Education</h2>
                 <div>
-                    <h3>Google</h3>
-                    <p>Software Developer</p>
+                    <p>{user.education}</p>
                 </div>
             </div>
             <div class="contact">
@@ -417,7 +421,7 @@ p {
         text-align: center;
     }
     .profile-image {
-        width: 120px;\=
+        width: 120px;
         height: 120px;
     }
     .buttons {

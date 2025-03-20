@@ -4,7 +4,7 @@
     let password = $state('');
 
     let is_remember = $state(false);
-
+    let errorMessage = $state(''); 
     import Eye from "../../lib/eye.svelte";
     import Password from '$lib/password.svelte';
 
@@ -15,6 +15,7 @@
     }
 
     async function Login() {
+        errorMessage = ''; // Reset error msg
         console.log(login);
         console.log(password);
 
@@ -34,6 +35,8 @@
         const user_id = json.id
         if (json.success) {
             goto(`/profile/${user_id}`)
+        } else {
+            errorMessage = "Incorrect username or password. Please try again.";
         }
     }
 
@@ -58,6 +61,9 @@
                 <Eye ToggleVisability={togglePasswordVisibility} />
             </div>
         </div>
+        {#if errorMessage}
+        <div class="error-msg">{errorMessage}</div>
+        {/if}
         <button class="login-btn" onclick={Login}>Login</button>
         <label class="remember-label">
             <input type="checkbox" bind:checked={is_remember}/>
@@ -202,6 +208,17 @@
         cursor: pointer;
         z-index: 1;
     }
+.error-msg {
+    color: red;
+    font-size: 0.9em;
+    background: #ffe0e0;
+    border: 1px solid red;
+    padding: 8px;
+    width: 100%;
+    text-align: center;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
 
 
 </style>
