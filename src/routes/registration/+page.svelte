@@ -30,6 +30,13 @@
       showConfirmPassword = !showConfirmPassword;
     }
 
+    const employment = [ "Academic", "Administrator", "Apprentice", "Artist", "Business Owner",
+    "Consultant", "Contractor", "Director", "Educator", "Entrepreneur", "Executive", "Freelancer",
+    "Full-time Employee", "Healthcare Professional", "Intern", "Lecturer", "Legal Professional",
+    "Manager", "Part-time Employee", "Postgraduate", "Researcher", "Retired", "Self-employed",
+    "Student", "Temporary Worker", "Trainee", "Unemployed", "Volunteer", "Work-from-home Employee",
+    "Undergraduate", "Other"];
+
     const timezones = ["UTC -12:00", "UTC -11:00", "UTC -10:00", "UTC -09:30", "UTC -09:00", "UTC -08:00", "UTC -07:00",
     "UTC -06:00", "UTC -05:00", "UTC -04:30", "UTC -04:00", "UTC -03:30", "UTC -03:00", "UTC -02:00", "UTC -01:00", "UTC ±00:00",
     "UTC +01:00", "UTC +02:00", "UTC +03:00", "UTC +03:30", "UTC +04:00", "UTC +04:30", "UTC +05:00", "UTC +05:30", "UTC +05:45",
@@ -104,8 +111,8 @@
           alert("Please enter a valid email address");
           return false;
         }
-        if (education.trim() == "") {
-          alert("Please enter your education");
+        if (education == "") {
+          alert("Please select your current employment status");
           return false;
         }
         if (age <= 0 || age > 99) {
@@ -961,7 +968,12 @@
             <input class="element" type="text" bind:value={forename} placeholder="Forename" />
             <input class="element" type="text" bind:value={surname} placeholder="Surname" /> 
             <input class="element" type="text" bind:value={email} placeholder="Email" /> 
-            <input class="element" type="text" bind:value={education} placeholder="Education" />
+            <select id="education" name="education" class="element" bind:value={education}>
+              <option value="">Select Employment Status</option>
+              {#each employment as employ}
+                <option value={employ}>{employ}</option>
+              {/each}
+            </select>
             <input class="element" type="number" bind:value={age} placeholder="Age" />
             <select id="language" name="language" class="element" bind:value={language}>
               <option value="">Select a language</option>
