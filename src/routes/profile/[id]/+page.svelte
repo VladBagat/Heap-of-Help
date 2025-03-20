@@ -281,20 +281,23 @@ onMount(() => {
 
 /* Main Container */
 .profile-container {
-    width: 90%;
-    max-width: 900px;
+    width: 95%;
+    max-width: 1200px;
+    margin: auto;
     background: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    color: #333; /* Add default text color for better readability */
+    color: #333; 
 }
 
 /* Header Section - Profile Image & User Info */
 .profile-header {
     display: flex;
     align-items: center;
-    gap: 70px;
+    gap: 30px;
+    flex-wrap: wrap;
+    text-align: center;
     border-bottom: 1px solid #ddd;
     padding-bottom: 20px;
     padding-left: 50px;
@@ -305,11 +308,12 @@ onMount(() => {
 }
 
 .profile-image {
-    width: 200px;  
-    height: 200px;
+    width: 150px;  
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid #ddd;
+    max-width: 100%
 }
 
 /* User Info */
@@ -394,6 +398,30 @@ p {
     border-radius: 5px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     color: #333; /* Ensure text is readable in these sections */
+}
+
+/*scaling for smaller screens */
+
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    .profile-image {
+        width: 120px;\=
+        height: 120px;
+    }
+    .buttons {
+        flex-direction: column;
+        width: 100%
+    }
+    .btn {
+        width: 100%;
+        padding: 10px;
+    }
+    .work-contact{
+        flex-direction: column;
+    }
 }
     
 </style>
