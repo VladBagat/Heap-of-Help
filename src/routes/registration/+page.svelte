@@ -30,12 +30,12 @@
       showConfirmPassword = !showConfirmPassword;
     }
 
-    const employment = [ "Academic", "Administrator", "Apprentice", "Artist", "Business Owner",
-    "Consultant", "Contractor", "Director", "Educator", "Entrepreneur", "Executive", "Freelancer",
-    "Full-time Employee", "Healthcare Professional", "Intern", "Lecturer", "Legal Professional",
-    "Manager", "Part-time Employee", "Postgraduate", "Researcher", "Retired", "Self-employed",
-    "Student", "Temporary Worker", "Trainee", "Unemployed", "Volunteer", "Work-from-home Employee",
-    "Undergraduate", "Other"];
+    const employment = [ "Academic", "Administrator", "Apprentice", "Artist/Creative", "Business Owner",
+    "Consultant", "Contractor", "Director", "Educator/Teacher", "Entrepreneur/Start-up Founder", "Executive/Director", "Freelancer",
+    "Full-time Employee", "Government Employee", "Healthcare Professional", "Intern", "IT Professional", "Journalist/Writer",
+    "Lecturer/Professor", "Legal Professional", "Manager", "Non-profit Worker", "Part-time Employee", "Postgraduate", "Remote Worker",
+    "Researcher", "Retired", "Scientist", "Self-employed", "Student", "Technician", "Temporary Worker", "Trainee",
+    "Unemployed", "Volunteer", "Undergraduate", "Other"];
 
     const timezones = ["UTC -12:00", "UTC -11:00", "UTC -10:00", "UTC -09:30", "UTC -09:00", "UTC -08:00", "UTC -07:00",
     "UTC -06:00", "UTC -05:00", "UTC -04:30", "UTC -04:00", "UTC -03:30", "UTC -03:00", "UTC -02:00", "UTC -01:00", "UTC ±00:00",
