@@ -325,14 +325,6 @@
 
     import { goto } from '$app/navigation';
 
-    // old passwordfunc
-    // function ToggleVisability(fieldId) {
-    //     const field = document.getElementById(fieldId);
-    //     // ? is a ternary operator, basically a one line if statement
-    //     // If password hidden when the toggle is pressed it wil be shown, otherwise it will be hidden
-    //     document.getElementById(fieldId).type = (field.type === "password") ? "text" : "password";
-    // }
-
     function LoginRedirect(){
         goto('/login');
     }
@@ -1257,8 +1249,8 @@
     font-size: 14px;
     margin-top: 1px;
     position: static;
-    text-align: center; /* Add this to center the text */
-    width: 100%; /* Ensure it takes full width */
+    text-align: center;
+    width: 100%;
   }
 
   /* photo upload styling */
@@ -1476,26 +1468,37 @@
     background-color: rgba(255, 77, 79, 0.1) !important;
   }
 
+  /* css for smaller screens on elemnts not adjusting */
+
   @media (max-width: 768px) {
-    .tag-selection-container {
+
+    .tree-container {
+      min-height: 500px;
+      max-height: 600px;
       width: 100%;
-      padding: 0 10px;
-      box-sizing: border-box;
+      overflow-y: auto;
+    }
+
+    .tag-selection-container,
+    #form-content,
+    #sidebar,
+    form {
+      max-width: 100%;
     }
     
     .tree-container,
     .selected-tags-container {
       width: 100%;
-      min-height: auto; /* Adjust height for mobile */
-      max-height: 300px; /* Smaller max height on mobile */
+      max-width: none;
+      box-sizing: border-box;
     }
     
     .selected-tags-list {
-      justify-content: center; /* Center tags on small screens */
+      justify-content: center;
     }
     
     .selected-tag {
-      font-size: 14px; /* Slightly smaller on mobile */
+      font-size: 14px;
       padding: 5px 10px;
     }
     
@@ -1524,10 +1527,10 @@
     }
   }
 
-  /* For very small screens */
+  /* for very small screens */
   @media (max-width: 480px) {
     .selected-tag {
-      width: 100%; /* Full width on very small screens */
+      width: 100%;
       justify-content: space-between;
       margin-bottom: 5px;
     }
