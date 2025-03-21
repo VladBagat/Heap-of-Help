@@ -74,9 +74,11 @@
     getChats()
     getMessages()
     const interval = setInterval(getMessages, (Math.random()+0.1)*10000); 
+    const chat_interval = setInterval(getChats, (120000)); 
 
     onNavigate(() => {
       clearInterval(interval);
+      clearInterval(chat_interval);
   })
   }
     
