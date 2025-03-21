@@ -37,11 +37,47 @@
     "Researcher", "Retired", "Scientist", "Self-employed", "Student", "Technician", "Temporary Worker", "Trainee",
     "Unemployed", "Volunteer", "Undergraduate", "Other"];
 
-    const timezones = ["UTC -12:00", "UTC -11:00", "UTC -10:00", "UTC -09:30", "UTC -09:00", "UTC -08:00", "UTC -07:00",
-    "UTC -06:00", "UTC -05:00", "UTC -04:30", "UTC -04:00", "UTC -03:30", "UTC -03:00", "UTC -02:00", "UTC -01:00", "UTC ±00:00",
-    "UTC +01:00", "UTC +02:00", "UTC +03:00", "UTC +03:30", "UTC +04:00", "UTC +04:30", "UTC +05:00", "UTC +05:30", "UTC +05:45",
-    "UTC +06:00", "UTC +06:30", "UTC +07:00", "UTC +08:00", "UTC +08:45", "UTC +09:00", "UTC +09:30", "UTC +10:00", "UTC +10:30",
-    "UTC +11:00", "UTC +12:00", "UTC +12:45", "UTC +13:00", "UTC +14:00"];
+    const timezones = [
+    "UTC -12:00 (Baker Island, Howland Island)", 
+    "UTC -11:00 (American Samoa, Niue)", 
+    "UTC -10:00 (HST - Hawaii, Tahiti)", 
+    "UTC -09:30 (MART - Marquesas Islands)", 
+    "UTC -09:00 (AKST - Alaska, Gambier Islands)", 
+    "UTC -08:00 (PST - Pacific Standard Time - USA, Canada, Mexico)", 
+    "UTC -07:00 (MST - Mountain Standard Time - USA, Canada)", 
+    "UTC -06:00 (CST - Central Standard Time - USA, Canada, Mexico)", 
+    "UTC -05:00 (EST - Eastern Standard Time - USA, Canada, Cuba)", 
+    "UTC -04:30 (VET - Venezuela)", 
+    "UTC -04:00 (AST - Atlantic Standard Time - Canada, Caribbean)", 
+    "UTC -03:30 (NST - Newfoundland Standard Time - Canada)", 
+    "UTC -03:00 (ART - Argentina, Brazil, Uruguay)", 
+    "UTC -02:00 (GST - South Georgia, Sandwich Islands)", 
+    "UTC -01:00 (AZOT - Azores, Cape Verde)", 
+    "UTC ±00:00 (GMT - UK, Ireland, Iceland)", 
+    "UTC +01:00 (CET - Central European Time - Germany, France, Spain, Italy)", 
+    "UTC +02:00 (EET - Eastern European Time - Greece, Turkey, Israel, Egypt)", 
+    "UTC +03:00 (AST - Arabian Standard Time - Saudi Arabia, Kuwait, Bahrain)", 
+    "UTC +03:30 (IRST - Iran Standard Time - Iran)", 
+    "UTC +04:00 (AMT - Armenia Time, AZT - Azerbaijan Time, GST - Gulf Standard Time - UAE)", 
+    "UTC +04:30 (AFT - Afghanistan Time)", 
+    "UTC +05:00 (PKT - Pakistan Standard Time, UZT - Uzbekistan Time)", 
+    "UTC +05:30 (IST - Indian Standard Time - India, Sri Lanka)", 
+    "UTC +05:45 (NPT - Nepal Time - Nepal)", 
+    "UTC +06:00 (BST - Bangladesh Standard Time, KGT - Kyrgyzstan Time)", 
+    "UTC +06:30 (CCT - Cocos Islands Time, MMT - Myanmar Time)", 
+    "UTC +07:00 (ICT - Indochina Time - Vietnam, Thailand, Cambodia)", 
+    "UTC +08:00 (CST - China Standard Time, WST - Western Standard Time - Australia)", 
+    "UTC +08:45 (ACST - Australian Central Standard Time - Eucla region)", 
+    "UTC +09:00 (JST - Japan Standard Time, KST - Korea Standard Time)", 
+    "UTC +09:30 (ACST - Australian Central Standard Time - Northern Territory, South Australia)", 
+    "UTC +10:00 (AEST - Australian Eastern Standard Time - Queensland, Papua New Guinea)", 
+    "UTC +10:30 (LHST - Lord Howe Standard Time - Australia)", 
+    "UTC +11:00 (SBT - Solomon Islands Time, VUT - Vanuatu Time, NCT - New Caledonia Time)", 
+    "UTC +12:00 (FJT - Fiji Time, GILT - Gilbert Islands Time, MHT - Marshall Islands Time)", 
+    "UTC +12:45 (CHAST - Chatham Islands Standard Time - New Zealand)", 
+    "UTC +13:00 (TOT - Tonga Time, SAMT - Samoa Standard Time, TKT - Tokelau Time)", 
+    "UTC +14:00 (LINT - Line Islands Time - Kiribati)"
+    ];
 
     const languages = [ "Abkhazian", "Achinese", "Acoli", "Adangme", "Adyghe", "Afar", "Afrikaans", "Akan",
     "Akkadian", "Albanian", "Aleut", "Amharic", "Angika", "Apache languages", "Arabic","Aragonese", "Arapaho", "Arawak", 
@@ -66,7 +102,7 @@
     "Tibetan", "Tigrinya", "Tongan", "Tswana", "Turkish", "Turkmen", "Twi", "Udmurt", "Uighur", "Ukrainian", "Urdu", "Uzbek", "Venda", "Vietnamese",
     "Walloon", "Welsh", "Western Frisian", "Wolof", "Xhosa", "Yiddish", "Yoruba", "Zhuang", "Zulu" ];
 
-    const regex = new RegExp('^[a-z0-9_-]{3,15}$');
+    const regex = new RegExp('^[A-Za-z0-9_-]{3,15}$');
     const emailregex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     const passwordregex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/;
   
@@ -288,14 +324,6 @@
     
 
     import { goto } from '$app/navigation';
-
-    // old passwordfunc
-    // function ToggleVisability(fieldId) {
-    //     const field = document.getElementById(fieldId);
-    //     // ? is a ternary operator, basically a one line if statement
-    //     // If password hidden when the toggle is pressed it wil be shown, otherwise it will be hidden
-    //     document.getElementById(fieldId).type = (field.type === "password") ? "text" : "password";
-    // }
 
     function LoginRedirect(){
         goto('/login');
@@ -968,20 +996,20 @@
             <input class="element" type="text" bind:value={forename} placeholder="Forename" />
             <input class="element" type="text" bind:value={surname} placeholder="Surname" /> 
             <input class="element" type="text" bind:value={email} placeholder="Email" /> 
-            <select id="education" name="education" class="element" bind:value={education}>
+            <select id="selection" name="education" class="element" bind:value={education}>
               <option value="">Select Employment Status</option>
               {#each employment as employ}
                 <option value={employ}>{employ}</option>
               {/each}
             </select>
             <input class="element" type="number" bind:value={age} placeholder="Age" />
-            <select id="language" name="language" class="element" bind:value={language}>
+            <select id="selection" name="language" class="element" bind:value={language}>
               <option value="">Select a language</option>
               {#each languages as lang}
                 <option value={lang}>{lang}</option>
               {/each}
             </select>
-            <select class="element" bind:value={timezone}>
+            <select id ="selection" class="element" bind:value={timezone}>
               <option value="" disabled selected>Select Time Zone</option>
               {#each timezones as tz}
                 <option value={tz}>{tz}</option>
@@ -1026,8 +1054,8 @@
             </div>
             <input class="element" type="file" id="profile-pic" accept="image/*" onchange={handle_profile_img}/>
             <textarea class="element" bind:value={description} placeholder="Description"></textarea>
-            <button type="button" onclick={previousStage}>Back</button>
             <button type="button" onclick={nextStage}>Next</button>
+            <button type="button" onclick={previousStage}>Back</button>
           </form>
         {/if}
 
@@ -1072,297 +1100,444 @@
     </div>
   </div>
 </div>
-  
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
 
-    #registration {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      background-color: #f8f8f8;
-      min-height: 80vh;
-      padding: 20px;
-      margin-bottom: 5px;  /*This is stopping footer overlap */
-    }
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
 
-    #container {
-      display: flex;
-      flex-direction: column;
-      width: 75%;
-      max-width: 1200px;
-      margin: auto;
-      padding: 20px;
-      align-items: center;
-    }
+  #registration {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #f8f8f8;
+    min-height: 80vh;
+    padding: 20px;
+    margin-bottom: 5px;  /* this stops footer overlap */
+  }
 
-    /* selecting student/tutor box  */
-    #selection {
-      cursor: pointer;
-    }
+  #container {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    align-items: center;
+  }
 
-    #form-content {
+  #form-content {
+    width: 100%;
+    max-width: 720px;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 10px;
+    margin: 0 auto;
+  }
+
+  .element {
+    width: 85%;
+    padding: 12px 19px;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s;
+    align-self: center;
+  }
+
+  .element:focus {
+    outline: none;
+    border-color: #4a6cf7;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+  }
+
+  /* selecting student/tutor box  */
+  #selection {
+    cursor: pointer;
+  }
+
+  h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 23px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 500;
+  }
+
+  h3 {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 2rem;
+  }
+
+  #username {
+    position: relative;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  #username_in {
+    max-width: 550px;
+    padding-right: 110px;
+  }
+
+  #valid_username {
+    position: absolute;
+    right: 8px;
+    top: 50px;
+    font-size: 14px;
+    max-width: 100px;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    padding: 10px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  #valid_username:hover {
+    background-color: #555;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  #username_message {
+    display: block;
+    font-size: 14px;
+    margin-top: 20px;
+    margin-bottom: 1px;
+  }
+
+  #selection {
+    cursor: pointer;
+    width: 92%;
+  }
+
+  #password {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    position: relative;
+  }
+
+  .password-field {
+    position: relative;
+    margin-bottom: 1.5rem;
+    width: 100%;
+  }
+
+  #pw_length_message,
+  #pw_values_message,
+  #pw_match_message {
+    display: block;
+    font-size: 14px;
+    margin-top: 1px;
+    position: static;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* photo upload styling */
+  input[type="file"] {
+    background-color: white;
+  }
+
+  /* description styling */
+  textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  /* eye */
+  .icon {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+
+  /* input doesn't overlap eye icon */
+  .icon input {
+    padding-right: 35px;
+    width: 50%;
+  }
+
+  .eye-position {
+    position: absolute;
+    right: 170px;
+    top: 37%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+  }
+
+  button[type="button"] {
+    width: 100%;
+    padding: 16px;
+    margin: 20px 0;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  button[type="button"]:first-of-type {
+    width: 100%;
+    padding: 16px;
+    margin: 20px 0;
+    margin-right: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  button[type="button"]:hover {
+    background-color: #555;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .submit-btn:hover {
+    background-color: #28a745 !important;
+    transform: scale(1.02);
+  }
+
+  span[style="color:green;"] {
+    color: #28a745 !important;
+  }
+
+  /* for sidebar */
+  #sidebar {
+    width: 100%;
+    max-width: 700px;
+    padding: 20px;
+    background-color: #ececec;
+    color: black;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .progress-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .progress-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    padding: 0 5px;
+  }
+
+  .progress-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background-color: #ccc;
+    color: white;
+    border-radius: 50%;
+    margin-bottom: 8px;
+    font-weight: bold;
+    position: relative;
+  }
+
+  .current .progress-number {
+    background-color: rgb(46, 108, 174);
+  }
+
+  .completed .progress-number {
+    background-color: rgb(76, 135, 76);
+  }
+
+  /* tags */
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+
+  .tag-selection-container {
+    width: 690px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+    color: black;
+  }
+
+  .tag-selection-container {
+    width: 100%;
+    max-width: 690px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+    color: black;
+  }
+
+  .tree-container {
+    width: 100%;
+    align-self: center;
+    padding: 15px;
+    min-height: 400px;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  .selected-tags-container {
+    width: 100%;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+    padding: 15px;
+    background-color: #fafafa;
+    min-height: 200px;
+    overflow-y: auto;
+    align-self: center;
+  }
+
+  .selected-tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .selected-tag {
+    display: flex;
+    align-items: center;
+    background-color: #e6f7ff;
+    padding: 7px 12px;
+    border-radius: 30px;
+    font-size: 15px;
+    border: 1px solid #91caff;
+  }
+
+  .empty-selection {
+    color: grey;
+    font-style: italic;
+  }
+
+  /* need to overwrite button styling*/
+  button.remove-btn {
+    background: none !important;
+    color: red !important;
+    height: 24px !important;
+    width: 24px !important;
+    padding: 0 !important;
+    margin: -5px -5px -5px 5px !important;
+    transform: none !important;
+    border-radius: 50% !important;
+    font-weight: bold !important;
+  }
+
+  button.remove-btn:hover {
+    background-color: rgba(255, 77, 79, 0.1) !important;
+  }
+
+  /* css for smaller screens on elemnts not adjusting */
+
+  @media (max-width: 768px) {
+
+    .tree-container {
+      min-height: 500px;
+      max-height: 600px;
       width: 100%;
-      max-width: 700px;
-      padding: 20px;
-      background-color: #ffffff;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      overflow-y: auto;
     }
 
-    #username {
-      display: flex;
+    .tag-selection-container,
+    #form-content,
+    #sidebar,
+    form {
+      max-width: 100%;
+    }
+    
+    .tree-container,
+    .selected-tags-container {
+      width: 100%;
+      max-width: none;
+      box-sizing: border-box;
+    }
+    
+    .selected-tags-list {
       justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-top: 20px;
     }
-
-    #username_in {
-      max-width: 550px;
+    
+    .selected-tag {
+      font-size: 14px;
+      padding: 5px 10px;
+    }
+    
+    .remove-btn {
+      width: 20px;
+      height: 20px;
+      font-size: 16px;
+      margin: -3px -3px -3px 3px;
     }
 
     #valid_username {
-      max-width: 100px;
-    }
-
-    #password {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-      position: relative;
-    }
-
-    .password-field {
-      margin-bottom: 10px;
-      width: 59%;
-      position: relative;
-    }
-
-    #pw_length_message {
       position: absolute;
-      left: 85%;
-      top: 40%;
-      transform: translateY(-50%);
-      white-space: nowrap; 
+      right: auto;
+      top: auto;
+      bottom: -20px;
+      align-content: center;
     }
-
-    #pw_values_message {
-      position: absolute;
-      left: 123%;
-      top: 15%;
-      width: max-content;
-      max-width: 200px;
-    }
-
-    #pw_match_message {
-      position: absolute;
-      top: 25%;
-      left: 85%;
-      white-space: nowrap; 
-    }
-        
-    .icon {
-      position: relative;
-      display: inline-block;
+    
+    #username_in {
+      padding-right: 0;
       width: 100%;
     }
     
-    .eye-position {
-      position: absolute;
-      right: 100px;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: auto;
+    #username {
+      padding-bottom: 50px;
     }
-    
-    /* input doesn't overlap eye icon */
-    .icon input {
-      padding-right: 35px;
-      width: 50%;
-    }
+  }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 13px;
-    }
-
-    .element {
-      padding: 11px;
-      border: 1px solid #aaa;
-      font-size: 15px;
-      border-radius: 5px;
-    }
-
-    h2 {
-      font-family: 'Poppins', sans-serif;
-      font-size: 23px;
-      color: #333;
-      margin-bottom: 15px;
-    }
-
-    h3 {
-      font-family: 'Poppins', sans-serif;
-      font-size: 20px;
-      color: #333;
-      margin-bottom: 15px;
-    }
-
-    button {
-      padding: 12px;
-      background-color: #d3d3d3;
-      color: #333;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background-color 0.3s ease, transform 0.1s ease;
-    }
-
-    button:hover {
-      background-color: #b0b0b0;
-      transform: scale(1.02);
-    }
-
-    /*for sidebar */
-    #sidebar {
-      width: 100%;
-      max-width: 700px;
-      padding: 20px;
-      background-color: #ececec;
-      color: black;
-      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-      border: 1px solid #ccc;
-      border-radius: 15px;
-      margin-bottom: 20px;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    .progress-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      flex: 1;
-      padding: 0 5px;
-    }
-
-    .progress-container {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      margin: 5px 0;
-    }
-
-    .progress-number {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 30px;
-      height: 30px;
-      background-color: #ccc;
-      color: white;
-      border-radius: 50%;
-      margin-bottom: 8px;
-      font-weight: bold;
-      position: relative;
-    }
-
-    .current .progress-number {
-      background-color: rgb(46, 108, 174);
-    }
-
-    .completed .progress-number {
-      background-color: rgb(76, 135, 76);
-    }
-
-    /* tags */
-    .nav-buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 15px;
-    }
-
-    .tag-selection-container {
-      width: 690px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      margin-bottom: 20px;
-      color: black;
-    }
-
-    .tree-container {
-      width: 670px;
-      border: 1px solid #e8e8e8;
-      border-radius: 6px;
-      padding: 15px;
-      background-color: #fafafa;
-      min-height: 400px;
-      max-height: 500px;
-      overflow-y: auto;
-    }
-
-    .selected-tags-container {
-      width: 96%;
-      border: 1px solid #e8e8e8;
-      border-radius: 6px;
-      padding: 15px;
-      background-color: #fafafa;
-      min-height: 200px;
-      overflow-y: auto;
-    }
-
-    .selected-tags-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
+  /* for very small screens */
+  @media (max-width: 480px) {
     .selected-tag {
-      display: flex;
-      align-items: center;
-      background-color: #e6f7ff;
-      padding: 7px 12px;
-      border-radius: 30px;
-      font-size: 15px;
-      border: 1px solid #91caff;
+      width: 100%;
+      justify-content: space-between;
+      margin-bottom: 5px;
     }
-
-    .empty-selection {
-      color: grey;
-      font-style: italic;
+    
+    .tree-container {
+      padding: 10px;
     }
+  }
 
-    .remove-btn {
-      background: none;
-      color: red;
-      cursor: pointer;
-      font-size: 19px;
-      font-weight: bold;
-      margin: -5px -5px -5px 5px;
-      height: 24px;
-      width: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-    }
-
-    .remove-btn:hover {
-      background-color: rgba(255, 77, 79, 0.1);
-    }
-
-    .submit-btn {
-      background-color: #95dc71;
-    }
-
-    .submit-btn:hover {
-      background-color: #65ab45;
-    }
-
-  </style>
+</style>
