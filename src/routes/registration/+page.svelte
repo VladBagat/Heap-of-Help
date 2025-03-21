@@ -37,11 +37,47 @@
     "Researcher", "Retired", "Scientist", "Self-employed", "Student", "Technician", "Temporary Worker", "Trainee",
     "Unemployed", "Volunteer", "Undergraduate", "Other"];
 
-    const timezones = ["UTC -12:00", "UTC -11:00", "UTC -10:00", "UTC -09:30", "UTC -09:00", "UTC -08:00", "UTC -07:00",
-    "UTC -06:00", "UTC -05:00", "UTC -04:30", "UTC -04:00", "UTC -03:30", "UTC -03:00", "UTC -02:00", "UTC -01:00", "UTC ±00:00",
-    "UTC +01:00", "UTC +02:00", "UTC +03:00", "UTC +03:30", "UTC +04:00", "UTC +04:30", "UTC +05:00", "UTC +05:30", "UTC +05:45",
-    "UTC +06:00", "UTC +06:30", "UTC +07:00", "UTC +08:00", "UTC +08:45", "UTC +09:00", "UTC +09:30", "UTC +10:00", "UTC +10:30",
-    "UTC +11:00", "UTC +12:00", "UTC +12:45", "UTC +13:00", "UTC +14:00"];
+    const timezones = [
+    "UTC -12:00 (Baker Island, Howland Island)", 
+    "UTC -11:00 (American Samoa, Niue)", 
+    "UTC -10:00 (HST - Hawaii, Tahiti)", 
+    "UTC -09:30 (MART - Marquesas Islands)", 
+    "UTC -09:00 (AKST - Alaska, Gambier Islands)", 
+    "UTC -08:00 (PST - Pacific Standard Time - USA, Canada, Mexico)", 
+    "UTC -07:00 (MST - Mountain Standard Time - USA, Canada)", 
+    "UTC -06:00 (CST - Central Standard Time - USA, Canada, Mexico)", 
+    "UTC -05:00 (EST - Eastern Standard Time - USA, Canada, Cuba)", 
+    "UTC -04:30 (VET - Venezuela)", 
+    "UTC -04:00 (AST - Atlantic Standard Time - Canada, Caribbean)", 
+    "UTC -03:30 (NST - Newfoundland Standard Time - Canada)", 
+    "UTC -03:00 (ART - Argentina, Brazil, Uruguay)", 
+    "UTC -02:00 (GST - South Georgia, Sandwich Islands)", 
+    "UTC -01:00 (AZOT - Azores, Cape Verde)", 
+    "UTC ±00:00 (GMT - UK, Ireland, Iceland)", 
+    "UTC +01:00 (CET - Central European Time - Germany, France, Spain, Italy)", 
+    "UTC +02:00 (EET - Eastern European Time - Greece, Turkey, Israel, Egypt)", 
+    "UTC +03:00 (AST - Arabian Standard Time - Saudi Arabia, Kuwait, Bahrain)", 
+    "UTC +03:30 (IRST - Iran Standard Time - Iran)", 
+    "UTC +04:00 (AMT - Armenia Time, AZT - Azerbaijan Time, GST - Gulf Standard Time - UAE)", 
+    "UTC +04:30 (AFT - Afghanistan Time)", 
+    "UTC +05:00 (PKT - Pakistan Standard Time, UZT - Uzbekistan Time)", 
+    "UTC +05:30 (IST - Indian Standard Time - India, Sri Lanka)", 
+    "UTC +05:45 (NPT - Nepal Time - Nepal)", 
+    "UTC +06:00 (BST - Bangladesh Standard Time, KGT - Kyrgyzstan Time)", 
+    "UTC +06:30 (CCT - Cocos Islands Time, MMT - Myanmar Time)", 
+    "UTC +07:00 (ICT - Indochina Time - Vietnam, Thailand, Cambodia)", 
+    "UTC +08:00 (CST - China Standard Time, WST - Western Standard Time - Australia)", 
+    "UTC +08:45 (ACST - Australian Central Standard Time - Eucla region)", 
+    "UTC +09:00 (JST - Japan Standard Time, KST - Korea Standard Time)", 
+    "UTC +09:30 (ACST - Australian Central Standard Time - Northern Territory, South Australia)", 
+    "UTC +10:00 (AEST - Australian Eastern Standard Time - Queensland, Papua New Guinea)", 
+    "UTC +10:30 (LHST - Lord Howe Standard Time - Australia)", 
+    "UTC +11:00 (SBT - Solomon Islands Time, VUT - Vanuatu Time, NCT - New Caledonia Time)", 
+    "UTC +12:00 (FJT - Fiji Time, GILT - Gilbert Islands Time, MHT - Marshall Islands Time)", 
+    "UTC +12:45 (CHAST - Chatham Islands Standard Time - New Zealand)", 
+    "UTC +13:00 (TOT - Tonga Time, SAMT - Samoa Standard Time, TKT - Tokelau Time)", 
+    "UTC +14:00 (LINT - Line Islands Time - Kiribati)"
+    ];
 
     const languages = [ "Abkhazian", "Achinese", "Acoli", "Adangme", "Adyghe", "Afar", "Afrikaans", "Akan",
     "Akkadian", "Albanian", "Aleut", "Amharic", "Angika", "Apache languages", "Arabic","Aragonese", "Arapaho", "Arawak", 
@@ -1026,8 +1062,8 @@
             </div>
             <input class="element" type="file" id="profile-pic" accept="image/*" onchange={handle_profile_img}/>
             <textarea class="element" bind:value={description} placeholder="Description"></textarea>
-            <button type="button" onclick={previousStage}>Back</button>
             <button type="button" onclick={nextStage}>Next</button>
+            <button type="button" onclick={previousStage}>Back</button>
           </form>
         {/if}
 
@@ -1169,20 +1205,22 @@
 
   #valid_username {
     position: absolute;
-    right: 10px;
+    right: 8px;
     top: 50px;
-    font-size: 15px;
+    font-size: 14px;
     max-width: 100px;
-    background-color: grey;
+    background-color: black;
     color: white;
     border-radius: 5px;
-    padding: 10px 14px;
+    padding: 10px 10px;
     cursor: pointer;
     transition: background-color 0.3s;
   }
 
   #valid_username:hover {
-    background-color: rgb(140, 186, 235)
+    background-color: #555;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   #username_message {
@@ -1194,7 +1232,7 @@
 
   #selection {
     cursor: pointer;
-    width: 90%;
+    width: 92%;
   }
 
   #password {
@@ -1217,8 +1255,10 @@
   #pw_match_message {
     display: block;
     font-size: 14px;
-    margin-top: 5px;
+    margin-top: 1px;
     position: static;
+    text-align: center; /* Add this to center the text */
+    width: 100%; /* Ensure it takes full width */
   }
 
   /* photo upload styling */
@@ -1254,62 +1294,48 @@
     color: #666;
   }
 
-  button {
-    padding: 12px;
-    background-color: #d3d3d3;
-    color: #333;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.1s ease;
-  }
-
-  button:hover {
-    background-color: #b0b0b0;
-    transform: scale(1.02);
-  }
-
   button[type="button"] {
-    padding: 12px 20px;
-    background-color: lightgrey;
+    width: 100%;
+    padding: 16px;
+    margin: 20px 0;
+    background-color: #333;
     color: white;
     border: none;
     border-radius: 6px;
-    font-size: 16px;
+    font-size: 1.2em;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 1rem;
+    transition: all 0.2s ease;
   }
 
   button[type="button"]:first-of-type {
-    background-color: #6c757d;
+    width: 100%;
+    padding: 16px;
+    margin: 20px 0;
     margin-right: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
   }
 
   button[type="button"]:hover {
-    background-color: #3a5bd9;
-  }
-
-  button[type="button"]:first-of-type:hover {
-    background-color: #5a6268;
-  }
-
-  .submit-btn {
-    background-color: #95dc71;
+    background-color: #555;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   .submit-btn:hover {
-    background-color: #65ab45;
+    background-color: #28a745 !important;
+    transform: scale(1.02);
   }
 
-  /* Validation Styles */
   span[style="color:green;"] {
     color: #28a745 !important;
-  }
-
-  span[style="color:red;"] {
-    color: #dc3545 !important;
   }
 
   /* for sidebar */
@@ -1394,10 +1420,8 @@
 
   .tree-container {
     width: 100%;
-    border: 1px solid #e8e8e8;
-    border-radius: 6px;
+    align-self: center;
     padding: 15px;
-    background-color: #fafafa;
     min-height: 400px;
     max-height: 500px;
     overflow-y: auto;
@@ -1411,6 +1435,7 @@
     background-color: #fafafa;
     min-height: 200px;
     overflow-y: auto;
+    align-self: center;
   }
 
   .selected-tags-list {
@@ -1434,68 +1459,81 @@
     font-style: italic;
   }
 
-  .remove-btn {
-    background: none;
-    color: red;
-    cursor: pointer;
-    font-size: 19px;
-    font-weight: bold;
-    margin: -5px -5px -5px 5px;
-    height: 24px;
-    width: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
+  /* need to overwrite button styling*/
+  button.remove-btn {
+    background: none !important;
+    color: red !important;
+    height: 24px !important;
+    width: 24px !important;
+    padding: 0 !important;
+    margin: -5px -5px -5px 5px !important;
+    transform: none !important;
+    border-radius: 50% !important;
+    font-weight: bold !important;
   }
 
-  .remove-btn:hover {
-    background-color: rgba(255, 77, 79, 0.1);
+  button.remove-btn:hover {
+    background-color: rgba(255, 77, 79, 0.1) !important;
   }
 
   @media (max-width: 768px) {
-    .tag-selection-container,
-    #form-content,
-    #sidebar,
-    form {
-      width: 95%; /* Change from 100% to 95% to add some margin */
-      max-width: 100%;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    
-    #container {
+    .tag-selection-container {
       width: 100%;
-      padding: 10px;
+      padding: 0 10px;
+      box-sizing: border-box;
     }
     
-    .element {
-      width: 90%;
+    .tree-container,
+    .selected-tags-container {
+      width: 100%;
+      min-height: auto; /* Adjust height for mobile */
+      max-height: 300px; /* Smaller max height on mobile */
     }
     
-    #username {
-      flex-direction: column;
-      align-items: center;
+    .selected-tags-list {
+      justify-content: center; /* Center tags on small screens */
+    }
+    
+    .selected-tag {
+      font-size: 14px; /* Slightly smaller on mobile */
+      padding: 5px 10px;
+    }
+    
+    .remove-btn {
+      width: 20px;
+      height: 20px;
+      font-size: 16px;
+      margin: -3px -3px -3px 3px;
+    }
+
+    #valid_username {
+      position: absolute;
+      right: auto;
+      top: auto;
+      bottom: -20px;
+      align-content: center;
     }
     
     #username_in {
       padding-right: 0;
+      width: 100%;
+    }
+    
+    #username {
+      padding-bottom: 50px;
     }
   }
 
-  @media (max-width: 576px) {
-    form {
-      padding: 1.5rem;
+  /* For very small screens */
+  @media (max-width: 480px) {
+    .selected-tag {
+      width: 100%; /* Full width on very small screens */
+      justify-content: space-between;
+      margin-bottom: 5px;
     }
     
-    .element {
+    .tree-container {
       padding: 10px;
-      font-size: 14px;
-    }
-    
-    button[type="button"] {
-      width: 100%;
-      margin: 0.5rem 0;
     }
   }
 
