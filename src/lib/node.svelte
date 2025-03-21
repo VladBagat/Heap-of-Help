@@ -46,9 +46,15 @@
 
 <div class="node-wrapper" style="margin-left: {level * 20}px">
   <div class="node" class:has-children={hasChildren(node)} class:selected={isSelected}>
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="node-label" on:click={toggleExpand}>
-      <span class="node-icon">
+    <div 
+      class="node-label" 
+      on:click={toggleExpand}
+      role="button"
+      tabindex="0"
+      on:keydown={(e) => e.key === 'Enter' && toggleExpand()}
+      aria-expanded={hasChildren(node) ? isExpanded : undefined}
+    >
+      <span class="node-icon" aria-hidden="true">
         {#if hasChildren(node)}
           {isExpanded ? '▼' : '►'}
         {:else}
@@ -57,14 +63,13 @@
       </span>
       <span class="node-name">{node.name}</span>
     </div>
-        
+    
     <div class="node-actions">
       {#if isSelected}
         <button type="button" class="action-btn remove-btn" on:click={removeTopic} title="Remove this topic">
           −
         </button>
-      {:else if !isComputerScience}
-        <!-- Only show the add button if it's not Computer Science -->
+      {:else if level > 0} <!-- Only show add button if not the root node -->
         <button type="button" class="action-btn add-btn" on:click={addTopic} title="Add this topic">
           +
         </button>
@@ -87,7 +92,6 @@
     </div>
   {/if}
 </div>
-
 
 <style>
   .node-wrapper {
@@ -141,8 +145,8 @@
   .node-actions {
     display: flex;
     gap: 5px;
-    position: absolute; /* Position absolutely */
-    right: 187px; /* Align to the right */
+    position: absolute;
+    right: 187px; /* align to the right */
     top: 50%;
     transform: translateY(-50%);
   }

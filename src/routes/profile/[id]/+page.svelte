@@ -21,6 +21,10 @@
     let errorMessage = "";
     let loading = true;
 
+    function ratingalert() {
+        // pop up where start appear and user can rate
+    }
+
 async function fetchProfile() {
     try {
         console.log("Fetching profile for ID:", id);
@@ -62,7 +66,6 @@ async function fetchProfile() {
         loading = false;
     }
 }
-
 
     async function ownerCheck() {
 
